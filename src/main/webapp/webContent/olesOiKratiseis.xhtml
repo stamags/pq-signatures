@@ -1,0 +1,253 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">ΚΕΠΥΕΣ</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+        <div class="warning">
+            Οι κρατήσεις που έχουν ολοκληρωθεί εμφανίζονται με ερυθρό χρώμα!
+        </div>
+
+        <p:panel header="Όλες οι Κρατήσεις">
+
+            <style type="text/css">
+                .false {
+                    background-color: #f9bbbc !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+            </style>
+
+
+            <br/>
+
+            <h:form id="form">
+                <p:growl id="msgs1" showDetail="true" life="3000"/>
+                <p:outputPanel id="stoixeia" style="width: 100%">
+                    <p:dataTable id="olesOiKratiseisMouTable"
+                                 value="#{OlesOiKratiseisBean.parkingBookingList}" var="record"
+                                 rowIndexVar="it"
+                                 filterEvent="enter"
+                                 paginator="true"
+                                 rows="10"
+                                 styleClass="aligncenter"
+                                 editable="false"
+                                 widgetVar="oiKratiseisMouTable"
+                                 rowKey="#{record}"
+                                 scrollable="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 currentPageReportTemplate="Βρέθηκαν {totalRecords} Κρατήσεις!"
+                                 rowStyleClass="#{OlesOiKratiseisBean.parkingBookingList.get(it).hasLeft ne true ? null: 'false'}">
+
+
+                        <f:facet name="{Exporters}">
+                            <p:commandButton value="Εξαγωγή Πίνακα σε Excel" icon="ui-icon-document" ajax="false"
+                                             style="margin-left: 30px">
+                                <p:dataExporter type="xls" target="olesOiKratiseisMouTable"
+                                                fileName="oles_Oi_Kratiseis"/>
+                            </p:commandButton>
+                        </f:facet>
+
+
+                        <p:column headerText="Α/Α" style="width: 20px!important;">
+                            <h:outputText value="#{it+1}"/>
+                        </p:column>
+
+                        <p:column headerText="Όνομα" sortBy="#{record.userId.name}"
+                                  filterBy="#{record.userId.name}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.userId.name}"/>
+                        </p:column>
+
+                        <p:column headerText="Επίθετο" sortBy="#{record.userId.surname}"
+                                  filterBy="#{record.userId.surname}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.userId.surname}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Από:" sortBy="#{record.startTime }"
+                                  filterBy="#{record.startTime}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px"
+                                  exportable="true">
+                            <h:outputText
+                                    value="#{record.startTime}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Ώρα:" sortBy="#{record.startTime }"
+                                  filterBy="#{record.startTime}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px"
+                                  exportable="true">
+                            <h:outputText
+                                    value="#{record.startTime}">
+                                <f:convertDateTime pattern="HH:mm:ss"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Έως:" sortBy="#{record.endTime}"
+                                  filterBy="#{record.endTime}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.endTime}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Ώρα:" sortBy="#{record.endTime}"
+                                  filterBy="#{record.endTime}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.endTime}">
+                                <f:convertDateTime pattern="HH:mm:ss"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Όροφος" sortBy="#{record.slotId.floorId.floorName}"
+                                  filterBy="#{record.slotId.floorId.floorName}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.slotId.floorId.floorName}"/>
+                        </p:column>
+
+                        <p:column headerText="Θέση" sortBy="#{record.slotId.slotNumber }"
+                                  filterBy="#{record.slotId.slotNumber}"
+                                  filterMatchMode="contains"
+                                  style="width: 20px">
+                            <h:outputText
+                                    value="#{record.slotId.slotNumber }"/>
+                        </p:column>
+
+                        <p:column headerText="Μάρκα Αυτοκινήτου" sortBy="#{record.markaAutokinitou}"
+                                  filterBy="#{record.markaAutokinitou}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px">
+                            <h:outputText
+                                    value="#{record.markaAutokinitou}"/>
+                        </p:column>
+
+                        <p:column headerText="Αριθμός Κυκολοφορίας" sortBy="#{record.arithmosKikloforias}"
+                                  filterBy="#{record.arithmosKikloforias}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px">
+                            <h:outputText
+                                    value="#{record.arithmosKikloforias}"/>
+                        </p:column>
+
+                        <p:column headerText="Ο χρήστης έχει εισέλθει στο Parking"
+                                  sortBy="#{record.arithmosKikloforias}"
+                                  filterBy="#{record.arithmosKikloforias}"
+                                  filterMatchMode="exact"
+                                  style="width: 100px">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('oiKratiseisMouTable').filter()"
+                                                 styleClass="ui-selectcheckboxmenu-items">
+                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>
+                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>
+                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText
+                                    value="#{record.hasArrived? 'ΝΑΙ' : 'ΟΧΙ'}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Ο χρήστης έχει φύγει από το Parking" sortBy="#{record.hasLeft}"
+                                  filterBy="#{record.hasLeft}"
+                                  filterMatchMode="exact"
+                                  style="width: 100px">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('oiKratiseisMouTable').filter()"
+                                                 styleClass="ui-selectcheckboxmenu-items">
+                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>
+                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>
+                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText
+                                    value="#{record.hasLeft? 'ΝΑΙ' : 'ΟΧΙ'}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Άφιξη Χρήστη" style="width: 100px;height: auto">
+                            <p:commandLink action="#{OlesOiKratiseisBean.userHasArrived(record)}"
+                                           update="form:olesOiKratiseisMouTable  form:msgs1"
+                                           disabled="#{record.hasLeft}">
+                                <h:graphicImage name="/icons/car_add.png"
+                                                title="Ενεργοποίηση"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column headerText="Αναχώρηση Χρήστη" style="width: 100px;height: auto">
+                            <p:commandLink action="#{OlesOiKratiseisBean.userHasLeft(record)}"
+                                           update="form:olesOiKratiseisMouTable  form:msgs1">
+                                <h:graphicImage name="/icons/car_delete.png"
+                                                title="Ενεργοποίηση"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column headerText="Έχει Ολοκληρωθεί"
+                                  filterBy="#{record.hasLeft}"
+                                  filterMatchMode="equals"
+                                  style="width: 100px;height: auto">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('oiKratiseisMouTable').filter()"
+                                                 styleClass="ui-selectcheckboxmenu-items">
+                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>
+                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>
+                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText
+                                    value="#{record.hasLeft? 'ΝΑΙ' : 'ΟΧΙ' }"/>
+                        </p:column>
+
+                        <p:column headerText="Ακύρωση Κράτησης" style="width: 100px;height: auto">
+                            <p:commandLink action="#{OlesOiKratiseisBean.deleteKratisi(record)}"
+                                           update="form:olesOiKratiseisMouTable  form:msgs1">
+                                <h:graphicImage name="/icons/delete.png"
+                                                title="Ακύρωση"/>
+                            </p:commandLink>
+                        </p:column>
+
+
+
+                    </p:dataTable>
+                </p:outputPanel>
+            </h:form>
+        </p:panel>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{LoginBean.redirect('employees')}"/>
+    </f:metadata>
+
+</ui:composition>

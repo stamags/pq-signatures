@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/mainTemplate/indexaerial.xhtml">
+
+
+    <ui:define name="head">
+        <meta http-equiv="content-security-policy" content="
+            script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com https://accounts.google.com;
+            frame-src 'self' https://accounts.google.com;
+            connect-src 'self' https://www.googleapis.com https://accounts.google.com;
+            report-uri /csp-report-endpoint;"/>
+
+        <!--        <h:outputStylesheet library="css" name="style.css"/>-->
+        <!--&lt;!&ndash;        <h:outputScript library="primefaces" name="jquery/jquery.js"/>&ndash;&gt;-->
+        <!--        <h:outputScript library="primefaces" name="core.js"/>-->
+        <!--        <h:outputScript library="primefaces" name="components.js"/>-->
+        <!--         Other head elements like title, styles, etc. -->
+    </ui:define>
+
+    <ui:define name="title">Login</ui:define>
+    <ui:define name="menu">
+        <div class="error">Login</div>
+
+    </ui:define>
+    <ui:define name="content">
+
+        <h:form id="loginform" style="color: white;">
+            <p:growl id="msgs" showDetail="true" life="3000"/>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" async="async" defer="defer"></script>
+            <script src="https://accounts.google.com/gsi/client" async="async" defer="defer"></script>
+
+            <h1 style="color: red;">Πληροφοριακό Σύστημα Κράτησης Θέσεων Parking</h1>
+
+            <!--            <p:growl id="growl1" showDetail="false"/>-->
+            <!--            <p:growl id="growl" showDetail="true" for="password username"/>-->
+            <!-- Hidden input field to hold the token -->
+            <h:inputHidden id="idToken" value="#{LoginBean.idToken}"></h:inputHidden>
+
+            <!-- Hidden command button to process the token -->
+            <p:commandButton id="hiddenBtn" action="#{LoginBean.processGoogleToken}"
+                             update="@form" style="display:none;"></p:commandButton>
+
+            <p/>
+
+            <div class="ui-g-4">
+            </div>
+            <div align="center"
+                 style="margin:0 auto; background: rgba(46, 49, 51, 0.73)!important;  width: 550px; height: 350px; border-radius: 15px;">
+
+
+                <div id="g_id_onload"
+                     data-client_id="1041078813908-78r2hcsv75bitv7t0o5anbci4lkfthqk.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-login_uri="http://localhost:8080/ken/login.jsf"
+                     data-nonce=""
+                     data-itp_support="true">
+                </div>
+
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left">
+                </div>
+
+
+                <script>
+
+
+                    function handleCredentialResponse(response) {
+
+                        if (response.credential) {
+                            console.log("JWT received:", response.credential);
+                            // PrimeFacesExt.jQuery('#loginform\\:idToken').val(response.credential);
+                            $('#loginform\\:idToken').val(response.credential);
+                            $('#loginform\\:hiddenBtn').click();
+
+                        } else {
+                            console.error("Error retrieving a token:", response);
+                        }
+                    }
+
+                    // Callback function to handle the credential response.
+                    // function handleCredentialResponse(response) {
+                    //     if (response.credential) {
+                    //         console.log("JWT received:", response.credential);
+                    //         $('#loginform\\:idToken').val(response.credential);
+                    //         // Trigger the hidden command button to process the token.
+                    //         $('#loginform\\:hiddenBtn').click();
+                    //         // sendTokenToServer(response.credential)
+                    //         // Optionally, send the token to your backend.
+                    //     } else {
+                    //         console.error("Error retrieving a token:", response);
+                    //     }
+                    //     console.log("Encoded JWT ID token: " + response.credential);
+                    //     // Process the token (e.g., send to your backend)
+                    // }
+                </script>
+
+                <script>
+                    function sendTokenToServer(idToken) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/ken/login.jsf', // Adjust to your actual endpoint path
+                            data: {idtoken: idToken},
+                            success: function (response) {
+                                console.log('Successfully processed token on the server');
+                                // Optionally, redirect the user or update UI
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Server error: ' + error);
+                            }
+                        });
+                    }
+                </script>
+
+
+                <div style="margin: 10px;text-align: center; font-size: large">
+                    <div class="ui-inputgroup" style="margin-top: 10px;display: inline-block">
+                                        <span class="ui-inputgroup-addon"
+                                              style="border: none; background: transparent; color: white"><i
+                                                class="fa fa-user"></i></span>
+                        <p:inputText id="username" value="#{LoginBean.username}"
+                                     required="false"
+                                     placeholder="Όνομα Χρήστη"
+                                     style="border-radius: 15px; font-size: large"
+                                     autocomplete="off" requiredMessage="Πρέπει να συμπληρώσεις το Όνομα Χρήστη">
+                            <f:validateLength minimum="1" maximum="25"/>
+                        </p:inputText>
+                    </div>
+                    <p/>
+                    <div class="ui-inputgroup" style="margin: 0px;display: inline-block; font-size: large">
+                                        <span class="ui-inputgroup-addon"
+                                              style="border: none; background: transparent; color: white"><i
+                                                class="fa fa-lock"></i></span>
+                        <p:password id="password" value="#{LoginBean.password}"
+                                    required="false"
+                                    placeholder="Κωδικός Πρόσβασης"
+                                    style="border-radius: 15px; font-size: large"
+                                    label="Πληκτρολόγησε τον κωδικό πρόσβασης"
+                                    promptLabel="Πληκτρολόγησε τον κωδικό πρόσβασης"
+                                    autocomplete="off" requiredMessage="Πρέπει να συμπληρώσεις τον κωδικό πρόσβασης">
+                            <f:validateLength minimum="0" maximum="120"/>
+                        </p:password>
+                        <p/>
+                    </div>
+
+
+                </div>
+
+
+                    <p:commandButton value="Έίσοδος Χρήστη" action="#{LoginBean.validateUser()}"
+                                     style="width: 200px;height: 40px; margin-left: 18px; border-radius: 5px; font-size: x-large"
+                                     update="msg"
+                                     ajax="false"/>
+                <p/>
+                    <p:commandButton value="Δημιουργία Νέου Χρήστη" action="#{LoginBean.newUserLogin}"
+                                     style="width: 150px;height: 40px; margin-left: 18px; border-radius: 5px; font-size: small;margin-right: 10px"
+                                     update="msg"
+                                     ajax="false"/>
+
+
+
+
+
+
+
+                <p:commandButton action="#{LoginBean.loginAsGuest}"
+                                 class="mr-4"
+                                 style="color: white"
+                                 update="msg"
+                                 ajax="false"
+                                 value="Εισόδος ως επισκέπτης"/>
+                <p/>
+                <!--                action="#{buttonView.buttonAction}"-->
+
+                <!--<p:messages showDetail="true"/>-->
+                <!--<p:captcha label="Captcha" language="gr" />-->
+                <!--<p:commandButton  actionListener="#{LoginBean.captcha}" ajax="false" icon="ui-icon-check"/>-->
+            </div>
+
+        </h:form>
+    </ui:define>
+
+
+    <!--  *********************************************************************-->
+    <!--                        Please Wait Panel                              -->
+    <!--  *********************************************************************-->
+    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+
+    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" style="text-align: center;"
+              closable="false" resizable="false" showHeader="false">
+        <h:graphicImage value="/resources/icons/loader.gif"/>
+
+        <p/>
+        <h:outputText value="Pease wait"/>
+
+    </p:dialog>
+
+
+</ui:composition>

@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Yea" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ed872c6c-25a4-42b8-ac9b-90c8da4767d9">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="208"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="781"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="YEA" uuid="040a1c52-a828-4301-9030-e3b26a05d2b8">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT  Y.STRK_PROS_KWD,Y.YEA_EPWNYMO,Y.YEA_ONOMA,Y.YEA_PATRWNYMO,Y.YEA_MATRIX_TEST,Y.YEA_LEK_TEST,Y.YEA_HLIKIA,Y.YEA_GRAM_GN,Y.YEA_KATAGWGH,Y.YEA_PARASTHMA,Y.YEA_PROSPATH,Y.YEA_EPITHIMIA
+ FROM yea Y  INNER JOIN ken_yphresiaka K ON Y.STRK_PROS_KWD = K.STRK_PROS_KWD
+ WHERE K.ENDEIXI_YEA IS TRUE AND K.PAROUSIASTIKE IS TRUE]]>
+		</queryString>
+		<field name="STRK_PROS_KWD" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_EPWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_EPWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_ONOMA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_ONOMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_PATRWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_PATRWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_MATRIX_TEST" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_MATRIX_TEST"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_LEK_TEST" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_LEK_TEST"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_HLIKIA" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_HLIKIA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_GRAM_GN" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_GRAM_GN"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_KATAGWGH" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_KATAGWGH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_PARASTHMA" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_PARASTHMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_PROSPATH" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_PROSPATH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+		<field name="YEA_EPITHIMIA" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YEA_EPITHIMIA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+		</field>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[SELECT  M.MONA_LEK,T.TOPO_LEK,Y.STRK_PROS_KWD,Y.YEA_EPWNYMO,Y.YEA_ONOMA,Y.YEA_PATRWNYMO,Y.YEA_MATRIX_TEST,Y.YEA_LEK_TEST,Y.YEA_HLIKIA,Y.YEA_GRAM_GN,Y.YEA_KATAGWGH,Y.YEA_PARASTHMA,Y.YEA_PROSPATH,Y.YEA_EPITHIMIA
+FROM yea Y INNER JOIN ken_yphresiaka K ON Y.STRK_PROS_KWD = K.STRK_PROS_KWD
+INNER JOIN monada M ON M.MONA_KWD = K.YPHR_META_MONA_KWD
+INNER JOIN toponymio T ON T.TOPO_KWD=M.MONA_TOPO_KWD
+WHERE K.ENDEIXI_YEA IS TRUE AND K.PAROUSIASTIKE IS TRUE]]>
+	</queryString>
+	<field name="MONA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="TOPO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="STRK_PROS_KWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_EPWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_EPWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_ONOMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_ONOMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_PATRWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_PATRWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_MATRIX_TEST" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_MATRIX_TEST"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_LEK_TEST" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_LEK_TEST"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_HLIKIA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_HLIKIA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_GRAM_GN" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_GRAM_GN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_KATAGWGH" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_KATAGWGH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_PARASTHMA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_PARASTHMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_PROSPATH" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_PROSPATH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<field name="YEA_EPITHIMIA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YEA_EPITHIMIA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="yea"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="257" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="555" height="30" uuid="a794d142-33e8-4511-9ab3-afdf83e1d157"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΚΑΤΑΧΩΡΗΣΕΙΣ ΚΑΤΑΛΛΗΛΩΝ ΥΕΑ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="53" height="20" uuid="0553aad8-7da1-488f-99f5-3e740337996a"/>
+				<textElement>
+					<font isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΜΟΝΑΔΑ:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="0" width="67" height="20" uuid="b707af75-2c63-4c2d-b081-2d778308f2bb"/>
+				<textElement>
+					<font isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MONA_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="0" width="40" height="18" uuid="945887fc-809c-4e6b-9be2-be2372773479"/>
+				<textElement>
+					<font isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΗΜΕΡ:]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="80" width="555" height="60" uuid="e51b513e-696c-435c-a518-3535367bb77a">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 3_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 3_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 3_TD"/>
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="YEA" uuid="f97a2bce-d95b-4772-91f8-63dc11cd6bd8">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="20" uuid="6d392f3e-5700-4bec-bd23-da8af9bad3d5">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="20" height="30" uuid="76886dc3-781d-4ba6-baaa-03f0d89b53f7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Α/Α]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="20" height="30" uuid="e02f9c86-e3d3-4a05-93f4-495c2c90490a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="aef54bf6-f82f-4b20-aaca-3ce64dfea149">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="566ec7f1-47df-47bf-8c81-e212b086a2d4"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΕΠΩΝΥΜΟ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="010a9f6b-804b-47f7-9beb-c3293bc42353"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_EPWNYMO} == null ? "-" : $F{YEA_EPWNYMO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="7cd9cd58-0698-4b2c-bb7a-027548719b7d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="30" uuid="78d3dafe-f85f-446d-9a03-4677b102fce3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΟΝΟΜΑ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="30" uuid="1cb02d17-a227-413a-a017-8e5e00742fc2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_ONOMA}  == null ? "-" : $F{YEA_ONOMA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="ce8e322a-21d9-47e3-a017-9c3f915df46e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="30" uuid="4d69f557-c8e3-4554-8aa6-cf879786b9d8"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΠΑΤΡ.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="80" height="30" uuid="46a641d2-5021-4c49-8233-05bb2d1ff48d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_PATRWNYMO} == null ? "-" : $F{YEA_PATRWNYMO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="ab43de20-fab3-4810-bffb-e36d8d904313">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="69eec87c-b1f6-43fb-82cf-e3e428fc8bf9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΑΣΜ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="15475cca-c6be-4fb8-aff4-6771033a47a1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{STRK_PROS_KWD} == null ? "-" : $F{STRK_PROS_KWD}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40" uuid="0ca092b1-e0dc-4dd0-b2ef-84e99cf004ee">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="30" uuid="48c2100e-7b1a-4918-8775-2b0003334b02"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[MATR]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="30" uuid="9e26bb52-0fa8-401f-b43f-9d1b41e325df"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_MATRIX_TEST} == null ? "-" : $F{YEA_MATRIX_TEST}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="cf5ea133-c16b-49e3-a164-5d76c1240acf">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="697603ca-ae8c-4c33-975c-074cf0607dd7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΛΕΚΤ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="dad94929-9c64-4b48-90c3-01e733f192bb"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_LEK_TEST}  == null ? "-" : $F{YEA_LEK_TEST}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="2fbe209a-3490-4a8d-9cf8-dd2e2a4e6c59">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="b8688f7f-fc52-4820-b556-ea4c7480ea81"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΗΛΙΚ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="3d01800c-eb7e-4c15-9a7e-5a540015b28e"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_HLIKIA}  == null ? "-" : $F{YEA_HLIKIA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="c1cffba5-b28d-4c77-a1a9-4a10c7ff9fe4">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="bb68af26-ab6f-44ba-b4a7-14c691d57a2b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΓΡΑΜ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="c5675907-2bdf-433f-88c4-c14f9f0364bc"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_GRAM_GN} == null ? "-" : $F{YEA_GRAM_GN}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="f75ef5bb-94a1-4218-82f3-0eb2127920bf">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="7e07e560-9747-4c39-9b9f-249e2e68bb0d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΚΑΤΑ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="370a8d05-5a92-49d0-82a1-d9c5965bb751"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_KATAGWGH}  == null ? "-" : $F{YEA_KATAGWGH}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="999ddbac-7987-4a85-b090-e9cd2275fb48">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="cc3969c3-56ba-4a2b-b296-fc85ec977b37"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΠΑΡΑ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="cede20d3-7a08-4d78-aa32-0c33b9c29fa8"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_PARASTHMA} == null ? "-" : $F{YEA_PARASTHMA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="baa8ba58-3923-4026-991e-785efa110f9b">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column12"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="30" uuid="f96b8d77-a97d-46e0-aa67-e5c9974b9fb3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΠΡΟΣ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="188905ea-3b4e-4268-93d1-8096e8a55388"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_PROSPATH} == null ? "-" : $F{YEA_PROSPATH}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="35" uuid="12f3d7eb-7c15-44f0-a382-dad9cd6d81ad">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column13"/>
+						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="35" height="30" uuid="418e792d-1329-4c57-9977-061481784c7a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[ΕΠΙΘ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 3_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="35" height="30" uuid="4179713b-d471-45c4-920a-c27936808eb5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="10" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{YEA_EPITHIMIA} == null ? "-" : $F{YEA_EPITHIMIA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField>
+				<reportElement positionType="Float" x="300" y="180" width="170" height="20" uuid="aa26899a-049a-4256-8209-8d2ccff90c2f"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="12" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOPO_LEK} + ","]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement positionType="Float" x="480" y="180" width="75" height="20" uuid="11d45e19-f7d9-4efa-9ff6-0499aac3741a"/>
+				<textElement>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="450" y="200" width="50" height="20" uuid="32b629b1-4321-47e3-9ffe-c147d22c1db3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="12" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[-O-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="450" y="220" width="50" height="30" uuid="2fdd3828-e5f6-4237-8f7b-10a03d1f03cf"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="false" pdfFontName="c:\windows\fonts\arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΔΚΤΗΣ]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="480" y="0" width="75" height="18" uuid="8ea16be8-bbbb-419e-994d-e7d8cfae26c2"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

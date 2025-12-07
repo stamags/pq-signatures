@@ -1,0 +1,79 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pm="http://primefaces.org/manhattan">
+
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{guestPreferences.setTheme(LoginBean.user.theme)}"/>
+    </f:metadata>
+
+
+    <div class="layout-sidebar">
+        <!--        <img src="#{request.contextPath}/resources/assets_aerial/css/images/depli1.gif" style="text-align: center"/>-->
+        <div class="layout-sidebar-logo">
+
+            <a href="missionstimeline.xhtml">
+<!--                <p:graphicImage name="images/landing/icon-cleancode.svg" library="manhattan-layout"/>-->
+                <p:graphicImage name="css/images/parking_logo.jpg" library="assets_aerial" />
+
+                <!--                <p:graphicImage name="images/pearl-rail.png" library="manhattan-layout" />-->
+                <!--                <p:graphicImage name="images/bg.png" library="manhattan-layout"/>-->
+            </a>
+            <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu">
+                <i class="fa"></i>
+            </a>
+        </div>
+
+
+        <div class="nano">
+            <div class="nano-content sidebar-scroll-content">
+                <div class="layout-menu-container">
+                    <h:form id="menuform">
+                        <pm:menu>
+
+
+                            <p:submenu id="efedrosData" label="Μενού Κρατήσεων" expanded="true"
+                                       icon="fa fa-fw fa-arrow-circle-down">
+                                <!--<p:column>-->
+
+                                <p:menuitem id="kratisiThesis" value="Κράτηση Θέσης Parking" icon="fa fa-calendar"
+                                            outcome="/webContent/kratisiThesis"
+                                            rendered="#{LoginBean.security.foundPageAccess('kratisiThesis')}"/>
+
+                                <p:menuitem id="oiKratiseisMou" value="Οι κρατήσεις μου" icon="fa fa-eye"
+                                            outcome="/webContent/oiKratiseisMou?faces-redirect=true"
+                                            rendered="#{LoginBean.security.foundPageAccess('oiKratiseisMou')}"/>
+                            </p:submenu>
+
+
+
+
+
+                            <p:submenu id="olesOiKratiseis" label="Διαχειριστικό Μενού" icon="fa fa-fw fa-arrow-circle-down"  rendered="#{LoginBean.isAdmin()}">
+                                <p:menuitem id="sync16" value="Οι κρατήσεις του Parking"  rendered="#{LoginBean.isAdmin()}"
+                                            outcome="/webContent/olesOiKratiseis.jsf?faces-redirect=true"
+                                            icon="fa fa-car"/>
+                                <p:menuitem id="oloiOiXristes" value="Όλοι οι χρήστες"  rendered="#{LoginBean.isAdmin()}"
+                                            outcome="/webContent/oloiOiXristes.jsf?faces-redirect=true"
+                                            icon="fa fa-fw fa-users"/>
+                            </p:submenu>
+
+
+
+
+                        </pm:menu>
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</ui:composition>

@@ -1,0 +1,2 @@
+ALTER TABLE `kends`.`ken_atomika`
+    ADD COLUMN `BIC` VARCHAR(300) NULL AFTER `TOPO_MHTRWA_KWD`;

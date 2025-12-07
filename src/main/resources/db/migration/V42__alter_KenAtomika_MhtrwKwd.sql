@@ -1,0 +1,3 @@
+ALTER TABLE `kends`.`ken_atomika`
+    ADD COLUMN `TOPO_MHTRWA_KWD` INT NULL AFTER `PARATHRHSEIS`,
+    ADD CONSTRAINT `FK_ken_atomika_toponymio_4` FOREIGN KEY (`TOPO_MHTRWA_KWD`) REFERENCES `kends`.`toponymio`(`TOPO_KWD`);

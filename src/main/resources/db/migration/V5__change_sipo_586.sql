@@ -1,0 +1,1 @@
+update sipo set sipo.SIPO_KWD = 110890986 where SIPO_KWD = 110890983;

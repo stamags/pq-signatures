@@ -1,0 +1,372 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">Οικογενειακή Κατάσταση Νεοσυλλέκτου</ui:define>
+    <ui:define name="title">ΚΕΠΥΕΣ</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+    <ui:define name="content">
+
+        <h:outputScript library="js" name="/statistics/statisticsMain.js" target="head"/>
+
+        <style>
+
+            .bigFont {
+                font-size: x-large;
+                font-weight: bolder;
+            }
+
+            .largeFont {
+                font-size: small;
+            }
+
+            .smallFont {
+                font-size: x-small;
+            }
+
+        </style>
+
+        <div class="info" style="font-weight:bold ">
+            <h:outputText styleClass="tile"
+                          value="#{missionstimelineBean.welcomeMsg}"/> Οι διαθέσιμες θέσεις parking για σήμερα
+            <h:outputText styleClass="tile"
+                          value="#{missionstimelineBean.currenDateFront}"/> φαίνονται στον πίνακα παρακάτω :
+            <!--            <br/>-->
+            <!--            Στην συνέχεια τροποποιήστε την Ομάδα Αίματος σε όσους δεν έχει καταχωρηθεί.<br/>-->
+        </div>
+
+        <div class="ui-g dashboard">
+            <!--            <div class="ui-g-12" style="background-color: #136a8a">-->
+            <!--                <div class="ui-g overview-box overview-box-5">-->
+            <!--                    <div class="overview-box-icon">-->
+            <!--                        <i class="fa fa-male"/>-->
+            <!--                    </div>-->
+            <!--                    <div class="overview-box-content">-->
+            <!--                        <div class="overview-box-title">#{missionstimelineBean.welcomeMsg}</div>-->
+            <!--                        <div class="overview-box-stats">Καλως ήρθατε στο ΠΣ ΚΑΤΑΤΑΞΗ</div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+
+            <div class="ui-g-12 ui-lg-6 ui-xl-3">
+
+                <div class="ui-g overview-box overview-box-1">
+                    <div class="overview-box-icon">
+                        <i class="fa fa-car"></i>
+                    </div>
+                    <div class="overview-box-content">
+                        <div class="overview-box-title">Σύνολο Ελεύθερων Θέσεων</div>
+                        <div class="overview-box-stats">#{missionstimelineBean.eleytheresTheseisParking}</div>
+                        <div class="overview-box-details">Από όλους τους ορόφους του Parking</div>
+                    </div>
+                </div>
+                <!--                </h:panelGroup>-->
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 ui-xl-3">
+
+                <div class="ui-g overview-box overview-box-3">
+                    <div class="overview-box-icon">
+                        <i class="fa fa-car"></i>
+                    </div>
+                    <div class="overview-box-content">
+                        <div class="overview-box-title">1ος Όροφος</div>
+                        <div class="overview-box-stats">#{missionstimelineBean.eleytheresTheseisParking1ouOrofou}</div>
+                        <div class="overview-box-details">θέσεις ελεύθερες</div>
+                    </div>
+                </div>
+                <!--                </h:panelGroup>-->
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 ui-xl-3">
+
+                <div class="ui-g overview-box overview-box-2">
+                    <div class="overview-box-icon">
+                        <i class="fa fa-car"></i>
+                    </div>
+                    <div class="overview-box-content">
+                        <div class="overview-box-title">2ος Όροφος</div>
+                        <div class="overview-box-stats">#{missionstimelineBean.eleytheresTheseisParking2ouOrofou}</div>
+                        <div class="overview-box-details">θέσεις ελεύθερες</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 ui-xl-3">
+
+                <div class="ui-g overview-box overview-box-4">
+                    <div class="overview-box-icon">
+                        <i class="fa fa-car"></i>
+                    </div>
+                    <div class="overview-box-content">
+                        <div class="overview-box-title">3ος Όροφος</div>
+                        <div class="overview-box-stats">#{missionstimelineBean.eleytheresTheseisParking3ouOrofou}</div>
+                        <div class="overview-box-details">θέσεις ελεύθερες</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <p:dialog header="Προσθήκη Νέου Χρήστη από Google"
+                  widgetVar="dlg3"
+                  width="600"
+                  modal="true"
+                  closable="true"
+                  rendered="#{missionstimelineBean.loginBean.newUserFromGoogle}">
+
+            <div class="info">
+                Καλώς ήρθατε στην εφαμοργή! To username θα είναι το email σας! Παρακαλώ να αλλάξετε κωδικό και να συμπληρώσετε τα στοιχεία του αυτοκινήτου σας !
+            </div>
+            <p></p>
+            <h:form id="eisagogiPopUp">
+                <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
+                <h:panelGrid columns="2" cellpadding="5" id="newUser">
+                    <h:outputText value="'Όνομα "/>
+                    <h:inputText id="name"
+                                 value="#{missionstimelineBean.tbluser.name}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"/>
+
+                    <h:outputText value="Επίθετο "/>
+                    <h:inputText id="surname"
+                                 value="#{missionstimelineBean.tbluser.surname}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Επίθετο"/>
+
+                    <h:outputText value="Username "/>
+                    <h:inputText id="username"
+                                 value="#{missionstimelineBean.tbluser.username}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το username"/>
+
+                    <h:outputText value="Email "/>
+                    <h:inputText id="email"
+                                 value="#{missionstimelineBean.tbluser.email}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Email"/>
+
+                    <h:outputText value="Αριθμός Τηλεφώνου "/>
+                    <h:inputText id="phoneNumber"
+                                 value="#{missionstimelineBean.tbluser.phone}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Τηλεφώνου"/>
+
+                    <h:outputText  value="Password"/>
+                    <p:password id="password"
+                                value="#{missionstimelineBean.passWord1}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                match="passwordrepeat"
+                                label="Password Repeat"
+                                feedback="true"
+                                requiredMessage="Πρέπει να συμπληρώσετε το password">
+                        <f:validateLength minimum="8"></f:validateLength>
+                    </p:password>
+
+
+                    <h:outputText value="Επανάληψη password"/>
+                    <p:password id="passwordrepeat"
+                                 value="#{missionstimelineBean.passWord2}"
+                                 toggleMask="true" redisplay="true"
+                                 required="true"
+                                 feedback="true"
+                                 label="Password Repeat"
+                                 requiredMessage="Πρέπει να συμπληρώσετε την Επανάληψη password"/>
+
+                    <h:outputText value="Μάρκα Αυτοκινητού"/>
+                    <h:inputText id="carMarka"
+                                 value="#{missionstimelineBean.parkingUsersCar.markaAutokinitou}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τη Μάρκα Αυτοκινήτου"/>
+
+                    <h:outputText value="Αριθμός Κυκλοφορίας"/>
+                    <h:inputText id="carArithmos"
+                                 value="#{missionstimelineBean.parkingUsersCar.arithmosKikloforias}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Κυκλοφορίας!"/>
+
+
+                    <p:commandButton id="no1"
+                                     value="Εισαγωγή"
+                                     action="#{missionstimelineBean.storeObjectsFromGoogle}"
+                                     update="eisagogiPopUp growl"
+                                     oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"/>
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+
+
+
+        <p:dialog header="Προσθήκη Νέου Χρήστη "
+                  widgetVar="dlg5"
+                  width="600"
+                  modal="true"
+                  closable="true"
+                  rendered="#{missionstimelineBean.loginBean.newUser}">
+
+            <div class="info">
+                Καλώς ήρθατε στην εφαμοργή! To username θα είναι το email σας! Παρακαλώ να αλλάξετε κωδικό και να συμπληρώσετε τα στοιχεία του αυτοκινήτου σας !
+            </div>
+            <p></p>
+            <h:form id="eisagogiPopUp2">
+                <p:growl id="growl2" sticky="false" showDetail="true" life="3000"/>
+                <h:panelGrid columns="2" cellpadding="5" id="newUser1">
+                    <h:outputText value="'Όνομα "/>
+                    <h:inputText id="name2"
+                                 value="#{missionstimelineBean.tbluser.name}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"/>
+
+                    <h:outputText value="Επίθετο "/>
+                    <h:inputText id="surname2"
+                                 value="#{missionstimelineBean.tbluser.surname}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Επίθετο"/>
+
+                    <h:outputText value="Username "/>
+                    <h:inputText id="username2"
+                                 value="#{missionstimelineBean.tbluser.username}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το username"/>
+
+                    <h:outputText value="Email "/>
+                    <h:inputText id="email2"
+                                 value="#{missionstimelineBean.tbluser.email}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Email"/>
+
+                    <h:outputText value="Αριθμός Τηλεφώνου "/>
+                    <h:inputText id="phoneNumber2"
+                                 value="#{missionstimelineBean.tbluser.phone}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Τηλεφώνου"/>
+
+                    <h:outputText  value="Password"/>
+                    <p:password id="password2"
+                                value="#{missionstimelineBean.passWord1}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                match="passwordrepeat2"
+                                label="Password Repeat"
+                                feedback="true"
+                                requiredMessage="Πρέπει να συμπληρώσετε το password">
+                        <f:validateLength minimum="8"></f:validateLength>
+                    </p:password>
+
+
+                    <h:outputText value="Επανάληψη password"/>
+                    <p:password id="passwordrepeat2"
+                                value="#{missionstimelineBean.passWord2}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                feedback="true"
+                                label="Password Repeat"
+                                requiredMessage="Πρέπει να συμπληρώσετε την Επανάληψη password"/>
+
+                    <h:outputText value="Μάρκα Αυτοκινητού"/>
+                    <h:inputText id="carMarka2"
+                                 value="#{missionstimelineBean.parkingUsersCar.markaAutokinitou}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τη Μάρκα Αυτοκινήτου"/>
+
+                    <h:outputText value="Αριθμός Κυκλοφορίας"/>
+                    <h:inputText id="carArithmos2"
+                                 value="#{missionstimelineBean.parkingUsersCar.arithmosKikloforias}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Κυκλοφορίας!"/>
+
+
+                    <p:commandButton id="no13"
+                                     value="Εισαγωγή"
+                                     action="#{missionstimelineBean.storeObjectsNewUser}"
+                                     update="eisagogiPopUp2 growl2"
+                                     oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg5').hide();"/>
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog header="Αλλαγή Κωδικού"
+                  widgetVar="dlg4"
+                  width="600"
+                  modal="true"
+                  closable="true"
+                  rendered="#{missionstimelineBean.tbluser.resetPassword}">
+
+            <div class="info">
+                Καλώς ήρθατε στην εφαμοργή! Προκειμένου να συνεχίσετε πρέπει να αλλάξετε τον κωδικό σας !
+            </div>
+            <p></p>
+            <h:form id="resetPasswordPopUp">
+                <p:growl id="growl1" sticky="false" showDetail="true" life="3000"/>
+                <h:panelGrid columns="2" cellpadding="5" id="resetPassword">
+                    <h:outputText value="'Όνομα "/>
+                    <h:inputText id="name1"
+                                 value="#{missionstimelineBean.tbluser.name}"
+                                 required="true"
+                                 disabled="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"/>
+
+                    <h:outputText value="Επίθετο "/>
+                    <h:inputText id="surname1"
+                                 value="#{missionstimelineBean.tbluser.surname}"
+                                 required="true"
+                                 disabled="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Επίθετο"/>
+
+
+                    <h:outputText  value="Password"/>
+                    <p:password id="password1"
+                                value="#{missionstimelineBean.passWord1}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                match="passwordrepeat1"
+                                label="Password Repeat"
+                                feedback="true"
+                                requiredMessage="Πρέπει να συμπληρώσετε το password">
+                        <f:validateLength minimum="8"></f:validateLength>
+                    </p:password>
+
+
+                    <h:outputText value="Επανάληψη password"/>
+                    <p:password id="passwordrepeat1"
+                                value="#{missionstimelineBean.passWord2}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                feedback="true"
+                                label="Password Repeat"
+                                requiredMessage="Πρέπει να συμπληρώσετε την Επανάληψη password"/>
+
+
+                    <p:commandButton id="no12"
+                                     value="Εισαγωγή"
+                                     action="#{missionstimelineBean.updatePassword}"
+                                     update="resetPasswordPopUp growl1"
+                                     oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg4').hide();"/>
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+
+</ui:composition>

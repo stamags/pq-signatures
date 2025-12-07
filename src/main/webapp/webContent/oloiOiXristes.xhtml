@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">ΚΕΠΥΕΣ</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+
+
+        <p:panel header="Όλοι οι Χρήστες">
+
+            <style type="text/css">
+                .false {
+                    background-color: #f9bbbc !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+            </style>
+
+
+
+            <br/>
+
+            <h:form id="form">
+                <p:growl id="msgs1" showDetail="true" life="3000"/>
+                <p:outputPanel id="stoixeia" style="width: 100%">
+                    <p:dataTable id="oloiOiXristes"
+                                 value="#{OloiOiXristesBean.tbluserList}"
+                                 var="record"
+                                 rowIndexVar="it"
+                                 filterEvent="enter"
+                                 paginator="true"
+                                 rows="10"
+                                 styleClass="aligncenter"
+                                 editable="false"
+                                 widgetVar="oloiOiXristesTable"
+                                 rowKey="#{record}"
+                                 scrollable="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 currentPageReportTemplate="Βρέθηκαν {totalRecords} Χρήστες!">
+
+
+
+                        <f:facet name="{Exporters}">
+                            <p:commandButton value="Εξαγωγή Πίνακα σε Excel" icon="ui-icon-document" ajax="false"
+                                             style="margin-left: 30px">
+                                <p:dataExporter type="xls" target="oloiOiXristes" fileName="oloi_Oi_Xristes"/>
+                            </p:commandButton>
+                        </f:facet>
+
+
+                        <p:column headerText="Α/Α" style="width: 60px!important;">
+                            <h:outputText value="#{it+1}"/>
+                        </p:column>
+
+                        <p:column headerText="Όνομα" sortBy="#{record.name}"
+                                  filterBy="#{record.name}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.name}"/>
+                        </p:column>
+
+                        <p:column headerText="Επίθετο" sortBy="#{record.surname}"
+                                  filterBy="#{record.surname}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.surname}"/>
+                        </p:column>
+
+                        <p:column headerText="Email" sortBy="#{record.email}"
+                                  filterBy="#{record.email}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.email}"/>
+                        </p:column>
+
+                        <p:column headerText="Τηλέφωνο" sortBy="#{record.phone}"
+                                  filterBy="#{record.phone}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.phone}"/>
+                        </p:column>
+
+                        <p:column headerText="Μάρκα Αυτοκινήτου" sortBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getMarkaAutokinitou()}"
+                                  filterBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getMarkaAutokinitou()}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getMarkaAutokinitou()}"/>
+                        </p:column>
+
+                        <p:column headerText="Αριθμός Κυκλοφορίας" sortBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getArithmosKikloforias()}"
+                                  filterBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getArithmosKikloforias()}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                  value="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getArithmosKikloforias()}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Ενεργός Χρήστης" sortBy="#{record.userActive}"
+                                  filterBy="#{record.userActive}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.userActive eq 0 ? 'Όχι'  : 'Ναι'}"/>
+                        </p:column>
+
+
+
+                        <p:column headerText="Απενεργοποίηση Χρήστη" style="width: 100px;height: auto">
+                            <p:commandLink action="#{OloiOiXristesBean.deactivateUser(record)}"
+                                           update="form:oloiOiXristes  form:msgs1">
+                                <h:graphicImage name="/icons/disconnect.png"
+                                                title="Απενεργοποίηση"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column headerText="Ενεργοποίηση Χρήστη" style="width: 100px;height: auto">
+                            <p:commandLink action="#{OloiOiXristesBean.activαteUser(record)}"
+                                           update="form:oloiOiXristes  form:msgs1">
+                                <h:graphicImage name="/icons/connect.png"
+                                                title="Ενεργοποίηση"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column headerText="Reset Password" style="width: 100px;height: auto">
+                            <p:commandLink action="#{OloiOiXristesBean.resetPassword(record)}"
+                                           update="form:oloiOiXristes  form:msgs1">
+                                <h:graphicImage name="/icons/arrow_refresh.png"
+                                                title="Reset Password"/>
+                            </p:commandLink>
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:outputPanel>
+            </h:form>
+        </p:panel>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{LoginBean.redirect('employees')}"/>
+    </f:metadata>
+
+</ui:composition>

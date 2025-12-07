@@ -1,0 +1,3 @@
+ALTER TABLE `kends`.`ken_atomika`
+  ADD COLUMN `TOPO_GENH_KWD_TAUT` INT(11) NULL AFTER `EFEDROS_EMAIL`,
+  ADD CONSTRAINT `FK_ken_atomika_toponymio_3` FOREIGN KEY (`TOPO_GENH_KWD_TAUT`) REFERENCES `kends`.`toponymio`(`TOPO_KWD`);

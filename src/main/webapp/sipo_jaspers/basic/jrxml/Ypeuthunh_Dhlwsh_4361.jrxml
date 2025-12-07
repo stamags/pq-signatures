@@ -1,0 +1,1435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c30228d2-e026-4053-a413-2a852a6f9fa1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="defaultBold" fontName="Arial" fontSize="12" isBold="true" pdfFontName="C:\Windows\Fonts\arialbd.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="GLWSSES" uuid="6e797356-f01a-4f7e-9bc5-8193748e532c">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT  GLWS.GLWS_LEK, EPID.XENH_GLWS_EPID_LEK
+FROM KEN_STRATEVMENOS STR
+  LEFT JOIN KEN_XENES_GLWSSES LANG ON STR.STRK_PROS_KWD = LANG.STRK_PROS_KWD
+  LEFT JOIN GLWSSA GLWS ON LANG.GLWS_KWD = GLWS.GLWS_KWD
+  LEFT JOIN XENH_GLWSSA_EPIDOSH EPID ON LANG.EPIP_GLWS_KWD = EPID.XENH_GLWS_EPID_KWD
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+		</queryString>
+		<field name="GLWS_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="GLWS_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="glwssa"/>
+		</field>
+		<field name="XENH_GLWS_EPID_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="XENH_GLWS_EPID_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="xenh_glwssa_epidosh"/>
+		</field>
+		<group name="GLWS_LEK">
+			<groupExpression><![CDATA[$F{GLWS_LEK}]]></groupExpression>
+		</group>
+		<group name="XENH_GLWS_EPID_LEK">
+			<groupExpression><![CDATA[$F{XENH_GLWS_EPID_LEK}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="DIPLWMATA" uuid="dd8bfe75-ce04-4e7d-825a-cb3306452288">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT DIPLPOL.DIPL_POLI_LEK AS "DIPLWMA", DIPLALL.DIPL_POLI_KTHSH AS "HMNIA DIPLWMATOS"
+FROM ken_stratevmenos STR
+  left join ken_diplwmata_politika DIPLALL ON STR.STRK_PROS_KWD = DIPLALL.STRK_PROS_KWD
+  left join diplwma_politiko DIPLPOL ON DIPLALL.DIPL_POLI_KDW = DIPLPOL.DIPL_POLI_KWD
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+		</queryString>
+		<field name="DIPLWMA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DIPLWMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="diplwma_politiko"/>
+		</field>
+		<field name="HMNIA DIPLWMATOS" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="HMNIA DIPLWMATOS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_diplwmata_politika"/>
+		</field>
+		<group name="DIPLWMA">
+			<groupExpression><![CDATA[$F{DIPLWMA}]]></groupExpression>
+		</group>
+		<group name="HMNIA DIPLWMATOS">
+			<groupExpression><![CDATA[$F{HMNIA DIPLWMATOS}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="EPITHYMIES_TOPOTHETHSHS" uuid="e3623883-9c4f-4d06-92c2-0f8c42090b21">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT topo.EPIT_TOPO_AA, e.EPAR_LEK
+  FROM ken_epithymies_topothethshs topo
+INNER JOIN eparxia e on topo.EPAR_KWD = e.EPAR_KWD
+WHERE topo.STRK_PROS_KWD = $P{STRK_PROS_KWD}
+ORDER BY topo.EPIT_TOPO_AA ASC]]>
+		</queryString>
+		<field name="EPIT_TOPO_AA" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="EPIT_TOPO_AA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymies_topothethshs"/>
+		</field>
+		<field name="EPAR_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="EPAR_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="eparxia"/>
+		</field>
+		<group name="EPAR_LEK">
+			<groupExpression><![CDATA[$F{EPAR_LEK}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="EPOPTHS STRATOLOGIAS" uuid="211a633e-75fe-48ad-927e-fcfd9bf4b07e">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT IPOG.ID AS "ID" , CONCAT(IPOG.EPWNYMO, " ", IPOG.ONOMA) AS "ONOM/MO IPOGRAFONTA", CONCAT(B.BATH_LEK, "(", O.OS_SYN, ")" ) AS "BATHMOS IPOGRAFONTA"
+FROM ipografes IPOG
+LEFT JOIN bathmos B on IPOG.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O on IPOG.OS_KWD = O.OS_KWD
+WHERE IPOG.ID = 6]]>
+		</queryString>
+		<field name="ONOM/MO IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ONOM/MO IPOGRAFONTA"/>
+		</field>
+		<field name="BATHMOS IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATHMOS IPOGRAFONTA"/>
+		</field>
+		<group name="ONOM/MO IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></groupExpression>
+		</group>
+		<group name="BATHMOS IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="EPIPEDO MORFWSHS" uuid="cc5e61fe-419c-4923-b6e0-f9800fe023a1">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select STR.STRK_PROS_KWD, EP.EPIP_MORF_LEK
+FROM ken_stratevmenos STR
+LEFT JOIN ken_morfwsh MOR on STR.STRK_PROS_KWD = MOR.STRK_PROS_KWD
+LEFT JOIN epipedo_morfwshs EP ON MOR.EPIP_MORF_KWD = EP.EPIP_MORF_KWD
+where STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+		</queryString>
+		<field name="STRK_PROS_KWD" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="EPIP_MORF_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="EPIP_MORF_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="epipedo_morfwshs"/>
+		</field>
+		<group name="EPIP_MORF_LEK">
+			<groupExpression><![CDATA[$F{EPIP_MORF_LEK}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  STR.STRK_PROS_KWD,
+  B.BATH_SYN,
+  O.OS_SYN,
+  date_format(YPHR.HMER_EGGRAFIS_SIPO, '%d/%m/%Y') as "hmnia katataxis",
+  YPHR.YPHR_ESSO,
+  STR.STRA_EPWNYMO,
+  STR.STRA_ONOMA,
+  STR.STRA_PATRWNYMO,
+  STR.STRA_MHTRONYMO,
+  M.MONA_LEK,
+  EID.EIDI_LEK,
+  date_format(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y'),
+  KAT.KATA_EFED_LEK,
+  E.EPAG_LEK,
+  EPAG.EPAG_PROYPHRESIA,
+  TOPO.TOPO_LEK,
+  NOM.NOMO_LEK,
+  ATOM.ATOM_DIEYTHYNSH,
+  ATOM.ATOM_TAXKWD,
+  DIPLPOL.DIPL_POLI_LEK                            AS "DIPLWMA",
+  DIPLALL.DIPL_POLI_KTHSH                          AS "HMNIA DIPLWMATOS",
+   EPITH.EPIT_PROEDR_FROURA_DKT,
+   EPITH.EPIT_STRATONOMIA_DKT,
+   EPITH.EPIT_DEA_DKT,
+   EPITH.EPIT_ELDYK_DKT,
+   EPITH.EPIT_KATADROMES_DKT,
+   EPITH.EPIT_TEXN_DKT
+FROM ken_stratevmenos STR
+  left join ken_atomika ATOM ON STR.STRK_PROS_KWD = ATOM.STRK_PROS_KWD
+  left join ken_yphresiaka YPHR ON STR.STRK_PROS_KWD = YPHR.STRK_PROS_KWD
+  left join ken_oikogeneiaka OIK ON STR.STRK_PROS_KWD = OIK.STRK_PROS_KWD
+  left join ken_diplwmata_politika DIPLALL ON STR.STRK_PROS_KWD = DIPLALL.STRK_PROS_KWD
+    left join ken_epithymia EPITH ON STR.STRK_PROS_KWD = EPITH.STRK_PROS_KWD
+  left join diplwma_politiko DIPLPOL ON DIPLALL.DIPL_POLI_KDW = DIPLPOL.DIPL_POLI_KWD
+  left join toponymio TOPO ON ATOM.TOPO_DIAM_KWD = TOPO.TOPO_KWD
+  left join nomos NOM ON TOPO.NOMO_KWD = NOM.NOMO_KWD
+  left join ken_epaggelmata EPAG ON STR.STRK_PROS_KWD = EPAG.STRK_PROS_KWD
+  left join epaggelma E ON EPAG.EPAG_KWD = E.EPAG_KWD
+  left join bathmos B ON YPHR.BATH_KWD = B.BATH_KWD
+  left join os O ON YPHR.OS_KWD = O.OS_KWD
+  left join eidikothta EID ON YPHR.YPHR_EIDI_KWD = EID.EIDI_KWD
+  left join katastash_efedrou KAT ON STR.KATA_EFED_KWD = KAT.KATA_EFED_KWD
+  left join monada M ON YPHR.YPHR_META_MONA_KWD = M.MONA_KWD
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+	</queryString>
+	<field name="STRK_PROS_KWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="BATH_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BATH_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+	</field>
+	<field name="OS_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+	</field>
+	<field name="hmnia katataxis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hmnia katataxis"/>
+	</field>
+	<field name="YPHR_ESSO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YPHR_ESSO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_yphresiaka"/>
+	</field>
+	<field name="STRA_EPWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_ONOMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_PATRWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_MHTRONYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_MHTRONYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="MONA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="EIDI_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EIDI_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="eidikothta"/>
+	</field>
+	<field name="date_format(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[date_format(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')]]>
+		</property>
+	</field>
+	<field name="KATA_EFED_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KATA_EFED_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="katastash_efedrou"/>
+	</field>
+	<field name="EPAG_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EPAG_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="epaggelma"/>
+	</field>
+	<field name="EPAG_PROYPHRESIA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EPAG_PROYPHRESIA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epaggelmata"/>
+	</field>
+	<field name="TOPO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="ATOM_DIEYTHYNSH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_DIEYTHYNSH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="ATOM_TAXKWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_TAXKWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="DIPLWMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DIPLWMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="diplwma_politiko"/>
+	</field>
+	<field name="HMNIA DIPLWMATOS" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="HMNIA DIPLWMATOS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_diplwmata_politika"/>
+	</field>
+	<field name="EPIT_PROEDR_FROURA_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_PROEDR_FROURA_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<field name="EPIT_STRATONOMIA_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_STRATONOMIA_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<field name="EPIT_DEA_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_DEA_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<field name="EPIT_ELDYK_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_ELDYK_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<field name="EPIT_KATADROMES_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_KATADROMES_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<field name="EPIT_TEXN_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_TEXN_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<columnHeader>
+		<band height="570" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="6" y="17" width="553" height="14" uuid="ba1a94ec-8f7c-4069-968b-fd8951a1fc90"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(ΑΡΘΡΟ 4 ν. 4361/2016)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="31" width="110" height="12" uuid="a833f900-26b0-49ff-a98b-6aa41a2e9293"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Ο υπογεγραμμένος]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="115" y="31" width="220" height="12" uuid="8fa64e1e-7eda-4864-8b1d-e47775101546"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_EPWNYMO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="335" y="31" width="224" height="12" uuid="144aeddb-334b-4064-ad97-965d52c62e87"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_ONOMA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="43" width="20" height="12" uuid="65383c08-bddc-4253-8154-5139bf001a37"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[του]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="25" y="43" width="220" height="12" uuid="843a6141-1477-42f1-adfd-0d2f60d71e9a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_PATRWNYMO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="245" y="43" width="60" height="12" uuid="ea031d62-e0f0-424f-91a3-f4af8ded257f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[και της]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="305" y="43" width="254" height="12" uuid="1f3bb88c-d2dc-4614-9692-701e98ff965c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_MHTRONYMO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="55" width="554" height="12" uuid="c3e860c2-2bb6-4683-a1f0-84f708baa555"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[δηλώνω υπεύθυνα τα παρακάτω:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="6" y="3" width="553" height="14" uuid="58df76cb-4e6d-4ff6-bb0b-be929295cfba"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ΑΙΤΗΣΗ - ΥΠΕΥΘΥΝΗ ΔΗΛΩΣΗ ΤΟΠΟΥ ΠΡΟΤΙΜΗΣΗΣ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="6" y="67" width="553" height="14" uuid="05bab4ef-f86f-45f0-b782-2af406a18522"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΣΤΡΑΤΙΩΤΙΚΑ ΣΤΟΙΧΕΙΑ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="81" width="110" height="12" uuid="e9cbf9f4-2a39-4c4f-a3a7-421f968ca69a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[1. ΣΑ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="93" width="110" height="12" uuid="d9105465-595f-48c0-a82a-6caf638ad4e8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[2. Όπλο - Σώμα]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="105" width="110" height="12" uuid="726bf9b3-fd40-4809-b0cf-802bb59f086a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[3. Θητεία]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="117" width="110" height="12" uuid="8048b609-9419-42e3-96c3-347c2deaab7a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[4. Α Ειδικότητα]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="129" width="110" height="12" uuid="b2b0277f-7d24-4975-a4d3-61662f11bf78"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[5. Μονάδα]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="115" y="81" width="444" height="12" uuid="bd185ff7-fac5-4167-bbb1-38369587fecf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRK_PROS_KWD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="115" y="93" width="444" height="12" uuid="32679e1d-088a-4899-b463-8ee3e89157cf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OS_SYN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="115" y="105" width="444" height="12" uuid="a08e56b2-d001-4d85-acd5-fd02a007048c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KATA_EFED_LEK} == null ? "-" : $F{KATA_EFED_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="115" y="117" width="170" height="12" uuid="35480e87-ac12-4ddd-9f6b-ea9e1514e36e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EIDI_LEK} == null ? "-" : $F{EIDI_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="285" y="117" width="104" height="12" uuid="d33dce46-4b5c-47bd-8260-f879b31619a5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[B Ειδικότητα]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="389" y="117" width="170" height="12" uuid="9b00c429-bd7e-489e-b4a1-2d46f18e5289"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EIDI_LEK} == null ? "-" : $F{EIDI_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="115" y="129" width="180" height="12" uuid="7384a5fa-4ed6-4902-a177-701095b5f19c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MONA_LEK} == null ? "-" : $F{MONA_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="295" y="129" width="120" height="12" uuid="b490353f-5581-43b4-a704-814746154ff9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Ημερ. Παρουσίασης]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="415" y="129" width="144" height="12" uuid="bce888e5-5cee-4493-891f-0fe15bb8ec93"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hmnia katataxis} == null ? "-" : $F{hmnia katataxis}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="6" y="141" width="553" height="14" uuid="a946ea4b-8022-4f42-8ec2-e8cb400bc9f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΛΟΙΠΑ ΣΤΟΙΧΕΙΑ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="155" width="190" height="15" uuid="f3d04b2c-ca90-43dc-9e0d-0419673726d3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[6. α. Τόπος Μόνιμης Κατοικίας]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="170" width="190" height="15" uuid="a7d20e9f-f3e9-4f46-acca-f0389a599c48"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[    β. Διεύθυνση Μόνιμης Κατοικίας]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="185" width="190" height="15" uuid="ad11bcc1-7e50-459d-97a8-2a477ad573e1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[    γ. Ημερομηνία Γεννήσεως]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="195" y="155" width="364" height="15" uuid="b13fb84f-28cd-433f-adfb-4dd516fed9cd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOPO_LEK} + " - " + $F{NOMO_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="195" y="170" width="250" height="15" uuid="0da69452-7e7c-4d7f-9dc5-c60842823aca"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ATOM_DIEYTHYNSH} == null ? "-" : $F{ATOM_DIEYTHYNSH}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="445" y="170" width="114" height="15" uuid="5ac15862-8009-4b2a-ac9d-ece5ff7690de"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ATOM_TAXKWD} == null ? "-" : $F{ATOM_TAXKWD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="195" y="185" width="364" height="15" uuid="17ccf4a5-3e56-4bde-8697-bde0983d6764"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_format(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')} == null ? "-" : $F{date_format(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="200" width="190" height="15" uuid="bf2b1d59-aaac-4d97-814d-5065f5dce9b9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[7. Γραμματικές Γνώσεις]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="215" width="554" height="15" uuid="b6c0309d-a9db-4f02-9eb8-9c9b82b02005"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[8. Ξένες Γλώσσες]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="7" y="230" width="552" height="40" uuid="324f0e2f-d27e-4c4d-bde5-1122dc38e5d3">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="GLWSSES" uuid="3ef02d65-d963-4006-8101-6a0fe62e0120">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="2ad66cb1-d6f5-4fc8-a7d9-64c326b10357">
+						<jr:columnHeader style="Table_CH" height="20">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="c1cd561c-224a-478a-9007-904aef4f47da"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10" isBold="true" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Γλώσσα]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="20">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="100" height="20" uuid="43b4f825-c3bd-4c8c-9a66-86569accbe96"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{GLWS_LEK} == null ? "-" : $F{GLWS_LEK}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="3102d337-c3eb-40f0-9abf-0853de57e5a1">
+						<jr:columnHeader style="Table_CH" height="20">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="fe7edaf3-be60-499c-a59c-056260036080"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10" isBold="true" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Επίπεδο]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="20">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="100" height="20" uuid="c99ab5b1-3b1b-41f2-98a4-8c94ddb88024"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{XENH_GLWS_EPID_LEK} == null ? "-" : $F{XENH_GLWS_EPID_LEK}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="270" width="110" height="15" uuid="43a552c1-54c7-4a5f-ae7f-6e8d5c82b3c9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[9. ΕΠΑΓΓΕΛΜΑ Α]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="115" y="270" width="226" height="15" uuid="18e1047b-3eb0-4df5-ba78-976f82c38b55"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPAG_LEK} == null ? "-" : $F{EPAG_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="341" y="270" width="114" height="15" uuid="6acddda4-a0ff-45d7-b831-3f5eeb0ea609"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΧΡΟΝΟΣ ΑΣΚΗΣΗΣ]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="455" y="270" width="104" height="15" uuid="a4dfbe3d-0287-407d-bd5d-e21ba253b6a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPAG_PROYPHRESIA} == null ? "-" : $F{EPAG_PROYPHRESIA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="285" width="554" height="15" uuid="a4120042-6d9a-49c9-988b-6db65b2b2146"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[10. ΙΚΑΝΟΤΗΤΑ ΟΔΗΓΗΣΗΣ]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="5" y="300" width="554" height="42" uuid="edf48773-98c0-4ff3-a661-f5180462c9a1">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="DIPLWMATA" uuid="a2405b06-8d4a-459d-b12a-b7af6773a2cf">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="c7401cfc-645d-4a5c-921e-ad899f54e5b6">
+						<jr:columnHeader style="Table 1_CH" height="20">
+							<staticText>
+								<reportElement positionType="Float" x="0" y="0" width="100" height="20" uuid="dd0dde6e-be11-433c-b5c6-678479877f54"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Άδεια Οδήγησης]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="20">
+							<textField isStretchWithOverflow="true">
+								<reportElement positionType="Float" x="0" y="0" width="100" height="20" uuid="e42038d4-c48c-4b15-89fa-c7c201f2339c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DIPLWMA} == null ? "-" : $F{DIPLWMA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="a7fe386f-66a0-4cb9-b865-2c8559d7fca6">
+						<jr:columnHeader style="Table 1_CH" height="20">
+							<staticText>
+								<reportElement positionType="Float" x="0" y="0" width="100" height="20" uuid="61fc52c4-89a8-4d27-80fe-7531c5c8b0f2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Ημ. Απόκτ.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="20">
+							<textField pattern="dd-MM-yyyy">
+								<reportElement positionType="Float" x="0" y="0" width="100" height="20" uuid="499a905b-a2aa-4a6e-a49e-ff70a2a75af6"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{HMNIA DIPLWMATOS} == null ? "-" : $F{HMNIA DIPLWMATOS}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="342" width="200" height="15" uuid="1aa717b9-0129-427e-93d2-ee62b7bbc12e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΕΠΙΘΥΜΙΑ ΤΟΠΟΘΕΤΗΣΗΣ]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="5" y="357" width="199" height="22" uuid="72882f06-d722-4afc-99f5-797d6ba46043">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 2_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 2_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="EPITHYMIES_TOPOTHETHSHS" uuid="9df20a45-08cc-4597-9c0f-a7cfcb98f1c0">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="3a070d40-2efa-4b97-a591-40bcc7ffc433">
+						<jr:detailCell style="Table 2_TD" height="20">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="20" uuid="a22e3699-7db9-430a-a89a-0d03873d58fa"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{EPIT_TOPO_AA} == null ? "-" : $F{EPIT_TOPO_AA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="70541f89-eec6-464b-8a6b-0639b8eeb72e">
+						<jr:detailCell style="Table 2_TD" height="20">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="20" uuid="f1db3bcf-2f44-4536-b38e-a2a089002c6f"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="10" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{EPAR_LEK} == null ? "-" : $F{EPAR_LEK}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="357" y="342" width="200" height="15" uuid="791d6358-b1f1-4618-924e-ec2d5e737390"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΕΠΙΘΥΜΙΑ ΜΕΤΑΘΕΣΗΣ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="205" y="355" width="151" height="15" uuid="0e180c4d-3912-4c68-a90c-7f2afa5eeb5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[- - -]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="195" y="200" width="364" height="15" uuid="f7665ec7-41f8-4243-ad88-f339a5bdef1d"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="EPIPEDO MORFWSHS" uuid="98152e91-8b80-4ca0-8c43-cf44f1c4f690">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="15" width="364">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="364" height="15" uuid="66d37122-e7ba-4ad0-92a7-19e558f22732"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{EPIP_MORF_LEK}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="379" width="554" height="30" uuid="613e2ff1-add0-48db-af90-a47655397eb5"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Σημείωση: Δηλώνονται υποχρεωτικά μέχρι τέσσερις Τόποι ή Μονάδες Επιθυμίας, αλλά τουλάχιστον δύο διαφορετικές φρουρές.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="409" width="554" height="15" uuid="f29d9e90-0aa8-4870-b84b-9883e7bf94d1"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[15. ΕΙΔΙΚΕΣ ΚΑΤΗΓΟΡΙΕΣ ΤΟΠΟΘΕΤΗΣΕΩΝ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="428" width="554" height="15" uuid="6907563c-591c-4194-ab6f-3fb119955d21"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[      Σε περίπτωση που επιλεγώ δηλώνω υπεύθυνα ότι:]]></text>
+			</staticText>
+			<frame>
+				<reportElement positionType="Float" x="5" y="443" width="30" height="15" uuid="2dd6b0b8-2ec6-4db1-b157-653536fc7889"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="458" width="30" height="15" uuid="36a08327-d29b-4c2e-be22-334466c60831"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="473" width="30" height="15" uuid="55da7b52-a103-4468-a9eb-82596b721248"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="488" width="30" height="15" uuid="45628471-44bb-4b04-a556-b2149b68b5e6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="503" width="30" height="15" uuid="584d153b-ef72-4430-8ac2-c59c2c465d53"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<textField>
+				<reportElement positionType="Float" x="45" y="443" width="514" height="15" uuid="202ed36b-1689-44a7-8dbc-7ba77e71def4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIT_PROEDR_FROURA_DKT} == null ? "-" : $F{EPIT_PROEDR_FROURA_DKT}.booleanValue()==true ? "ΕΠΙΘΥΜΩ  NA ΥΠΗΡΕΤΗΣΩ ΠΡΟΕΔΡΙΚΗ ΦΡΟΥΡΑ" : "ΔΕΝ ΕΠΙΘΥΜΩ  ΝΑ ΥΠΗΡΕΤΗΣΩ ΠΡΟΕΔΡΙΚΗ ΦΡΟΥΡΑ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="45" y="458" width="514" height="15" uuid="1b32fae4-e21c-4b9d-ac54-c628b0ee822f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIT_ELDYK_DKT} == null ? "-" : $F{EPIT_ELDYK_DKT}.booleanValue()==true ? "ΕΠΙΘΥΜΩ  NA ΥΠΗΡΕΤΗΣΩ  ΕΛΔΥΚ" : "ΔΕΝ ΕΠΙΘΥΜΩ  ΝΑ ΥΠΗΡΕΤΗΣΩ ΕΛΔΥΚ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="45" y="473" width="514" height="15" uuid="e9f7a59c-5d5c-4dc5-ab1c-39298bc99020"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIT_STRATONOMIA_DKT}== null ? "-" : $F{EPIT_STRATONOMIA_DKT}.booleanValue()==true ? "ΕΠΙΘΥΜΩ  NA ΥΠΗΡΕΤΗΣΩ  ΣΤΡΑΤΟΝΟΜΙΑ" : "ΔΕΝ ΕΠΙΘΥΜΩ  ΝΑ ΥΠΗΡΕΤΗΣΩ ΣΤΡΑΤΟΝΟΜΙΑ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="45" y="488" width="514" height="15" uuid="41d5f096-bba7-41d7-96ff-7a821db9a2fa"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIT_KATADROMES_DKT}== null ? "-" : $F{EPIT_KATADROMES_DKT}.booleanValue()==true ? "ΕΠΙΘΥΜΩ  NA ΥΠΗΡΕΤΗΣΩ  ΕΙΔΙΚΕΣ ΔΥΝΑΜΕΙΣ" : "ΔΕΝ ΕΠΙΘΥΜΩ  ΝΑ ΕΙΔΙΚΕΣ ΔΥΝΑΜΕΙΣ"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="45" y="503" width="514" height="15" uuid="ec58e3a1-edad-4936-9a05-7cc35a775fa5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIT_TEXN_DKT}== null ? "-" : $F{EPIT_TEXN_DKT}.booleanValue()==true ? "ΕΠΙΘΥΜΩ  NA ΥΠΗΡΕΤΗΣΩ  ΣΤΟ ΤΕΝΞ" : "ΔΕΝ ΕΠΙΘΥΜΩ  ΝΑ ΣΤΟ ΤΕΝΞ"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="4" y="518" width="554" height="15" uuid="8aa64cbd-2bc8-4a4f-9b43-7cd3fb2246ba"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[16. Δηλώνω ότι ανήκω στην -ις παρακάτω κατηγορία -ες.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="4" y="533" width="554" height="15" uuid="aff17da0-ba1c-4206-9591-93b3116190ad"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[α. του Άρθρου 75 ν. 3421/2005 (Α 302)]]></text>
+			</staticText>
+			<frame>
+				<reportElement positionType="Float" x="4" y="548" width="30" height="15" uuid="473cc6d7-c356-4dca-8c2f-11f18132c6a5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement positionType="Float" x="34" y="548" width="524" height="15" uuid="84f4f1fd-3b8e-448c-a530-9dfdaee429fc"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Παρ. 3: Οπλίτης που έχει γονέα με βαριά κινητική αναπηρία τουλάχιστον σε ποσοστό 67% και άνω ή είναι τυφλός]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="724">
+			<frame>
+				<reportElement positionType="Float" x="4" y="3" width="30" height="25" uuid="f033679d-f076-4a2b-adb6-efdf9313c80f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement positionType="Float" x="34" y="3" width="524" height="25" uuid="9fa749ef-2e25-45ad-ab89-4dea848c8497"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Παρ. 4α: Ύπαρξη αδελφού που εκπληρώνει ταυτόχρονα την στρατιωτική υποχρέωση στις τάξεις των ενόπλων δυνάμεων.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="15" y="74" width="544" height="15" uuid="8c63dc33-8bb8-4b65-9563-acfd2fe4fe91"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[παράγραφος 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="93" width="524" height="15" uuid="f3da04e1-9187-4b52-b9d0-c87dbb6f5132"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(α) Οπλίτης που είναι δικαιούχος του προγράμματος "Στέγαση και Επανένταξη"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="108" width="524" height="15" uuid="de8d07ad-7ffc-4150-89e9-744a98ed253b"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(β) Οπλίτης που είναι εξαρτώμενο μέλος δικαιούχου του προγράμματος "Στέγαση και Επανένταξη"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="123" width="524" height="25" uuid="2b816558-1c90-4375-93e6-91226985d1dd"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(γ) Οπλίτης με τουλάχιστον ένα (1) τέκνο που διαβιώνει σε συνθήκες ακραίας φτώχειας και λαμβάνει τουλάχιστον
+μία από τις παροχές, που προβλέπονται στο ν. 4320/2015 (Α 29).]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="148" width="524" height="25" uuid="426fb417-9f2b-473f-b10f-e1df39dd5460"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(δ) Οπλίτης που είναι εξαρτώμενο μέλος δικαιούχου μιας από από τις παροχές, που προβλέπονται στο ν.
+4320/2015 (Α 29) και διαβιώνει σε συνθήκες ακραίας φτώχειας.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="173" width="524" height="15" uuid="3b6cc396-27b3-49e5-aade-3df36e49ed99"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(ε) Οπλίτης με τουλάχιστον ένα (1) τέκνο ΑΜΕΑ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="15" y="188" width="544" height="15" uuid="19db1671-8d86-4d11-b617-a275f8f98346"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[παράγραφος 3
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="57" width="554" height="15" uuid="c4877c1e-d6a5-4033-a683-dd36f153959e"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[β. του Άρθρου 6 ν.4361/2016 (Α 10)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="203" width="524" height="25" uuid="9e443076-4cf4-4c22-8a2e-6b3468a6d213"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Οπλίτης που έχει ολοκληρώσει επιτυχώς πρόγραμμα θεραπείας εξαρτημένων ατόμων από ναρκωτικές ουσίες
+στους εγκεκριμένους οργανισμούς ή φορείς του άρθρου 51 του ν. 4139/2013 (Α 74)]]></text>
+			</staticText>
+			<frame>
+				<reportElement positionType="Float" x="5" y="93" width="30" height="14" uuid="804357dd-2c83-4537-b66f-07192566f2ac"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="108" width="30" height="14" uuid="712aaaa1-3fd0-4ca8-a1c1-ce57fbb38062"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="123" width="30" height="25" uuid="d5848434-535c-4d92-a0e6-282a970bb4e9"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="148" width="30" height="25" uuid="8cffa4ba-9b71-487f-a767-acf9af91d486"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="173" width="30" height="15" uuid="e583386a-2701-4e3e-8a57-01d3125b8e90"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="203" width="30" height="25" uuid="acf5efcb-7940-42f0-b047-a15ed3ea0ba1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement x="5" y="29" width="30" height="25" uuid="7ca85f6c-818e-4162-8b19-d2e7011dad83"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="28" width="524" height="25" uuid="dcd562c5-6344-4b92-891b-376ffac72c01"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Παρ. 4β: Ύπαρξη δίδυμου αδελφού που εκπληρώνει ταυτόχρονα τη στρατιωτική του υποχρέωση στις τάξεις των ενόπλων δυνάμεων.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="440" width="524" height="25" uuid="3aea4755-6e9f-427e-9e5f-302710cb64a7"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(η) Οπλίτης ορφανός και από τους δύο γονείς χωρίς εξαρτώμενα μέλη, ολοκλήρου θητείας και οι αδελφοί του είναι εξαρτώμενα μέλη.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="465" width="524" height="15" uuid="ceefa57e-bbdc-481e-9e56-51a118c0c50c"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(θ) Οπλίτης, μέλος πολύτεκνης, τρίτεκνης ή μονογονεϊκής οικογένειεας .]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="480" width="524" height="15" uuid="9db627d9-2cba-4355-bc56-10ab183eab8e"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(ι) Ανεργία γονέα και χαμηλό οικογενειακό εισόδημα, εφόσον ο οπλίτης είναι εξαρτώμενο μέλος.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="495" width="524" height="15" uuid="8a649ffa-4562-4a3b-ab33-380f1b81bade"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(ια) Ανεργία συζύγου για τον έγγαμο ή σύντροφου για συμφωνο συμβίωσης και χαμηλό οικογενειακό εισόδημα]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="510" width="524" height="25" uuid="6ffde67d-7153-4277-a6b9-2990e9d257b2"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Λοιπά σοβαρά οικογενειακά-κοινωνικά-οικονομικά προβλήματα οπλίτη ή μέλους αυτού τα οποία δεν περιλαμβάνονται στις ανωτέρω κατηγορίες:]]></text>
+			</staticText>
+			<frame>
+				<reportElement positionType="Float" x="5" y="440" width="30" height="25" uuid="3ab90501-a05c-40b2-b108-bff572aca6da"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="465" width="30" height="15" uuid="139adf10-4ebb-4730-878d-c8406d5a17f7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="480" width="30" height="15" uuid="8da3af64-cec0-42fa-8f0e-122ec24fac20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="495" width="30" height="15" uuid="6ebd3795-fc95-4878-9ce9-b77f9d1f13bb"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="510" width="30" height="25" uuid="5da0ef5f-ed5d-4dd4-a9fd-980040c66662"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="228" width="554" height="15" uuid="3ed96057-203f-40c3-a9ba-95273798432f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[γ. του Άρθρου 3 παράγραφος 2β του ν. 4361/2016 (Α 10) περίπτωση:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="243" width="524" height="15" uuid="78197786-a6e9-4f22-b165-b79f73eaf19c"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(α) Απώλεια συγγενούς α' βαθμού κατά το τελευταίο έτος πριν την κατάταξη ή κατά την διάρκεια της θητείας.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="258" width="524" height="25" uuid="9f404bce-0dd8-4c12-90de-2f43ca024045"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(β) Ανεργία γονέων με χαμηλό οικογενειακό εισόδημα, όπως κάθε φορά ορίζεται, εφόσον ο οπλίτης είναι
+εξαρτώμενο μέλος.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="283" width="524" height="25" uuid="d063c9c4-5af8-4db4-ba58-5c5414b1ac37"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(γ) Ανεργία συζύγου για τον έγγαμο οπλίτη και συντρόφου για τον οπλίτη που έχει συνάψει σύμφωνο συμβίωσης,
+με τουλάχιστον 1 τέκνο και χαμηλό οικογενειακό εισόδημα, όπως κάθε φορά ορίζεται.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="308" width="524" height="15" uuid="2b24eef0-ce59-4b4d-928b-58b5880beeb1"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(δ) Οπλίτης με ένα (1) τουλάχιστον]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="323" width="524" height="15" uuid="e5566ed5-9e43-4fef-8b88-a15b7003562a"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[τέκνο ή]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="37" y="339" width="524" height="15" uuid="03ad9ec1-904d-4133-8adc-90dcc0be05cc"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[σύζυγο ή]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="354" width="524" height="15" uuid="c3671f80-a782-4fae-818a-b81026e83949"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[γονέα ή]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="369" width="524" height="15" uuid="d3a26f11-36ac-4a01-a581-c15a6417d9fa"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[αδελφό με αναπηρία σε ποσοστό 67% και άνω.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="385" width="524" height="15" uuid="04c9f7a1-1882-457a-9cbd-3171d99b721d"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(ε) Οπλίτης που επιμελείται με δικαστική απόφαση ή είναι ανάδοχος ή θετός γονέας ατόμου με αναπηρία 67% και άνω]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="400" width="524" height="15" uuid="a59ca609-adeb-4afe-ab7f-9637c75cc704"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(στ) Οπλίτης με ένα (1) τουλάχιστον τέκνο.]]></text>
+			</staticText>
+			<frame>
+				<reportElement positionType="Float" x="5" y="243" width="30" height="15" uuid="ed054ee6-4864-44a9-932f-c3c89f79b5d5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="258" width="30" height="25" uuid="08449649-d09c-4eb5-a4f2-7d2ce05277d8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="283" width="30" height="25" uuid="ec9204b3-e645-4229-bd10-482854834a64"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="323" width="30" height="15" uuid="ba4677f5-0db8-4aa2-b2e7-bc5fe81c8b14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="338" width="30" height="15" uuid="8b813b9e-5a20-4a8f-99fb-a64587775759"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="354" width="30" height="15" uuid="aaa2d402-a09d-4f28-a797-f05ca7b875d3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="369" width="30" height="15" uuid="859268f9-f489-4aef-8f84-e272fee01b89"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="385" width="30" height="15" uuid="0e709137-e04e-4712-8a14-b36a8e6b6d39"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="400" width="30" height="15" uuid="190fbeae-2267-422e-aed2-6b7a3032fe03"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="415" width="30" height="25" uuid="72a23966-9978-452d-ab72-d1173bc09090"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement positionType="Float" x="35" y="415" width="524" height="25" uuid="83c432bd-6406-49ea-b879-28980b8d1db8"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(ζ) Οπλίτης, μέλος πολύτεκνης, τρίτεκνης ή μονογονεϊκής οικογένειεας ολοκλήρου θητείας και οι αδελφοί του είναι εξαρτώμενα μέλη.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="536" width="554" height="15" uuid="d796857f-8ea0-4a0d-9743-84479edb6847"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[17. Υποβάλλω συνημμένα τα παρακάτω δικαιολογητικά (οικονομικής, κοινωνικής, οικογενειακής κατάστασης)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="33" y="551" width="262" height="15" uuid="783279aa-efd2-450a-bfb4-e0105bb94265"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[α]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="33" y="566" width="262" height="15" uuid="8e82cbd4-6b05-403e-9050-be360b8ef1f8"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[β]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="295" y="551" width="262" height="15" uuid="de32a6bb-3608-4ed9-99aa-acc89b6aa762"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[γ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="295" y="566" width="262" height="15" uuid="ff4e7335-6a30-4d7c-bbd5-71d5b693da7b"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[δ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="581" width="554" height="13" uuid="68b2d2e7-b2e5-475a-9b7f-ea0322f5b92b"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Σε περίπτωση μη υποβολλής συγκεκριμένων δικαιολογητικών, οι ανωτέρω λόγοι δεν λαμβάνονται υπόψη.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="595" width="190" height="15" uuid="6048f7ca-4cee-4d38-859c-2108d09c9eb0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΘΕΩΡΗΘΗΚΕ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="610" width="190" height="15" uuid="17fcfb9a-f725-44d1-bd69-e8c60ca2c2c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Για την ακρίβεια των στοιχείων και ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="625" width="190" height="15" uuid="314029ca-e9c4-4b54-840f-88deb4f69d6b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[το γνήσιο της υπογραφής]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="640" width="190" height="15" uuid="741f09b0-4a03-4f68-a790-f59838c78e93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[-Ο-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="655" width="190" height="15" uuid="1f7d72fd-becb-4b80-95ab-c2a08e854403"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΕΠΟΠΤΗΣ ΣΤΡΑΤΟΛΟΓΙΑΣ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="405" y="644" width="154" height="15" uuid="cb59103d-8fe6-408e-b9c8-c7bf57eed059"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[-Ο-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="405" y="659" width="154" height="15" uuid="2e1a8637-319c-4218-a8b2-aec5a7e7cc25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΔΗΛΩΝ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="231" y="629" width="139" height="15" uuid="df13000c-bb65-44e3-a97d-f83b32e6e6a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΗΜΕΡΟΜΗΝΙΑ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="405" y="629" width="154" height="15" uuid="f7772ed5-8fdd-4d2e-8f64-e0632e8dc277"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="3" y="684" width="197" height="30" uuid="c7d7b3de-09e3-428e-b4df-a4f15eefa8fa">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="EPOPTHS STRATOLOGIAS" uuid="4e497371-6c92-4e53-b8eb-b330fc7a3b6c">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="197">
+						<textField>
+							<reportElement x="0" y="0" width="197" height="15" uuid="9b925cc2-761d-45b2-aea6-ced15cfd9d75"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="15" width="197" height="15" uuid="473157dd-7c78-4560-87e7-81e55245875f"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<frame>
+				<reportElement positionType="Float" x="5" y="308" width="30" height="15" uuid="e56f163a-0e06-4771-9210-8862e2317946"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

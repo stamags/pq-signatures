@@ -1,0 +1,1 @@
+UPDATE aima t SET t.AIMA_LEK = 'O RHESUS- (ΑΡΝΗΤΙΚΟ)' WHERE t.AIMA_KWD = 8;

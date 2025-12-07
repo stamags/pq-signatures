@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/composite">
+
+
+<h:head>
+    <title>Κράτηση Θέση Parking</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="#{request.contextPath}/resources/assets_aerial/css/main.css"/>
+    <!--<link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.css" type="text/css" media="screen"/>-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+</h:head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .video-background {
+        background: #000;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -99;
+    }
+
+    .video-foreground,
+    .video-background iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    #vidtop-content {
+        top: 0;
+        color: #fff;
+    }
+
+    .vid-info {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 33%;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        padding: 1rem;
+        font-family: Avenir, Helvetica, sans-serif;
+    }
+
+    .vid-info h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 0;
+        line-height: 1.2;
+    }
+
+    .vid-info a {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        background: rgba(0, 0, 0, 0.5);
+        transition: .6s background;
+        border-bottom: none;
+        margin: 1rem auto;
+        text-align: center;
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+        .video-foreground {
+            height: 300%;
+            top: -100%;
+        }
+    }
+
+    @media (max-aspect-ratio: 16/9) {
+        .video-foreground {
+            width: 300%;
+            left: -100%;
+        }
+    }
+
+    @media all and (max-width: 600px) {
+        .vid-info {
+            width: 50%;
+            padding: .5rem;
+        }
+
+        .vid-info h1 {
+            margin-bottom: .2rem;
+        }
+    }
+
+    @media all and (max-width: 500px) {
+        .vid-info .acronym {
+            display: none;
+        }
+    }
+</style>
+<h:body class="loading">
+
+<!--    <div class="video-background">-->
+<!--        -->
+<!--    </div>-->
+
+    <div id="wrapper">
+        <div id="bg"></div>
+        <div id="overlay"></div>
+        <div id="main">
+
+            <!-- Header -->
+            <header id="header">
+                <nav style="font-size:85%">
+                    <ui:insert name="content"></ui:insert>
+                </nav>
+            </header>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <span class="copyright">Copyright © #{LoginBean.currentYear}</span>
+<!--                <a href="http://www.army.gr"-->
+<!--                   target="_blank">Greek Army</a>-->
+            </footer>
+        </div>
+    </div>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <script>
+
+        window.onload = function () {
+            document.body.className = '';
+        }
+        window.ontouchmove = function () {
+            return false;
+        }
+        window.onorientationchange = function () {
+            document.body.scrollTop = 0;
+        }
+    </script>
+
+
+    <h:outputScript library="js" name="jquery-easing/jquery.easing.min.js"/>
+
+</h:body>
+</html>

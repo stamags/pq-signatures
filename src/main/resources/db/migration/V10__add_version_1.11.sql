@@ -1,0 +1,1 @@
+INSERT INTO kends.sypo_version (ID, HMEROMHNIA, VERSION, PERIGRAFH) VALUES (3, '2020-11-05', '1.11', 'Διορθώσεις στα εκτυπωτικά και στην ικανότητα του στρατιώτη.')

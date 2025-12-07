@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <display-name>cto</display-name>
+
+    <env-entry>
+        <env-entry-name>jsf/ClientSideSecretKey</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>am9kZXRlcHV0b2hhY2tlcg==</env-entry-value>
+    </env-entry>
+
+
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Production</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <!--<context-param>-->
+    <!--<param-name>primefaces.THEME</param-name>-->
+    <!--<param-value>#{LoginBean.getTheme()}</param-value>-->
+    <!--</context-param>-->
+
+    <!--<context-param>-->
+    <!--<param-name>primefaces.THEME</param-name>-->
+    <!--<param-value>manhattan-blue-grey</param-value>-->
+    <!--</context-param>-->
+
+    <!--<context-param>-->
+    <!--<param-name>primefaces.THEME</param-name>-->
+    <!--<param-value>manhattan-#{guestPreferences.getTheme()==null?'blue-grey':guestPreferences.getTheme()}</param-value>-->
+    <!--</context-param>-->
+
+    <listener>
+        <listener-class>utils.GeneralContexListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>utils.FlywayRunner</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>manhattan-#{LoginBean.getTheme()}</param-value>
+    </context-param>
+
+
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>auto</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>Character Encoding Filter</filter-name>
+        <filter-class>manhattan.filter.CharacterEncodingFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>
+            org.primefaces.webapp.filter.FileUploadFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    <!-- Τέλος για το fileupload -->
+
+    <context-param>
+        <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!-- Gia tis hmeromhnies-->
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/primefaces-manhattan.taglib.xml</param-value>
+    </context-param>
+
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <mime-mapping>
+        <extension>ecss</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/font-sfnt</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/font-woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>application/font-woff2</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>eot?#iefix</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg#exosemibold</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg#exobolditalic</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg#exomedium</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg#exoregular</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg#fontawesomeregular</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <!--<secure>true</secure>--> <!-- uncomment only when TLS/SSL is available -->
+        </cookie-config>
+    </session-config>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Restricted</web-resource-name>
+            <url-pattern>/*</url-pattern>
+            <http-method>HEAD</http-method>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+    </security-constraint>
+    <welcome-file-list>
+        <welcome-file>login.jsf</welcome-file>
+    </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+
+    <!--     Error Pages-->
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/login.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error_page/error_page.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error_page/error_page.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error_page/error_page.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error_page/error_page.html</location>
+    </error-page>
+    <filter>
+        <filter-name>RestrictPageFilter</filter-name>
+        <filter-class>filters.RestrictPageFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RestrictPageFilter</filter-name>
+        <url-pattern>/webContent/*</url-pattern>
+        <url-pattern>/statistika/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <context-param>
+        <param-name>com.sun.faces.writeStateAtFormEnd</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <!--<context-param>-->
+    <!--<param-name>primefaces.THEME</param-name>-->
+    <!--<param-value>admin</param-value>-->
+    <!--</context-param>-->
+
+    <!--    <context-param>-->
+    <!--        <param-name>primefaces.CACHE_PROVIDER</param-name>-->
+    <!--        <param-value>org.primefaces.cache.EHCacheProvider</param-value>-->
+    <!--    </context-param>-->
+
+    <!--Primefaces Captca keys for tsotzolas.zapto.org-->
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <!--for local-->
+        <!--<param-value>6LeXhwcUAAAAAALD-j_OIVS3zEPn-B507fwe35pR</param-value>-->
+        <!--for production-->
+        <param-value>6LfLqgcUAAAAADMdJhNXFMVAEUyRSTH5iJ3yMR6O</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <!--for local-->
+        <!--<param-value>6LeXhwcUAAAAAI8OIw2jy33mjG1T11MwnAZEX8Sr</param-value>-->
+        <!--for production-->
+        <param-value>6LfLqgcUAAAAALQWImaVnx_-ALhCHAhTzByQX0xg</param-value>
+    </context-param>
+
+    <!-- Is for making the redirection for the https-->
+    <!--<security-constraint>-->
+    <!--<web-resource-collection>-->
+    <!--<web-resource-name>SecureResource</web-resource-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</web-resource-collection>-->
+    <!--<user-data-constraint>-->
+    <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+    <!--</user-data-constraint>-->
+    <!--</security-constraint>-->
+    <!--<security-constraint>-->
+    <!--<web-resource-collection>-->
+    <!--<web-resource-name>Non-SecureResource</web-resource-name>-->
+    <!--<url-pattern>/reports/*</url-pattern>-->
+    <!--</web-resource-collection>-->
+    <!--<user-data-constraint>-->
+    <!--<transport-guarantee>NONE</transport-guarantee>-->
+    <!--</user-data-constraint>-->
+    <!--</security-constraint>-->
+
+
+    <servlet-mapping>
+        <servlet-name>java.ws.rs.Application</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

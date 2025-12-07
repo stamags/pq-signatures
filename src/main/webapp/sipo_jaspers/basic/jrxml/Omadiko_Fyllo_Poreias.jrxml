@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KEN_Omadiko_Fyllo_Poreias" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="85b5c908-8db3-4b50-8ad4-de0aadecea2a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS LOCALHOST"/>
+	<style name="defaultBold" fontName="Arial" isBold="true" pdfFontName="C:\Windows\Fonts\arialbd.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<topPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<leftPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<bottomPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<rightPen lineWidth="0.5" lineColor="#FCFAFA"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<topPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<leftPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<bottomPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<rightPen lineWidth="0.5" lineColor="#FCFAFA"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<topPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<leftPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<bottomPen lineWidth="0.5" lineColor="#FCFAFA"/>
+			<rightPen lineWidth="0.5" lineColor="#FCFAFA"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<subDataset name="YDKTHS" uuid="5e5b766c-cbae-4898-a508-109c0fe4dd92">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT IPOG.ID AS "ID" , CONCAT(IPOG.EPWNYMO, " ", IPOG.ONOMA) AS "ONOM/MO IPOGRAFONTA", CONCAT(B.BATH_LEK, "(", O.OS_SYN, ")" ) AS "BATHMOS IPOGRAFONTA"
+FROM ipografes IPOG
+LEFT JOIN bathmos B on IPOG.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O on IPOG.OS_KWD = O.OS_KWD
+WHERE IPOG.ID = 4]]>
+		</queryString>
+		<field name="ID" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ipografes"/>
+		</field>
+		<field name="ONOM/MO IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ONOM/MO IPOGRAFONTA"/>
+		</field>
+		<field name="BATHMOS IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATHMOS IPOGRAFONTA"/>
+		</field>
+		<group name="ONOM/MO IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></groupExpression>
+		</group>
+		<group name="BATHMOS IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="OMADIKO FYLLO POREIAS" uuid="85524929-279b-4a90-b873-2db6d9fafc89">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT B.BATH_LEK,O.OS_SYN,STR.STRA_EPWNYMO,STR.STRA_ONOMA,STR.STRA_PATRWNYMO,STR.STRK_PROS_KWD
+FROM ken_stratevmenos STR 
+LEFT OUTER JOIN ken_yphresiaka K ON STR.STRK_PROS_KWD = K.STRK_PROS_KWD
+LEFT OUTER JOIN bathmos B ON K.BATH_KWD = B.BATH_KWD
+LEFT OUTER JOIN os O ON K.OS_KWD = O.OS_KWD
+WHERE K.STRK_PROS_KWD in ($P!{STRK_PROS_KWD})]]>
+		</queryString>
+		<field name="BATH_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATH_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+		</field>
+		<field name="OS_SYN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+		</field>
+		<field name="STRA_EPWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_ONOMA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_PATRWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRK_PROS_KWD" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+	</subDataset>
+	<subDataset name="EPIKEFALIS_OMADAS" uuid="18d5ff48-5d6b-4788-80a6-c55d5a147f34">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT B.BATH_LEK,O.OS_SYN,STR.STRA_EPWNYMO,STR.STRA_ONOMA,STR.STRA_PATRWNYMO,STR.STRK_PROS_KWD
+FROM ken_stratevmenos STR 
+LEFT JOIN ken_yphresiaka K ON STR.STRK_PROS_KWD = K.STRK_PROS_KWD
+LEFT JOIN bathmos B ON K.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O ON K.OS_KWD = O.OS_KWD
+WHERE K.STRK_PROS_KWD in ($P!{STRK_PROS_KWD})
+LIMIT 1]]>
+		</queryString>
+		<field name="BATH_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATH_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+		</field>
+		<field name="OS_SYN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+		</field>
+		<field name="STRA_EPWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_ONOMA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_PATRWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRK_PROS_KWD" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+	</subDataset>
+	<subDataset name="HMEROMHNIES_FYLLOU_POREIAS" uuid="20851ac8-e182-4b51-89e8-a615dea45a4c">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT DATE_FORMAT(DATE_ANAXWRISIS, '%d/%m/%Y'), DATE_FORMAT(DATE_DIAGRAFIS, '%d/%m/%Y'),DATE_FORMAT(DATE_EGGRAFIS, '%d/%m/%Y'),DATE_FORMAT(DATE_PAROUSIASIS, '%d/%m/%Y')
+ FROM diaxeirsi_ipografwn]]>
+		</queryString>
+		<field name="DATE_FORMAT(DATE_ANAXWRISIS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label">
+				<![CDATA[DATE_FORMAT(DATE_ANAXWRISIS, '%d/%m/%Y')]]>
+			</property>
+		</field>
+		<field name="DATE_FORMAT(DATE_DIAGRAFIS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label">
+				<![CDATA[DATE_FORMAT(DATE_DIAGRAFIS, '%d/%m/%Y')]]>
+			</property>
+		</field>
+		<field name="DATE_FORMAT(DATE_EGGRAFIS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label">
+				<![CDATA[DATE_FORMAT(DATE_EGGRAFIS, '%d/%m/%Y')]]>
+			</property>
+		</field>
+		<field name="DATE_FORMAT(DATE_PAROUSIASIS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label">
+				<![CDATA[DATE_FORMAT(DATE_PAROUSIASIS, '%d/%m/%Y')]]>
+			</property>
+		</field>
+	</subDataset>
+	<subDataset name="DIATAGI_METATHESIS" uuid="56e88ef7-a3df-4c93-898f-1c9048bb7114">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT F_DIATAGIS FROM diaxeirsi_ipografwn]]>
+		</queryString>
+		<field name="F_DIATAGIS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="F_DIATAGIS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="diaxeirsi_ipografwn"/>
+		</field>
+	</subDataset>
+	<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT STR.`STRK_PROS_KWD`,DX.F_DIATAGIS, M.MONA_LEK, MON.MONA_LEK AS 'SYPO', NOMSYP.`NOMO_LEK` AS 'NOMOS SYPO',  TOPO.`TOPO_LEK` AS 'TOPOS SYPO'
+FROM `ken_stratevmenos` STR
+  LEFT JOIN `ken_yphresiaka` YP ON STR.`STRK_PROS_KWD` = YP.`STRK_PROS_KWD`
+  LEFT JOIN `bathmos` B ON YP.`BATH_KWD` = B.`BATH_KWD`
+  LEFT JOIN `os` O ON YP.`OS_KWD` = O.`OS_KWD`
+  LEFT JOIN `monada` M ON YP.`MONADA_METATHESIS` = M.`MONA_KWD`
+  LEFT JOIN `monada` MON ON YP.`YPHR_META_MONA_KWD` = MON.`MONA_KWD`
+  LEFT JOIN `toponymio` TOPO ON MON.`MONA_TOPO_KWD` = TOPO.`TOPO_KWD`
+  LEFT JOIN `nomos` NOMSYP ON TOPO.`NOMO_KWD` = NOMSYP.`NOMO_KWD`,`diaxeirsi_ipografwn` DX
+WHERE STR.STRK_PROS_KWD in ($P!{STRK_PROS_KWD})]]>
+	</queryString>
+	<field name="STRK_PROS_KWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="F_DIATAGIS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="F_DIATAGIS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="diaxeirsi_ipografwn"/>
+	</field>
+	<field name="MONA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="NOMOS SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOS SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="TOPOS SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPOS SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<group name="STRK_PROS_KWD">
+		<groupExpression><![CDATA[$F{STRK_PROS_KWD}]]></groupExpression>
+	</group>
+	<group name="MONA_LEK">
+		<groupExpression><![CDATA[$F{MONA_LEK}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="585">
+			<textField>
+				<reportElement x="10" y="0" width="140" height="30" uuid="80eca922-5848-4577-9953-a0dfee7a8c13"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SYPO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="450" y="0" width="100" height="20" uuid="df268054-1981-4c5c-bafb-568ce96888c7"/>
+				<textElement>
+					<font fontName="Arial" size="10" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Κ. 0021 / 1ο ΕΓ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="207" y="28" width="150" height="30" uuid="9242081b-aa05-4e31-bf95-f325e7b7d115"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="15" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΦΥΛΛΟ ΠΟΡΕΙΑΣ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="207" y="58" width="150" height="30" uuid="13b9a887-ddbf-4b4e-b021-22a13326f889"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[(ΟΜΑΔΙΚΟ)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="88" width="540" height="77" uuid="46937b31-37f1-41b2-9717-efc282f3b464"/>
+				<textElement markup="html">
+					<font fontName="SansSerif" size="12" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+					<paragraph lineSpacing="Double"/>
+				</textElement>
+				<textFieldExpression><![CDATA["απερχόμενο στο  "+ $F{MONA_LEK} + " σε εκτέλεση της υπ'αριθμ.: " + ($F{F_DIATAGIS} == null ? " - " : $F{F_DIATAGIS}) +"<br/> "  +" Eπικεφαλής των παρακάτων οπλιτών: "]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="15" y="165" width="543" height="30" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" uuid="98bf8dc4-9bf1-4385-b64e-eb2739fa25e2">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="Blank">
+					<datasetRun subDataset="EPIKEFALIS_OMADAS" uuid="a70e739d-3bfc-4d5d-8ba1-2b9ebbcaeb2e">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="400" uuid="622db7dd-a207-4f29-8325-4de6f6c0d624">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="400" height="30" uuid="8d185563-9d96-46cf-b9be-efbc4e78f645"/>
+								<box padding="0">
+									<pen lineWidth="1.0" lineColor="#FFFFFF"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+									<paragraph lineSpacing="1_1_2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BATH_LEK} +"  " + "("+ $F{OS_SYN}  +")" +  "  "  + $F{STRA_EPWNYMO} + " " + $F{STRA_ONOMA} + "  του " + $F{STRA_PATRWNYMO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="143" uuid="c5252f63-3c5f-492b-a804-33ea1a0267ee">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="143" height="30" uuid="9a13488a-ca56-4fc3-a638-13c908a93697"/>
+								<box>
+									<pen lineColor="#FFFFFF"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{STRK_PROS_KWD}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="15" y="210" width="543" height="30" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" forecolor="#FFFFFF" uuid="b99553df-3246-4ac7-8ab8-85c7c5846cee">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="Blank">
+					<datasetRun subDataset="OMADIKO FYLLO POREIAS" uuid="b849dd53-14ed-437b-80e5-db23dbf8b765">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="30" uuid="00ae9e2a-71f5-4f6a-8695-3360404322b7">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="30" uuid="8da8f2b6-fb4b-4647-a482-c8e54e2ef966"/>
+								<box>
+									<pen lineColor="#FFFFFF"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{COLUMN_COUNT} +"."]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="400" uuid="d22fdd56-1f70-4c26-b582-fbd3bd8bdfce">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="400" height="30" uuid="a040e3fd-cb07-4341-9adf-c7797b6bcb5e"/>
+								<box padding="0">
+									<pen lineWidth="1.0" lineColor="#FFFFFF"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+									<paragraph lineSpacing="1_1_2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{BATH_LEK} +"  " + "("+ $F{OS_SYN}  +")" +  "  "  + $F{STRA_EPWNYMO} + " " + $F{STRA_ONOMA} + "  του " + $F{STRA_PATRWNYMO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="113" uuid="b84ab315-a6b8-437a-a868-a553368cedfe">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="113" height="30" uuid="26800a93-01fd-41db-b64a-2b29d88be64a"/>
+								<box>
+									<pen lineColor="#FFFFFF"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{STRK_PROS_KWD}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="15" y="250" width="543" height="130" uuid="9c9aa23b-7227-44c0-8c55-0b4fac68cdcd">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="HMEROMHNIES_FYLLOU_POREIAS" uuid="e91bbeff-daf1-40e4-8027-c25562ecef5b">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="190" uuid="bfc2b0f6-bb44-4d9e-9294-db8149b266af">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table 1_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="190" height="30" uuid="d9ddaef6-8d55-48e8-86b2-4ed50416c5e8"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Ημερομηνία αναχωρήσεως :]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="190" height="30" uuid="57b9925e-3e74-48c2-8152-0f4ee70646b0"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Ημερομηνία διαγραφής :]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="40" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="190" height="40" uuid="7090e65b-bfb5-4d4c-bf79-67bf6f2d0b17"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Ημερομηνία παρουσιάσεως :]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="190" height="30" uuid="40979543-e5cf-4353-b261-27547b91f626"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<text><![CDATA[Ημερομηνία εγγραφής :]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="353" uuid="0b973ebf-f41b-4ebe-a36f-4b505c7fef63">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table 1_TH" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="353" height="30" uuid="29c8f01c-6938-48bb-b101-d349a5ec0a35"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DATE_FORMAT(DATE_ANAXWRISIS, '%d/%m/%Y')}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="353" height="30" uuid="f77db1c0-1c8d-451c-ad8d-1a95ae4e1e71"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DATE_FORMAT(DATE_DIAGRAFIS, '%d/%m/%Y')}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="40" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="353" height="40" uuid="43ab941e-1885-49d0-8b2b-77592d687669"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DATE_FORMAT(DATE_PAROUSIASIS, '%d/%m/%Y')}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="353" height="30" uuid="a2016ee7-4bc4-4654-b406-4e799fe435df"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DATE_FORMAT(DATE_EGGRAFIS, '%d/%m/%Y')}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="15" y="384" width="470" height="30" uuid="dc436892-252c-4e13-af6d-95810729bc11"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Χορηγήθηκε το υπ'αριθμόν __________________________ Φύλλο Μισθοτροφοδοσίας]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="285" y="421" width="165" height="30" uuid="dfce7cc9-5dae-4013-964c-e05a97865a6a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOPOS SYPO}+", "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="365" y="464" width="160" height="20" uuid="bedab534-2e9e-49d5-a72c-2fc5da266eb6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Ο ΔΚΤΗΣ]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="328" y="517" width="230" height="30" uuid="a669264c-588a-462f-98fb-7b1899d7320e">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="YDKTHS" uuid="3228703c-e872-4efd-914c-a9ff6ad5f794">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="230">
+						<textField>
+							<reportElement x="0" y="0" width="230" height="15" uuid="0fa801c2-d0fe-4e0c-806f-cfea1b3ddf13"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="15" width="230" height="15" uuid="a594ecec-9fc1-4470-ab12-fd1f304221b8"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement positionType="Float" x="450" y="421" width="100" height="30" uuid="7994cbcd-b645-40ae-9069-679087285d25"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="HMEROMHNIES_FYLLOU_POREIAS" uuid="b4972d9a-a6b2-41e7-94ad-24b243b5f541">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="100">
+						<textField>
+							<reportElement x="0" y="0" width="100" height="30" uuid="6a5e34cf-a6f9-4e97-843b-6ddae6265f83"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Arial" size="12"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{DATE_FORMAT(DATE_ANAXWRISIS, '%d/%m/%Y')}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</title>
+</jasperReport>

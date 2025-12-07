@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Parapemptiko" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="85b5c908-8db3-4b50-8ad4-de0aadecea2a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ManhattanDS"/>
+	<style name="defaultBold" fontName="Arial" isBold="true" pdfFontName="C:\Windows\Fonts\arialbd.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="IATROS" uuid="5e5b766c-cbae-4898-a508-109c0fe4dd92">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT IPOG.ID AS "ID" , CONCAT(IPOG.EPWNYMO, " ", IPOG.ONOMA) AS "ONOM/MO IPOGRAFONTA", CONCAT(B.BATH_LEK, "(", O.OS_SYN, ")" ) AS "BATHMOS IPOGRAFONTA"
+FROM ipografes IPOG
+LEFT JOIN bathmos B on IPOG.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O on IPOG.OS_KWD = O.OS_KWD
+WHERE IPOG.ID = 9]]>
+		</queryString>
+		<field name="ID" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ipografes"/>
+		</field>
+		<field name="ONOM/MO IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ONOM/MO IPOGRAFONTA"/>
+		</field>
+		<field name="BATHMOS IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATHMOS IPOGRAFONTA"/>
+		</field>
+		<group name="ONOM/MO IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></groupExpression>
+		</group>
+		<group name="BATHMOS IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="NOSOKOMEIO" uuid="9c723f86-8d84-496e-b7e9-09fccdf680fb">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ManhattanDS"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT NOSOKOMEIO FROM diaxeirsi_ipografwn]]>
+		</queryString>
+		<field name="NOSOKOMEIO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOSOKOMEIO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="diaxeirsi_ipografwn"/>
+		</field>
+	</subDataset>
+	<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT STR.`STRK_PROS_KWD`, DATE_FORMAT(YP.YPHR_META_MONA_HMNIA, '%d/%m/%Y')  AS YPHR_HMNIA_MONADA, B.BATH_SYN, O.OS_SYN, E.EIDI_LEK, STR.STRA_EPWNYMO, STR.STRA_ONOMA, STR.STRA_PATRWNYMO, M.MONA_LEK, TOPMET.TOPO_LEK, NOM.NOMO_LEK, MON.MONA_LEK AS 'SYPO', TOPO.`TOPO_LEK` AS 'TOPOS SYPO', NOMSYP.`NOMO_LEK` AS 'NOMOS SYPO', DATE_FORMAT(YP.HMER_PAROUS_NEA_MON, '%d/%m/%Y') AS 'HMNIA PAROUSIASEWS', DATE_FORMAT(YP.HMER_DIAGRAFIS_SIPO, '%d/%m/%Y') AS 'HMNIA DIAGRAFIS', DATE_FORMAT(YP.HMER_XOR_FIL_POR, '%d/%m/%Y') AS 'HMNIA ANAXWRISEWS'
+FROM `ken_stratevmenos` STR
+LEFT JOIN `ken_yphresiaka` YP ON STR.`STRK_PROS_KWD` = YP.`STRK_PROS_KWD`
+LEFT JOIN `bathmos` B ON YP.`BATH_KWD` = B.`BATH_KWD`
+LEFT JOIN `os` O ON YP.`OS_KWD` = O.`OS_KWD`
+LEFT JOIN `eidikothta` E ON YP.`YPHR_EIDI_KWD` = E.`EIDI_KWD`
+LEFT JOIN `monada` M ON YP.`MONADA_METATHESIS` = M.`MONA_KWD`
+LEFT JOIN `monada` MON ON YP.`YPHR_META_MONA_KWD` = MON.`MONA_KWD`
+LEFT JOIN `toponymio` TOPO ON MON.`MONA_TOPO_KWD` = TOPO.`TOPO_KWD`
+LEFT JOIN `toponymio` TOPMET ON M.`MONA_TOPO_KWD` = TOPMET.`TOPO_KWD`
+LEFT JOIN `nomos` NOM ON TOPMET.`NOMO_KWD` = NOM.`NOMO_KWD`
+LEFT JOIN `nomos` NOMSYP ON TOPO.`NOMO_KWD` = NOMSYP.`NOMO_KWD`
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+	</queryString>
+	<field name="STRK_PROS_KWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="YPHR_HMNIA_MONADA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="YPHR_HMNIA_MONADA"/>
+	</field>
+	<field name="BATH_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BATH_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+	</field>
+	<field name="OS_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+	</field>
+	<field name="EIDI_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EIDI_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="eidikothta"/>
+	</field>
+	<field name="STRA_EPWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_ONOMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_PATRWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="MONA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="TOPO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="TOPOS SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPOS SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMOS SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOS SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="HMNIA PAROUSIASEWS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="HMNIA PAROUSIASEWS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_yphresiaka"/>
+	</field>
+	<field name="HMNIA DIAGRAFIS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="HMNIA DIAGRAFIS"/>
+	</field>
+	<field name="HMNIA ANAXWRISEWS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="HMNIA ANAXWRISEWS"/>
+	</field>
+	<group name="STRK_PROS_KWD">
+		<groupExpression><![CDATA[$F{STRK_PROS_KWD}]]></groupExpression>
+	</group>
+	<group name="BATH_SYN">
+		<groupExpression><![CDATA[$F{BATH_SYN}]]></groupExpression>
+	</group>
+	<group name="OS_SYN">
+		<groupExpression><![CDATA[$F{OS_SYN}]]></groupExpression>
+	</group>
+	<group name="STRA_EPWNYMO">
+		<groupExpression><![CDATA[$F{STRA_EPWNYMO}]]></groupExpression>
+	</group>
+	<group name="STRA_ONOMA">
+		<groupExpression><![CDATA[$F{STRA_ONOMA}]]></groupExpression>
+	</group>
+	<group name="STRA_PATRWNYMO">
+		<groupExpression><![CDATA[$F{STRA_PATRWNYMO}]]></groupExpression>
+	</group>
+	<group name="MONA_LEK">
+		<groupExpression><![CDATA[$F{MONA_LEK}]]></groupExpression>
+	</group>
+	<group name="YPHR_HMNIA_MONADA">
+		<groupExpression><![CDATA[$F{YPHR_HMNIA_MONADA}]]></groupExpression>
+	</group>
+	<group name="TOPO_LEK">
+		<groupExpression><![CDATA[$F{TOPO_LEK}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="410" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout"/>
+			<staticText>
+				<reportElement x="0" y="60" width="240" height="20" uuid="5d6658d5-b3eb-46f9-adb8-12000082432f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ΣΗΜΕΙΩΣΤΕ ΤΟΝ ΤΙΤΛΟ ΜΟΝΑΔΑΣ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="60" width="310" height="40" uuid="7d4b2089-d2e3-4f5b-b503-94c83e7846a7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ΠΑΡΑΠΕΜΠΤΙΚΟ ΣΗΜΕΙΩΜΑ ΙΑΤΡΟΥ ΜΟΝΑΔΑΣ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="80" width="240" height="20" uuid="906aed11-0f5d-4968-96ec-7e999d703fd8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{SYPO} == null ? "-" : $F{SYPO} ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="101" width="180" height="40" uuid="c05c56ae-ec74-4886-b344-1d371e24902f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[ΠΡΟΣ:       ΕΙ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="141" width="140" height="12" uuid="011451ca-09fa-4319-9cb1-c57ead7b1665"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Βαθμός Ασθενούς)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="153" width="140" height="28" uuid="0cecedbe-59f7-4a81-951b-930ccd5a5547"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Ν/Σ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="141" width="190" height="12" uuid="33d767a5-682e-4494-98bc-af26da69cbbe"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ονοματεπώνυμο ασθενούς]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="141" width="100" height="12" uuid="f6be7bf6-8b4d-4b95-9cb0-642c0e016aed"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(όνομα Πατέρα)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="141" width="120" height="12" uuid="d2d2ed57-472e-46d8-8709-4e1dff825cf6"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(ΑΣΜ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="181" width="330" height="12" uuid="750cc741-987a-4a8c-adfd-f25fff23a8e0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Σημειώστε τη ζητούμενη εξέταση)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="193" width="330" height="28" uuid="ffc0768c-42c9-4f5b-a72b-b2a0fbd67e3e"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[ΚΡΙΣΗ ΣΙ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="181" width="220" height="12" uuid="6d120d28-b92c-4b48-ab24-43fb1c6f7e94"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Σημειώστε κλινικά ή άλλα στοιχεία)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="193" width="220" height="28" uuid="04b8eb21-5968-4f3c-b0ab-07b46ca79c82"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="221" width="140" height="12" uuid="095efc72-92fb-4a8f-b919-dbcd87f83f46"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Βαθμός)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="221" width="190" height="12" uuid="0da81ee9-0aaf-4022-ac4c-0052be63c167"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ονοματεπώνυμο Υγ/κου Αξ/κου που ζητάει εξέταση]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="221" width="100" height="12" uuid="2b563a6f-1135-40fd-b462-13014849c285"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Υπογραφή)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="233" width="100" height="28" uuid="1afdcc05-83da-474b-8252-0a3f8c2aaa6c"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="221" width="120" height="12" uuid="0cf6af8e-7704-42d0-8f45-d15d7be10b84"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Ημερομηνία)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="261" width="550" height="12" uuid="9d779788-ddec-4cb5-9bb3-55802a6b7d4f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Σημειώστε εδώ το πόρισμα της εξέτασης)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="273" width="550" height="97" uuid="c7eff2b8-b3fa-4111-9336-7454f7a4466a"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="370" width="140" height="12" uuid="3c36f4aa-888a-4528-b18d-42f41f5d4376"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Βαθμός)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="370" width="160" height="12" uuid="05accf3d-4be0-4def-b440-4b0b31ea2c0e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ονοματεπώνυμο αυτού που εξετάζει]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="370" width="80" height="12" uuid="0b9ab5c1-6851-49b0-b8e6-f18091bbb854"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Υπογραφή)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="370" width="79" height="12" uuid="33147e7b-85d6-4a4a-bb0f-475be3d2e105"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Ημερομηνία)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="382" width="140" height="28" uuid="43d3ffaf-f2fe-4f44-b901-64e274e8b075"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="382" width="160" height="28" uuid="82dfc16d-d27d-45f5-83b4-94112ebdf1d4"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="382" width="80" height="28" uuid="57876987-5885-4b23-8e72-73bc1128e817"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="382" width="80" height="28" uuid="0cc7f1ed-8676-4eff-b2ad-200b48ab772c"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="370" width="90" height="12" uuid="81f161eb-db76-487c-92ed-ae380e4729c6"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(Αριθμός Εξέτασης)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="382" width="90" height="28" uuid="0bfb5759-3040-4ce3-9db9-95aaa4196564"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="220" height="30" uuid="80645439-1be0-4862-bef5-feb4c8cf14b8"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[ΓΕΝΙΚΟ ΕΠΙΤΕΛΕΙΟ   ΣΤΡΑΤΟΥ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="25" width="130" height="30" uuid="a7300689-f8b7-46b0-a634-57fc772b5b49"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Κ.0741/ΔΥΓ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="153" width="100" height="28" uuid="7c084088-4780-4968-ae55-6c363099cd14"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_PATRWNYMO} == null ? "-" : $F{STRA_PATRWNYMO} ]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="153" width="190" height="28" uuid="3ec1b2d8-111b-40fd-8e15-ac83800092dc"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_ONOMA} +    "  "  +$F{STRA_EPWNYMO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="153" width="120" height="27" uuid="f7401953-78b6-4f91-8936-32e48c3b7470"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRK_PROS_KWD} == null ? "-" : $F{STRK_PROS_KWD} ]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="0" y="233" width="140" height="28" uuid="a77b3393-c5c4-4160-b4ef-3dc64a664d5b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="IATROS" uuid="59298438-39f7-45ba-b65a-621da26d0416">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="28" width="140">
+						<textField>
+							<reportElement x="0" y="0" width="140" height="28" uuid="22e2af78-31de-4d0f-aba2-562016fb896c"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement verticalAlignment="Bottom">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="140" y="233" width="190" height="28" uuid="9c2c3c4b-234b-4fb4-82bb-9c051bfbe89b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="IATROS" uuid="9105c09d-0ac3-461f-8ae7-48fc213b466e">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="28" width="190">
+						<textField>
+							<reportElement x="0" y="0" width="190" height="28" uuid="68f1c2b6-5ff5-4273-8528-5e84016e6d58"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement verticalAlignment="Bottom">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="180" y="101" width="370" height="40" uuid="246879d3-03de-4ad4-a76a-e115e3a7cfbd"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="NOSOKOMEIO" uuid="63886654-439f-4bc7-afaf-bc2cb56c9cb8">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="40" width="370">
+						<textField>
+							<reportElement x="0" y="0" width="370" height="40" uuid="34d73828-2b59-4298-8232-9473d6fe8687"/>
+							<box>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textElement verticalAlignment="Bottom">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{NOSOKOMEIO}   == null ? "-" : $F{NOSOKOMEIO} ]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="430" y="233" width="120" height="28" uuid="7bdc546a-3f10-4697-872d-a8b438f66ce1"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

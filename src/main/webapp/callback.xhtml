@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+                template="/mainTemplate/indexaerial.xhtml">
+
+    <ui:define name="title">Login</ui:define>
+    <ui:define name="menu">
+        <div class="error">Login</div>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="loginform" style="color: white;">
+            <!--            <div style="alignment: center;">-->
+            <!--                <img src="#{request.contextPath}/resources/assets_aerial/css/images/1200px-HellenicArmySeal.svg.png"-->
+            <!--                        style="height: 180px"/>-->
+            <!--            </div>-->
+            <h1 style="color: red;">Πληροφοριακό Σύστημα Κράτησης Θέσεων Parking</h1>
+
+            <p:growl id="growl1" showDetail="false"/>
+            <p:growl id="growl" showDetail="true" for="password username"/>
+            <p/>
+
+            <div class="ui-g-4">
+            </div>
+            <div align="center"
+                 style="margin:0 auto; background: rgba(46, 49, 51, 0.73)!important;  width: 550px; height: 230px; border-radius: 15px;">
+                <script src="https://accounts.google.com/gsi/client" async="async" defer="defer"></script>
+
+<!--                <div id="g_id_onload"-->
+<!--                     data-client_id="1041078813908-78r2hcsv75bitv7t0o5anbci4lkfthqk.apps.googleusercontent.com"-->
+<!--                     data-context="signin"-->
+<!--                     data-ux_mode="popup"-->
+<!--                     data-login_uri="http://localhost:8080/ken/login"-->
+<!--                     data-itp_support="true">-->
+<!--                </div>-->
+
+<!--                <div class="g_id_signin"-->
+<!--                     data-type="standard"-->
+<!--                     data-shape="rectangular"-->
+<!--                     data-theme="outline"-->
+<!--                     data-text="signin_with"-->
+<!--                     data-size="large"-->
+<!--                     data-logo_alignment="left">-->
+<!--                </div>-->
+            </div>
+
+
+            <f:metadata>
+                <f:viewParam name="code" value="#{GoogleAuthBean.authCode}" />
+                <f:event type="preRenderView" listener="#{GoogleAuthBean.exchangeCodeForToken}" />
+            </f:metadata>
+            <h:outputText value="Authenticating... Please wait..." />
+
+
+
+                <!--                <div style="margin: 10px;text-align: center; font-size: large">-->
+                <!--                    <div class="ui-inputgroup" style="margin-top: 20px;display: inline-block">-->
+                <!--                        <span class="ui-inputgroup-addon" style="border: none; background: transparent; color: white"><i class="fa fa-user"></i></span>-->
+                <!--                        <p:inputText id="username" value="#{LoginBean.username}"-->
+                <!--                                     required="true"-->
+                <!--                                     placeholder="Όνομα Χρήστη"-->
+                <!--                                     style="border-radius: 15px; font-size: large"-->
+                <!--                                     autocomplete="off" requiredMessage="Πρέπει να συμπληρώσεις το Όνομα Χρήστη">-->
+                <!--                            <f:validateLength minimum="1" maximum="20"/>-->
+                <!--                        </p:inputText>-->
+                <!--                    </div>-->
+                <!--                    <p/>-->
+                <!--                    <div class="ui-inputgroup" style="margin: 0px;display: inline-block; font-size: large">-->
+                <!--                        <span class="ui-inputgroup-addon" style="border: none; background: transparent; color: white"><i class="fa fa-lock"></i></span>-->
+                <!--                        <p:password id="password" value="#{LoginBean.password}"-->
+                <!--                                    required="true"-->
+                <!--                                    placeholder="Κωδικός Πρόσβασης"-->
+                <!--                                    style="border-radius: 15px; font-size: large"-->
+                <!--                                    label="Πληκτρολόγησε τον κωδικό πρόσβασης"-->
+                <!--                                    promptLabel="Πληκτρολόγησε τον κωδικό πρόσβασης"-->
+                <!--                                    autocomplete="off" requiredMessage="Πρέπει να συμπληρώσεις τον κωδικό πρόσβασης">-->
+                <!--                            <f:validateLength minimum="0" maximum="120"/>-->
+                <!--                        </p:password>-->
+                <!--                        <p/>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <p/>
+                <p:commandButton value="Εισαγωγή" action="#{LoginBean.validateUser()}"
+                                 style="width: 200px;height: 40px; margin-left: 18px; border-radius: 5px; font-size: x-large"
+                                 ajax="false"/>
+
+
+            <div class="ui-g-4">
+            </div>
+
+            <p></p>
+
+
+            <!--<p:messages showDetail="true"/>-->
+            <!--<p:captcha label="Captcha" language="gr" />-->
+            <!--<p:commandButton  actionListener="#{LoginBean.captcha}" ajax="false" icon="ui-icon-check"/>-->
+
+
+        </h:form>
+    </ui:define>
+
+
+    <!--  *********************************************************************-->
+    <!--                        Please Wait Panel                              -->
+    <!--  *********************************************************************-->
+    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+
+    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" style="text-align: center;"
+              closable="false" resizable="false" showHeader="false">
+        <h:graphicImage value="/resources/icons/loader.gif"/>
+
+        <p/>
+        <h:outputText value="Pease wait"/>
+
+    </p:dialog>
+
+
+</ui:composition>

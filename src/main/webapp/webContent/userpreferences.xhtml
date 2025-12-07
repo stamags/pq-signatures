@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:o="http://omnifaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">ΚΕΠΥΕΣ</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+        <p:panel header="Προτιμήσεις Χρήστη">
+            <p></p>
+            <h:form id="eisagogiPopUp">
+                <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
+                <h:panelGrid columns="2" cellpadding="5" id="newUser">
+                    <h:outputText value="'Όνομα "/>
+                    <h:inputText id="name"
+                                 value="#{UserpreferencesBean.tbluser.name}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"/>
+
+                    <h:outputText value="Επίθετο "/>
+                    <h:inputText id="surname"
+                                 value="#{UserpreferencesBean.tbluser.surname}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Επίθετο"/>
+
+                    <h:outputText value="Email "/>
+                    <h:inputText id="email"
+                                 value="#{UserpreferencesBean.tbluser.email}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε το Email"/>
+
+                    <h:outputText value="Αριθμός Τηλεφώνου "/>
+                    <h:inputText id="phoneNumber"
+                                 value="#{UserpreferencesBean.tbluser.phone}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Τηλεφώνου"/>
+
+                    <h:outputText  value="Password"/>
+                    <p:password id="password"
+                                value="#{UserpreferencesBean.tbluser.password}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                match="passwordrepeat"
+                                label="Password Repeat"
+                                feedback="true"
+                                requiredMessage="Πρέπει να συμπληρώσετε το password">
+                        <f:validateLength minimum="8"></f:validateLength>
+                    </p:password>
+
+
+                    <h:outputText value="Επανάληψη password"/>
+                    <p:password id="passwordrepeat"
+                                value="#{UserpreferencesBean.tbluser.password}"
+                                toggleMask="true" redisplay="true"
+                                required="true"
+                                feedback="true"
+                                label="Password Repeat"
+                                requiredMessage="Πρέπει να συμπληρώσετε την Επανάληψη password"/>
+
+                    <h:outputText value="Μάρκα Αυτοκινητού"/>
+                    <h:inputText id="carMarka"
+                                 value="#{UserpreferencesBean.parkingUsersCar.markaAutokinitou}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τη Μάρκα Αυτοκινήτου"/>
+
+                    <h:outputText value="Αριθμός Κυκλοφορίας"/>
+                    <h:inputText id="carArithmos"
+                                 value="#{UserpreferencesBean.parkingUsersCar.arithmosKikloforias}"
+                                 required="true"
+                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Κυκλοφορίας!"/>
+
+
+                    <p:commandButton id="no1"
+                                     value="Εισαγωγή"
+                                     action="#{UserpreferencesBean.storeObjects}"
+                                     update="eisagogiPopUp growl"/>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

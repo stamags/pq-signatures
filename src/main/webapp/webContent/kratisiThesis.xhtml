@@ -1,0 +1,197 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">Προσωπικά Στοιχεία Νεοσυλλέκτου</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+    <!--<ui:define name="header">-->
+    <!--<meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>-->
+    <!--</ui:define>&lt;!&ndash;  #{request.contextPath}/  &ndash;&gt;-->
+    <!--<ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define>-->
+    <!--<ui:define name="leftMenu"><ui:include src="/menus/leftKentriki.xhtml"></ui:include></ui:define>-->
+    <ui:define name="content">
+        <!--Toolbar για navigation-->
+        <!--<ui:include src="toolbar.xhtml"></ui:include>-->
+        <!-- ****************************************************************** -->
+        <!--      ARXH Κεντρικού Panel Προσωπικά Στοιχεία Νεοσυλλέκτων          -->
+        <!-- ****************************************************************** -->
+        <p:panel header="Κράτηση Θέσης Parking">
+
+            <h:form id="form">
+                <div class="info" style="color: darkred">
+                    Το κόστος ανά ώρα κράτησης είναι 3 ευρώ! Από τις 10 ώρες και μετά είναι το κόστος ημέρας 35 ευρώ! Και για κάθε επιπλέον ημέρα είναι 35 ευρώ!
+                </div>
+
+
+                <p:growl id="msgs" showDetail="true" life="5000" redisplay="false"/>
+
+                <p:outputPanel id="stoixeia">
+                    <p:fieldset legend="Στοιχεία Χρήστη" style="border: double; margin-top: 30px">
+                        <h:panelGrid columns="1" id="updategraid" styleClass="firstColumnAlignRight" cellspacing="3px">
+
+                            <h:panelGrid columns="2" styleClass="firstColumnAlignRight">
+                                <h:outputText value="Επώνυμο" styleClass="required"/>
+                                <p:inputText value="#{kratisiThesisBean.tbluser.surname}" required="true"
+                                             requiredMessage="Πρέπει να συμπληρώσετε το Επώνυμο"
+                                             converter="omnifaces.ToUpperCaseConverter"
+                                             style="width: 250px;text-transform: uppercase"
+                                             disabled="#{kratisiThesisBean.episkeptis}"/>
+
+                                <h:outputText value="Όνομα" styleClass="required"/>
+                                <p:inputText value="#{kratisiThesisBean.tbluser.name}" required="true"
+                                             requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"
+                                             converter="omnifaces.ToUpperCaseConverter"
+                                             style="width: 250px;text-transform: uppercase"
+                                             disabled="#{kratisiThesisBean.episkeptis}"/>
+
+
+                                <h:outputText value="Email" styleClass="required"/>
+                                <p:inputText value="#{kratisiThesisBean.tbluser.email}" required="true"
+                                             requiredMessage="Πρέπει να συμπληρώσετε το Μητρώνυμο"
+                                             converter="omnifaces.ToUpperCaseConverter"
+                                             style="text-transform: uppercase;width: 250px"
+                                             disabled="#{kratisiThesisBean.episkeptis}"/>
+
+                                <h:outputText value="Μάρκα Αυτοκινήτου" styleClass="required"/>
+                                <p:inputText value="#{kratisiThesisBean.parkingUsersCar.markaAutokinitou}"
+                                             required="true"
+                                             requiredMessage="Πρέπει να συμπληρώσετε τη Μάρκα Αυτοκινήτου"
+                                             disabled="#{kratisiThesisBean.episkeptis}"/>
+
+                                <h:outputText value="Αριθμός Κυκλοφορίας" styleClass="required"/>
+                                <p:inputText value="#{kratisiThesisBean.parkingUsersCar.arithmosKikloforias}"
+                                             required="true"
+                                             requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Κυκλοφορίας"
+                                             disabled="#{kratisiThesisBean.episkeptis}"/>
+
+                            </h:panelGrid>
+
+                        </h:panelGrid>
+
+                    </p:fieldset>
+                    <br/>
+
+                    <p:fieldset legend="Επιλογή Ημερομηνίας Κράτησης Θέσης" toggleable="false"
+                                style="margin-top: 20px;margin-left: 0px;"
+                                styleClass="borderLight">
+                        <h:panelGrid columns="2" styleClass="firstColumnAlignRight">
+
+                            <h:outputText value="Από:" styleClass="required"/>
+                            <p:calendar id="kratisiApo"
+                                        value="#{kratisiThesisBean.parkingBooking.startTime}"
+                                        required="true"
+                                        mask="true"
+                                        pattern="dd/MM/yyyy HH:mm:ss"
+                                        placeholder="__/__/__"
+                                        validatorMessage="Δεν έχετε συμπληρώσει σωστά την Ημερομηνία Κράτησης"
+                                        requiredMessage="Δεν έχετε συμπληρώσει σωστά την Ημερομηνία Κράτησης"
+                                        converterMessage="Δεν έχετε συμπληρώσει σωστά την Ημερομηνία"
+                                        mindate="#{kratisiThesisBean.getMinDate()}"
+                                        maxdate="#{kratisiThesisBean.getMaxDate()}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                <p:ajax event="dateSelect"
+                                        listener="#{kratisiThesisBean.enableKratisiEos}"
+                                        update="kratisiEos"/>
+                            </p:calendar>
+
+
+                            <h:outputText value="'Εως:" styleClass="required"/>
+                            <p:calendar id="kratisiEos"
+                                        value="#{kratisiThesisBean.parkingBooking.endTime}"
+                                        disabled="#{!kratisiThesisBean.kratisiEosEnable}"
+                                        required="true"
+                                        mask="true"
+                                        pattern="dd/MM/yyyy HH:mm:ss"
+                                        placeholder="__/__/__"
+                                        validatorMessage="Δεν έχετε συμπληρώσει σωστά την Ημερομηνία Κράτησης"
+                                        requiredMessage="Δεν έχετε συμπληρώσει σωστά την Ημερομηνία Κράτησης"
+                                        converterMessage="Δεν έχετε συμπληρώσει σωστά την Ημερομηνία"
+                                        mindate="#{kratisiThesisBean.getMinDate1()}"
+                                        maxdate="#{kratisiThesisBean.getMaxDate()}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                <p:ajax event="dateSelect"
+                                        listener="#{kratisiThesisBean.onImerominiaSelect}"
+                                        update="orofos kostos msgs"/>
+                            </p:calendar>
+                        </h:panelGrid>
+
+                        <p:panel header="Επιλογή Ορόφου και Θέσης">
+
+                            <h:panelGrid columns="6" id="updategraid3">
+                                <h:outputText value="Όροφος" styleClass="gridEntry"/>
+                                <p:selectOneMenu id="orofos"
+                                                 disabled="#{!kratisiThesisBean.orofosEnable}"
+                                                 filter="true"
+                                                 filterMatchMode="contains"
+                                                 styleClass="selectOneMenu gridEntrySeparator"
+                                                 value="#{kratisiThesisBean.parkingSlots.floorId}"
+                                                 required="true" requiredMessage="Πρέπει να επιλέξετε Νομό"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="- Επιλέξτε -"
+                                                  noSelectionOption="true"
+                                                  itemDisabled="true"/>
+                                    <f:selectItems value="#{kratisiThesisBean.parkingFloorList}"
+                                                   var="par"
+                                                   itemLabel="#{par.floorName}"
+                                                   itemValue="#{floorId}"/>
+                                    <p:ajax
+                                            listener="#{kratisiThesisBean.onOrofosSelect}"
+                                            update="parkingSlot"/>
+                                    <!--                                    <f:ajax listener="#{proswpikaBean.onNomosChange}" render="eparxia poli"/>-->
+                                </p:selectOneMenu>
+
+
+                                <h:outputText value="Θέση Parking" styleClass="gridEntry"/>
+                                <p:selectOneMenu id="parkingSlot"
+                                                 disabled="#{!kratisiThesisBean.slotEnable}"
+                                                 filter="true"
+                                                 filterMatchMode="contains"
+                                                 styleClass="selectOneMenu gridEntrySeparator"
+                                                 value="#{kratisiThesisBean.parkingSlots}"
+                                                 required="true" requiredMessage="Πρέπει να επιλέξετε Νομό"
+                                                 converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="- Επιλέξτε -"
+                                                  noSelectionOption="true"
+                                                  itemDisabled="true"/>
+                                    <f:selectItems value="#{kratisiThesisBean.parkingSlotsList}"
+                                                   var="slot"
+                                                   itemLabel="#{slot.slotNumber}"
+                                                   itemValue="#{slot}"/>
+                                </p:selectOneMenu>
+
+
+                                <h:outputText value="Συνολικό Κόστος"/>
+                                <p:inputText value="#{kratisiThesisBean.parkingBooking.sinolikoKostos} € "
+                                             readonly="true"
+                                             id="kostos"/>
+
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:fieldset>
+                </p:outputPanel>
+
+                <!--Η υλοποίηση εδώ γίνεται με servlet mapping-->
+                <p:fieldset style="margin-top: 20px" legend="QR Code Κράτησης" id="qrCode" header="QR Code"
+                            rendered="#{not empty kratisiThesisBean.qrCodePath}">
+                    <img src="#{request.contextPath}/image/#{kratisiThesisBean.qrCodeFileName}" alt="QR Code"
+                         width="200" height="200"/>
+                </p:fieldset>
+
+                <div style="text-align:right;margin-top: 20px;">
+                    <h:outputText value="Υποχρεωτικά Πεδία" styleClass="required" style=" font-style: italic"/>
+                </div>
+                <p:commandButton value="Οριστικοποίηση Κράτησης"
+                                 action="#{kratisiThesisBean.store}"
+                                 update="@form"/>
+
+
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

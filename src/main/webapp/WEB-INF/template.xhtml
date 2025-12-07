@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      lang="en">
+
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+    </f:facet>
+    <title><ui:insert name="title">PrimeFaces Manhattan</ui:insert></title>
+    <h:outputScript name="js/nanoscroller.js" library="manhattan-layout"/>
+    <h:outputScript name="js/layout.js" library="manhattan-layout"/>
+
+    <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/icons/favicon.ico"/>
+    <link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.css" type="text/css" media="screen"/>
+
+    <h:outputStylesheet name="css/primeflex/primeflex.css"/>
+
+    <!--[if IE 6]><link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.ie6.css" type="text/css" media="screen" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.ie7.css" type="text/css" media="screen" /><![endif]-->
+
+    <!--<h:outputStylesheet library="css" name="#{request.contextPath}/resources/css/style.css"/>-->
+    <h:outputStylesheet library="css" name="style.css"/>
+
+    <!--<h:outputScript library="js" name="highcharts/highcharts.js"/>-->
+    <h:outputScript library="js" name="highcharts/highstock.js"/>
+    <!--<script src="https://code.highcharts.com/stock/highstock.js"></script>-->
+    <h:outputScript library="js" name="highcharts/highcharts-more.js"/>
+    <h:outputScript library="js" name="highcharts/modules/solid-gauge.js"/>
+    <h:outputScript library="js" name="highcharts/modules/drilldown.js"/>
+
+
+    <!--<h:outputScript library="js" name="highcharts/highcharts.js"/>-->
+    <h:outputScript library="js" name="highcharts/highcharts-3d.js"/>
+    <h:outputScript library="js" name="highcharts/exporting.js"/>
+    <h:outputScript library="js" name="highcharts/export-data.js"/>
+
+
+    <!--<script src="https://code.highcharts.com/stock/highstock.js"></script>-->
+
+    <style>
+        .editor-stage .snow {
+            height: 50px;
+            background: #fff;
+        }
+
+        .snow {
+            position: fixed;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100vh;
+            background: none;
+            background-image: url("#{resource['manhattan-layout:images/s1.png']}"), url("#{resource['manhattan-layout:images/s2.png']}"), url("#{resource['manhattan-layout:images/s3.png']}");
+            z-index: 100;
+            -webkit-animation: snow 10s linear infinite;
+            -moz-animation: snow 10s linear infinite;
+            -ms-animation: snow 10s linear infinite;
+            animation: snow 10s linear infinite;
+        }
+
+        @keyframes snow {
+            0% {
+                background-position: 0px 0px, 0px 0px, 0px 0px;
+            }
+            50% {
+                background-position: 500px 500px, 100px 200px, -100px 150px;
+            }
+            100% {
+                background-position: 500px 1000px, 200px 400px, -100px 300px;
+            }
+        }
+
+        @-moz-keyframes snow {
+            0% {
+                background-position: 0px 0px, 0px 0px, 0px 0px;
+            }
+            50% {
+                background-position: 500px 500px, 100px 200px, -100px 150px;
+            }
+            100% {
+                background-position: 400px 1000px, 200px 400px, 100px 300px;
+            }
+        }
+
+        @-webkit-keyframes snow {
+            0% {
+                background-position: 0px 0px, 0px 0px, 0px 0px;
+            }
+            50% {
+                background-position: 500px 500px, 100px 200px, -100px 150px;
+            }
+            100% {
+                background-position: 500px 1000px, 200px 400px, -100px 300px;
+            }
+        }
+
+        @-ms-keyframes snow {
+            0% {
+                background-position: 0px 0px, 0px 0px, 0px 0px;
+            }
+            50% {
+                background-position: 500px 500px, 100px 200px, -100px 150px;
+            }
+            100% {
+                background-position: 500px 1000px, 200px 400px, -100px 300px;
+            }
+        }
+    </style>
+
+    <style>.art-content .art-postcontent-0 .layout-item-0 {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .ie7 .art-post .art-layout-cell {
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    .ie6 .art-post .art-layout-cell {
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    .northBound {
+        background-color: #00B4DB !important;
+        background-image: none !important;
+        color: #000000 !important;
+    }
+
+    .southBound {
+        background-color: #22b165 !important;
+        background-image: none !important;
+        color: #000000 !important;
+    }
+
+    .eastBound {
+        background-color: #eac547 !important;
+        background-image: none !important;
+        color: #000000 !important;
+    }
+
+    .westBound {
+        background-color: #cb2426 !important;
+        background-image: none !important;
+        color: #000000 !important;
+    }
+
+    .unKnown {
+        background-color: #a5a0a7 !important;
+        background-image: none !important;
+        color: #e6e6e6 !important;
+    }
+
+    .badge {
+        margin-right: 25px;
+        float: left;
+        /*color: #ffffff;*/
+        background-color: #EFF2F5;
+        width: 65px;
+        height: 40px;
+        text-align: center;
+        border-radius: 50px;
+    }
+
+    .badge1 {
+        margin-right: 25px;
+        /*float: left;*/
+        /*color: #ffffff;*/
+        background-color: #EFF2F5;
+        /*width: 65px;*/
+        height: 40px;
+        text-align: center;
+        border-radius: 12px;
+    }
+
+    .ui-accordion .ui-accordion-content {
+        padding: 0 !important;
+    }
+
+    .fa-2x {
+        font-size: 1.0em !important;
+    }
+
+    /*.ui-icon-closethick {
+        visibility: hidden;
+    }*/
+
+    .ui-sidebar-close {
+        width: 0px;
+    }
+
+
+    </style>
+
+
+    <ui:insert name="head"/>
+</h:head>
+
+<h:body>
+
+
+
+
+    <div class="layout-wrapper #{guestPreferences.layoutStyleClass}">
+        <div class="layout-main">
+            <ui:include src="./topbar.xhtml"/>
+
+            <div class="layout-content">
+                <ui:insert name="content"/>
+            </div>
+
+            <ui:include src="./footer.xhtml"/>
+
+            <div class="layout-main-mask"></div>
+        </div>
+
+        <ui:include src="./sidebar.xhtml"/>
+    </div>
+
+
+    <p:ajaxStatus id="startAjax" onstart="startHandler();" oncomplete="endHandler();"/>
+    <script>
+        var ajaxInProgress;
+
+        function startHandler() {
+            ajaxInProgress = setTimeout(function () {
+                PF('statusDialog').show();
+            }, 600);
+        }
+
+        function endHandler() {
+            clearTimeout(ajaxInProgress);
+            PF('statusDialog').hide();
+            ajaxInProgress = null;
+        }
+    </script>
+
+
+    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false"
+              showHeader="false">
+        <!--<p:graphicImage name="/resources/images/loader.gif" />-->
+        <p:graphicImage url="/resources/images/loader.gif"
+                        style=" background: transparent !important;"></p:graphicImage>
+    </p:dialog>
+
+
+
+    <h:outputStylesheet name="css/nanoscroller.css" library="manhattan-layout"/>
+    <h:outputStylesheet name="css/layout-blue-grey.css" library="manhattan-layout"/>
+</h:body>
+
+</html>

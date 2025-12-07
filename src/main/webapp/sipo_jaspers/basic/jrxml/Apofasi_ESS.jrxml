@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Apofasi_ESS" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d304b5be-209f-4282-9838-4faf5f33ee2b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS LOCALHOST"/>
+	<style name="defaultBold" fontName="Arial" isBold="true" pdfFontName="C:\Windows\Fonts\arialbd.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+	<subDataset name="PROEDROS" uuid="fcb39abb-4b6e-428a-89cb-a56546bd0838">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT IPOG.ID AS "ID" , CONCAT(IPOG.EPWNYMO, " ", IPOG.ONOMA) AS "ONOM/MO IPOGRAFONTA", CONCAT(B.BATH_LEK, "(", O.OS_SYN, ")" ) AS "BATHMOS IPOGRAFONTA"
+FROM ipografes IPOG
+LEFT JOIN bathmos B on IPOG.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O on IPOG.OS_KWD = O.OS_KWD
+WHERE IPOG.ID = 1]]>
+		</queryString>
+		<field name="ID" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ipografes"/>
+		</field>
+		<field name="ONOM/MO IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ONOM/MO IPOGRAFONTA"/>
+		</field>
+		<field name="BATHMOS IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATHMOS IPOGRAFONTA"/>
+		</field>
+		<group name="ONOM/MO IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></groupExpression>
+		</group>
+		<group name="BATHMOS IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="A_MELOS" uuid="dc9d7d40-704e-4046-aec1-b1a23b314f42">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT IPOG.ID AS "ID" , CONCAT(IPOG.EPWNYMO, " ", IPOG.ONOMA) AS "ONOM/MO IPOGRAFONTA", CONCAT(B.BATH_LEK, "(", O.OS_SYN, ")" ) AS "BATHMOS IPOGRAFONTA"
+FROM ipografes IPOG
+LEFT JOIN bathmos B on IPOG.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O on IPOG.OS_KWD = O.OS_KWD
+WHERE IPOG.ID = 2]]>
+		</queryString>
+		<field name="ID" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ipografes"/>
+		</field>
+		<field name="ONOM/MO IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ONOM/MO IPOGRAFONTA"/>
+		</field>
+		<field name="BATHMOS IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATHMOS IPOGRAFONTA"/>
+		</field>
+		<group name="BATHMOS IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></groupExpression>
+		</group>
+		<group name="ONOM/MO IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="B_MELOS" uuid="0ceb7031-c4af-478a-9276-c8507384cf39">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT IPOG.ID AS "ID" , CONCAT(IPOG.EPWNYMO, " ", IPOG.ONOMA) AS "ONOM/MO IPOGRAFONTA", CONCAT(B.BATH_LEK, "(", O.OS_SYN, ")" ) AS "BATHMOS IPOGRAFONTA"
+FROM ipografes IPOG
+LEFT JOIN bathmos B on IPOG.BATH_KWD = B.BATH_KWD
+LEFT JOIN os O on IPOG.OS_KWD = O.OS_KWD
+WHERE IPOG.ID = 3]]>
+		</queryString>
+		<field name="ID" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="ID"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ipografes"/>
+		</field>
+		<field name="ONOM/MO IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ONOM/MO IPOGRAFONTA"/>
+		</field>
+		<field name="BATHMOS IPOGRAFONTA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATHMOS IPOGRAFONTA"/>
+		</field>
+		<group name="BATHMOS IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></groupExpression>
+		</group>
+		<group name="ONOM/MO IPOGRAFONTA">
+			<groupExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+  STR.STRK_PROS_KWD,
+  B.BATH_SYN,
+  O.OS_SYN,
+  STR.STRA_EPWNYMO,
+  STR.STRA_ONOMA,
+  STR.STRA_PATRWNYMO,
+  M.MONA_LEK,
+  TOPO.TOPO_LEK,
+  NOM.NOMO_LEK,
+  TOPGEN.TOPO_LEK           AS "POLH GENNHSHS",
+  NOMGEN.NOMO_LEK           AS "NOMOS GENNHSHS",
+  IKAN.IKAN_EFED_SYN        AS "IKANOTHTA",
+  DATE_FORMAT(YPHR.HMER_EGGRAFIS_SIPO, '%d/%m/%Y'),
+  DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y'),
+  TOPOSYPO.TOPO_LEK AS "TOPOS SYPO",
+  SI.IKAN_GNWMATEYSH,
+  SI.IKAN_ISXYO_SI,
+  PD.PD_ARTHRO,
+  DATE_FORMAT(SI.IKAN_HMNIA, '%d/%m/%Y'),
+  SI.IKAN_AR_GNWMAT,
+  EA.EPIT_APALL_LEK
+FROM ken_stratevmenos STR
+  left join ken_atomika ATOM ON STR.STRK_PROS_KWD = ATOM.STRK_PROS_KWD
+  left join ken_yphresiaka YPHR ON STR.STRK_PROS_KWD = YPHR.STRK_PROS_KWD
+  left join ken_iatrika IAT ON STR.STRK_PROS_KWD = IAT.STRK_PROS_KWD
+  left join toponymio TOPO ON ATOM.TOPO_DIAM_KWD = TOPO.TOPO_KWD
+  left join toponymio TOPGEN ON ATOM.TOPO_GENH_KWD = TOPGEN.TOPO_KWD
+  left join nomos NOM ON TOPO.NOMO_KWD = NOM.NOMO_KWD
+  left join nomos NOMGEN ON TOPGEN.NOMO_KWD = NOMGEN.NOMO_KWD
+  left join bathmos B ON YPHR.BATH_KWD = B.BATH_KWD
+  left join os O ON YPHR.OS_KWD = O.OS_KWD
+  left join eidikothta EID ON YPHR.YPHR_EIDI_KWD = EID.EIDI_KWD
+  left join katastash_efedrou KAT ON STR.KATA_EFED_KWD = KAT.KATA_EFED_KWD
+  left join thriskia THRI ON ATOM.THRI_KWD = THRI.THRI_KWD
+  left join doy DOY ON ATOM.DOY_KWD = DOY.DOY_KWD
+  left join monada M ON YPHR.YPHR_META_MONA_KWD = M.MONA_KWD
+  left join toponymio TOPOSYPO ON M.MONA_TOPO_KWD = TOPOSYPO.TOPO_KWD
+   left join ken_ikanothtes SI ON STR.STRK_PROS_KWD = SI.STRK_PROS_KWD
+   left join pd_133_02 PD ON SI.IKAN_PD_PARAG = PD.PD_PARAG_KWD
+  left join ikanothta_efedrou IKAN ON IKAN.IKAN_EFED_KWD = SI.IKAN_EFED_KWD
+  left join EPITROPH_APALLAGWN EA ON SI.IKAN_EPITROPH_APALL = EA.EPIT_APALL_KWD
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD} AND SI.IKAN_ISXYO_SI='1']]>
+	</queryString>
+	<field name="STRK_PROS_KWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="BATH_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BATH_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+	</field>
+	<field name="OS_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+	</field>
+	<field name="STRA_EPWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_ONOMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_PATRWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="MONA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="TOPO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="POLH GENNHSHS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="POLH GENNHSHS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMOS GENNHSHS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOS GENNHSHS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="IKANOTHTA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="IKANOTHTA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ikanothta_efedrou"/>
+	</field>
+	<field name="DATE_FORMAT(YPHR.HMER_EGGRAFIS_SIPO, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[DATE_FORMAT(YPHR.HMER_EGGRAFIS_SIPO, '%d/%m/%Y')]]>
+		</property>
+	</field>
+	<field name="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')]]>
+		</property>
+	</field>
+	<field name="TOPOS SYPO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPOS SYPO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="IKAN_GNWMATEYSH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="IKAN_GNWMATEYSH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_ikanothtes"/>
+	</field>
+	<field name="IKAN_ISXYO_SI" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="IKAN_ISXYO_SI"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_ikanothtes"/>
+	</field>
+	<field name="PD_ARTHRO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PD_ARTHRO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pd_133_02"/>
+	</field>
+	<field name="DATE_FORMAT(SI.IKAN_HMNIA, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label">
+			<![CDATA[DATE_FORMAT(SI.IKAN_HMNIA, '%d/%m/%Y')]]>
+		</property>
+	</field>
+	<field name="IKAN_AR_GNWMAT" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="IKAN_AR_GNWMAT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_ikanothtes"/>
+	</field>
+	<field name="EPIT_APALL_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_APALL_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="epitroph_apallagwn"/>
+	</field>
+	<group name="STRK_PROS_KWD">
+		<groupExpression><![CDATA[$F{STRK_PROS_KWD}]]></groupExpression>
+	</group>
+	<group name="BATH_SYN">
+		<groupExpression><![CDATA[$F{BATH_SYN}]]></groupExpression>
+	</group>
+	<group name="OS_SYN">
+		<groupExpression><![CDATA[$F{OS_SYN}]]></groupExpression>
+	</group>
+	<group name="STRA_EPWNYMO">
+		<groupExpression><![CDATA[$F{STRA_EPWNYMO}]]></groupExpression>
+	</group>
+	<group name="STRA_ONOMA">
+		<groupExpression><![CDATA[$F{STRA_ONOMA}]]></groupExpression>
+	</group>
+	<group name="STRA_PATRWNYMO">
+		<groupExpression><![CDATA[$F{STRA_PATRWNYMO}]]></groupExpression>
+	</group>
+	<group name="MONA_LEK">
+		<groupExpression><![CDATA[$F{MONA_LEK}]]></groupExpression>
+	</group>
+	<group name="TOPO_LEK">
+		<groupExpression><![CDATA[$F{TOPO_LEK}]]></groupExpression>
+	</group>
+	<group name="NOMO_LEK">
+		<groupExpression><![CDATA[$F{NOMO_LEK}]]></groupExpression>
+	</group>
+	<group name="POLH GENNHSHS">
+		<groupExpression><![CDATA[$F{POLH GENNHSHS}]]></groupExpression>
+	</group>
+	<group name="NOMOS GENNHSHS">
+		<groupExpression><![CDATA[$F{NOMOS GENNHSHS}]]></groupExpression>
+	</group>
+	<group name="IKANOTHTA">
+		<groupExpression><![CDATA[$F{IKANOTHTA}]]></groupExpression>
+	</group>
+	<group name="DATE_FORMAT(YPHR.HMER_EGGRAFIS_SIPO, &apos;%d/%m/%Y&apos;)">
+		<groupExpression><![CDATA[$F{DATE_FORMAT(YPHR.HMER_EGGRAFIS_SIPO, '%d/%m/%Y')}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="458" splitType="Stretch">
+			<staticText>
+				<reportElement style="defaultBold" x="10" y="20" width="60" height="15" uuid="1cf4abd7-0948-4511-bbde-e6dedcad157e"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Αριθμός : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="470" y="20" width="61" height="15" uuid="19607650-b0fc-426e-a582-87173978001b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΔΣΛ/9/83]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="226" y="35" width="103" height="15" uuid="1d059de5-c1c9-4358-bc3f-c0a45104770c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="true" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΑΠΟΦΑΣΗ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="80" width="521" height="30" uuid="cd64c973-6bad-4540-9adb-95ed728f1f3e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Στην  "+ ($F{TOPOS SYPO} == null ?"-" : $F{TOPOS SYPO}) + " την " + ($F{DATE_FORMAT(SI.IKAN_HMNIA, '%d/%m/%Y')} == null ? " - " : $F{DATE_FORMAT(SI.IKAN_HMNIA, '%d/%m/%Y')}) + " το Ειδικό Στρατολογικό Συμβούλιο του " + ($F{MONA_LEK} == null ? "-" : $F{MONA_LEK}) + " αποτελούμενο από τον : "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="110" width="70" height="15" uuid="8ba752fe-4b3b-493b-bf39-02cf0d5ad381"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Πρόεδρο]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="140" width="70" height="15" uuid="4afb23a4-f1cf-41e3-8cee-2bd43547bc73"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[και τα μέλη]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="80" y="140" width="60" height="15" uuid="2b907050-be33-43e1-82d8-bfc71411334c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[α)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="80" y="155" width="60" height="15" uuid="52a195a6-9c32-4753-a1b8-3d775b9254bd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[β)]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="140" y="110" width="391" height="15" uuid="3e6c3662-f24f-4372-bf75-4808a3034488"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="PROEDROS" uuid="7d11c619-ba72-4e7e-9774-47127a03eaf5">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="15" width="391">
+						<textField>
+							<reportElement x="0" y="0" width="70" height="15" uuid="9def866e-9b71-474d-98c6-f8b8ce9d9467"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="70" y="0" width="321" height="15" uuid="24e1a54a-613c-4531-8e34-50d1e60cec6d"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="140" y="140" width="391" height="15" uuid="b5516129-6bc4-48ed-b7e3-f328a5282012"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="A_MELOS" uuid="4561d528-3616-48ea-a07e-1759e5fa3baf">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="15" width="391">
+						<textField>
+							<reportElement x="0" y="0" width="80" height="15" uuid="129f8b0e-3ab1-4a4a-aa81-f66c7570ec5f"/>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="80" y="0" width="311" height="15" uuid="c561d6e1-52e5-4c31-bb1e-bdc17c78e89e"/>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="140" y="155" width="391" height="15" uuid="d2e7d176-8a12-47df-acb3-292b67950b91"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="B_MELOS" uuid="32ba197c-10ed-47d3-9bd5-8b1d9004ef66">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="15" width="391">
+						<textField>
+							<reportElement x="0" y="0" width="80" height="15" uuid="e7009bc9-a9f1-4181-8279-1eb05c73541d"/>
+							<textElement>
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="80" y="0" width="311" height="15" uuid="bc453c65-3150-478b-bda1-5707c75d81cb"/>
+							<textElement>
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement positionType="Float" x="10" y="179" width="521" height="129" uuid="6cbf077a-2fba-406a-82a7-8362c9a2e20e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["αφού εξέτασε τη σωματική ικανότητα του " + $F{BATH_SYN} + " (" + $F{OS_SYN} + ") " + $F{STRA_EPWNYMO} + " " + $F{STRA_ONOMA} + " του " + $F{STRA_PATRWNYMO} + " γραμμένου στα μητρώα αρρένων του Δήμου ή Κοινότητας " + $F{POLH GENNHSHS}  + " του Νομού " +$F{NOMOS GENNHSHS} + " με ημερομηνία γεννήσεως " + ($F{DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')} == null ? " - " : $F{DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')})  + ", (ΣΑ : " + $F{STRK_PROS_KWD} + "), και έλαβε υπ' όψη του τη γνωμοδότηση του υγειονομικού  μέλους, κρίνεται Ικανός " + $F{IKANOTHTA} + " πάσχων από " + ($F{IKAN_GNWMATEYSH} == null ? "-" : $F{IKAN_GNWMATEYSH} ) +  ", σύμφωνα με την παράγραφο " + ($F{PD_ARTHRO} == null ? " - " : $F{PD_ARTHRO}) + " του ΠΔ 11/2014."   + "<br/>" + "Αριθμός Απόφασης : " +( ($F{IKAN_AR_GNWMAT} == null ? "-" : $F{IKAN_AR_GNWMAT}) + " / " + ($F{EPIT_APALL_LEK} == null ? "-" : $F{EPIT_APALL_LEK}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="308" width="210" height="15" uuid="c7c051ec-ac8c-4f39-a656-28c3fa66af77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Ο ΠΡΟΕΔΡΟΣ]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="348" width="209" height="30" uuid="265589d4-0c3e-4e55-8d92-8cc13168340d">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="PROEDROS" uuid="9e14b1b6-426c-45e6-972d-9160a2289f3b">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="209">
+						<textField>
+							<reportElement x="0" y="0" width="209" height="15" uuid="0c020d8b-ed52-436c-80aa-5726485cb24c"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="15" width="209" height="15" uuid="8ff2384f-10ed-4103-b66f-b0d925201318"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="322" y="308" width="209" height="15" uuid="3019c8e3-56f8-4590-8aa6-c7e1b2dc2570"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ΤΑ ΜΕΛΗ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="322" y="323" width="209" height="15" uuid="94cf1601-3258-4f3f-96ca-be0c206b832f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[α.]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="322" y="357" width="209" height="30" uuid="f1801b48-2857-4049-8dad-157dd1e13aec">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="A_MELOS" uuid="d9cceffb-11d5-491c-9e16-137089ba337a">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="209">
+						<textField>
+							<reportElement x="0" y="0" width="209" height="15" uuid="02cd44d9-3b4a-47d4-a6ae-1386a9fe3b31"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="15" width="209" height="15" uuid="2075d2b4-a1a7-4118-8710-e7299cfb6d06"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="322" y="392" width="209" height="15" uuid="6f9a1df2-1acb-4337-bbda-db85d923b226"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[β.]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="322" y="428" width="209" height="30" uuid="4b32d376-fced-434d-8dbb-857289da0f52">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="B_MELOS" uuid="6ac260ba-8fb7-4a98-ace3-fab2e9536f48">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="209">
+						<textField>
+							<reportElement x="0" y="0" width="209" height="15" uuid="aab97cf2-4017-451d-a5fa-408a4feac653"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ONOM/MO IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="15" width="209" height="15" uuid="c49bcff1-c519-4674-88e7-64b43da2f7e3"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{BATHMOS IPOGRAFONTA}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement x="70" y="20" width="110" height="15" uuid="0cc53fce-afa2-4928-b6b2-77c9de4eb048"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IKAN_AR_GNWMAT} == null ? " - " : $F{IKAN_AR_GNWMAT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

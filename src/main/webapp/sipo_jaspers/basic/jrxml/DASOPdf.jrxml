@@ -1,0 +1,1818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.2.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DASO" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="a18ec49a-a37a-4318-9586-79b954e9d96f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS LOCALHOST"/>
+	<style name="defaultBold" fontName="Arial" fontSize="12" isBold="true" pdfFontName="C:\Windows\Fonts\arialbd.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="KEN_SIPO" uuid="f960e17e-b179-414e-bba8-ca4adcce5332">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KENDS LOCALHOST"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT STR.`STRK_PROS_KWD`, B.BATH_SYN, O.OS_SYN,    
+ EPI.EPIT_STOIX_INTERNET_DKT,
+ YPHR.YPHR_ESSO, 
+ STR.STRA_EPWNYMO, 
+ STR.STRA_ONOMA, 
+ STR.STRA_PATRWNYMO,
+  STR.STRA_MHTRONYMO,
+   STR.STRA_GRAF_KWD, 
+   STR.STRA_ASM, 
+  STR.STRA_KLASH,
+   M.MONA_LEK, 
+   EID.EIDI_LEK,
+   DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y'),
+    KAT.KATA_EFED_LEK, THRI.THRI_LEK, 
+    E.EPAG_LEK, 
+    ATOM.AFM, 
+    ATOM.ATOM_AR_AST_TAYT,
+     DOY.DOY_LEK, 
+    STAT.OIKO_KATA_LEK,
+     OIK.OIKO_TEKNA, 
+    SWM.SWMA_YPSOS, 
+    SWM.SWMA_BAROS,
+     SWM.SWMA_NO_STOLIS,
+      SWM.SWMA_NO_ARVI,
+       EP.EPIP_MORF_LEK, 
+      TOPO.TOPO_LEK, 
+      NOM.NOMO_LEK, 
+      ATOM.ATOM_DIEYTHYNSH,
+       ATOM.ATOM_TAXKWD, 
+       ATOM.ATOM_THLEFWNO, 
+       ASTY.ASTY_TMHM_LEK, GLWS.GLWS_LEK, 
+       EPID.XENH_GLWS_EPID_LEK, 
+       TOPGEN.TOPO_LEK AS "POLH GENNHSHS",
+        NOMGEN.NOMO_LEK AS "NOMOS GENNHSHS",
+        TOPMHTRWA.TOPO_LEK  AS "POLH MHTRWA",
+  NOMMHTRWA.NOMO_LEK       AS "NOMOS MHTRWA",
+         AIM.AIMA_SYN, 
+         SYG.SYG_ONOMA, SYG.SYG_ODOS, SYG.SYG_ARITHMOS, 
+         SYG.SYG_TK, SYG.SYG_THLEFONO, 
+         TOPSYG.TOPO_LEK AS "POLH SYGGENH", 
+         NOMSYG.NOMO_LEK AS "NOMOS SYGGENH", 
+         ASTYSYG.ASTY_TMHM_LEK AS "AT SYGGENH", 
+         EPAG.EPAG_PROYPHRESIA
+FROM `ken_stratevmenos` STR
+INNER JOIN `ken_atomika` ATOM ON STR.STRK_PROS_KWD = ATOM.STRK_PROS_KWD
+INNER JOIN `ken_yphresiaka` YPHR ON STR.STRK_PROS_KWD = YPHR.STRK_PROS_KWD
+INNER JOIN `ken_oikogeneiaka` OIK ON STR.STRK_PROS_KWD = OIK.STRK_PROS_KWD
+INNER JOIN `ken_morfwsh` MOR ON STR.STRK_PROS_KWD = MOR.STRK_PROS_KWD
+INNER JOIN `ken_epithymia` EPI ON STR.STRK_PROS_KWD = EPI.STRK_PROS_KWD
+INNER JOIN `ken_xenes_glwsses` LANG ON STR.STRK_PROS_KWD = LANG.STRK_PROS_KWD
+INNER JOIN `glwssa` GLWS ON LANG.GLWS_KWD = GLWS.GLWS_KWD 
+INNER JOIN `xenh_glwssa_epidosh` EPID ON LANG.EPIP_GLWS_KWD = EPID.XENH_GLWS_EPID_KWD
+INNER JOIN `ken_iatrika` IAT ON STR.STRK_PROS_KWD = IAT.STRK_PROS_KWD
+INNER JOIN `aima` AIM ON IAT.AIMA_KWD = AIM.AIMA_KWD
+INNER JOIN `astynomiko_tmhma` ASTY ON ATOM.ASTY_TMHM_DIAM_KWD = ASTY.ASTY_TMHM_KWD
+INNER JOIN `toponymio` TOPO ON ATOM.TOPO_DIAM_KWD = TOPO.TOPO_KWD
+INNER JOIN `toponymio` TOPGEN ON ATOM.TOPO_GENH_KWD = TOPGEN.TOPO_KWD
+INNER JOIN `toponymio` TOPMHTRWA ON ATOM.TOPO_MHTRWA_KWD = TOPMHTRWA.TOPO_KWD
+INNER JOIN `ken_sygeneis` SYG ON STR.STRK_PROS_KWD = SYG.STRK_PROS_KWD
+INNER JOIN `toponymio` TOPSYG ON SYG.SYG_POLI = TOPSYG.TOPO_KWD
+INNER JOIN `nomos` NOM ON TOPO.NOMO_KWD = NOM.NOMO_KWD
+INNER JOIN `nomos` NOMGEN ON TOPGEN.NOMO_KWD = NOMGEN.NOMO_KWD
+INNER JOIN `nomos` NOMSYG ON TOPSYG.NOMO_KWD = NOMSYG.NOMO_KWD
+INNER JOIN `nomos` NOMMHTRWA ON TOPMHTRWA.NOMO_KWD = NOMMHTRWA.NOMO_KWD
+INNER JOIN `astynomiko_tmhma` ASTYSYG ON SYG.SYG_ASTY_TMHM = ASTYSYG.ASTY_TMHM_KWD
+INNER JOIN `epipedo_morfwshs` EP ON MOR.EPIP_MORF_KWD = EP.EPIP_MORF_KWD
+INNER JOIN `ken_swmatometrika` SWM ON STR.STRK_PROS_KWD = SWM.STRK_PROS_KWD
+INNER JOIN `oikogeneiakh_katastash` STAT ON OIK.OIKO_KATA_KWD = STAT.OIKO_KATA_KWD
+INNER JOIN `ken_epaggelmata` EPAG ON STR.STRK_PROS_KWD = EPAG.STRK_PROS_KWD
+INNER JOIN `epaggelma` E ON EPAG.EPAG_KWD = E.EPAG_KWD
+INNER JOIN `ken_yphresiaka` YP ON STR.STRK_PROS_KWD = YP.STRK_PROS_KWD
+INNER JOIN `bathmos` B ON YP.BATH_KWD = B.BATH_KWD
+INNER JOIN `os` O ON YP.OS_KWD = O.OS_KWD
+INNER JOIN `eidikothta` EID ON YP.YPHR_EIDI_KWD = EID.EIDI_KWD
+INNER JOIN `katastash_efedrou` KAT ON STR.KATA_EFED_KWD = KAT.KATA_EFED_KWD
+INNER JOIN `thriskia` THRI ON ATOM.THRI_KWD = THRI.THRI_KWD
+INNER JOIN `doy` DOY ON ATOM.DOY_KWD = DOY.DOY_KWD
+INNER JOIN `monada` M ON YP.YPHR_META_MONA_KWD = M.MONA_KWD]]>
+		</queryString>
+		<field name="STRK_PROS_KWD" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="BATH_SYN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="BATH_SYN"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+		</field>
+		<field name="OS_SYN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+		</field>
+		<field name="EPIT_STOIX_INTERNET_DKT" class="java.lang.Boolean">
+			<property name="com.jaspersoft.studio.field.label" value="EPIT_STOIX_INTERNET_DKT"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+		</field>
+		<field name="YPHR_ESSO" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="YPHR_ESSO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_yphresiaka"/>
+		</field>
+		<field name="STRA_EPWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_ONOMA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_PATRWNYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_MHTRONYMO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_MHTRONYMO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_GRAF_KWD" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_GRAF_KWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_ASM" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_ASM"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="STRA_KLASH" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="STRA_KLASH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+		</field>
+		<field name="MONA_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+		</field>
+		<field name="EIDI_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="EIDI_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="eidikothta"/>
+		</field>
+		<field name="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)"/>
+		</field>
+		<field name="KATA_EFED_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="KATA_EFED_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="katastash_efedrou"/>
+		</field>
+		<field name="THRI_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="THRI_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="thriskia"/>
+		</field>
+		<field name="EPAG_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="EPAG_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="epaggelma"/>
+		</field>
+		<field name="AFM" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="AFM"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+		</field>
+		<field name="ATOM_AR_AST_TAYT" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ATOM_AR_AST_TAYT"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+		</field>
+		<field name="DOY_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="DOY_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="doy"/>
+		</field>
+		<field name="OIKO_KATA_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="OIKO_KATA_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="oikogeneiakh_katastash"/>
+		</field>
+		<field name="OIKO_TEKNA" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="OIKO_TEKNA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_oikogeneiaka"/>
+		</field>
+		<field name="SWMA_YPSOS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SWMA_YPSOS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+		</field>
+		<field name="SWMA_BAROS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SWMA_BAROS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+		</field>
+		<field name="SWMA_NO_STOLIS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SWMA_NO_STOLIS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+		</field>
+		<field name="SWMA_NO_ARVI" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SWMA_NO_ARVI"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+		</field>
+		<field name="EPIP_MORF_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="EPIP_MORF_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="epipedo_morfwshs"/>
+		</field>
+		<field name="TOPO_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="TOPO_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+		</field>
+		<field name="NOMO_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOMO_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+		</field>
+		<field name="ATOM_DIEYTHYNSH" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ATOM_DIEYTHYNSH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+		</field>
+		<field name="ATOM_TAXKWD" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ATOM_TAXKWD"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+		</field>
+		<field name="ATOM_THLEFWNO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ATOM_THLEFWNO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+		</field>
+		<field name="ASTY_TMHM_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ASTY_TMHM_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="astynomiko_tmhma"/>
+		</field>
+		<field name="GLWS_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="GLWS_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="glwssa"/>
+		</field>
+		<field name="XENH_GLWS_EPID_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="XENH_GLWS_EPID_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="xenh_glwssa_epidosh"/>
+		</field>
+		<field name="POLH GENNHSHS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="POLH GENNHSHS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+		</field>
+		<field name="NOMOS GENNHSHS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOMOS GENNHSHS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+		</field>
+		<field name="POLH MHTRWA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="POLH MHTRWA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+		</field>
+		<field name="NOMOS MHTRWA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOMOS MHTRWA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+		</field>
+		<field name="AIMA_SYN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="AIMA_SYN"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="aima"/>
+		</field>
+		<field name="SYG_ONOMA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SYG_ONOMA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+		</field>
+		<field name="SYG_ODOS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SYG_ODOS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+		</field>
+		<field name="SYG_ARITHMOS" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SYG_ARITHMOS"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+		</field>
+		<field name="SYG_TK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SYG_TK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+		</field>
+		<field name="SYG_THLEFONO" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="SYG_THLEFONO"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+		</field>
+		<field name="POLH SYGGENH" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="POLH SYGGENH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+		</field>
+		<field name="NOMOS SYGGENH" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="NOMOS SYGGENH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+		</field>
+		<field name="AT SYGGENH" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="AT SYGGENH"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="astynomiko_tmhma"/>
+		</field>
+		<field name="EPAG_PROYPHRESIA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="EPAG_PROYPHRESIA"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ken_epaggelmata"/>
+		</field>
+		<group name="STRK_PROS_KWD">
+			<groupExpression><![CDATA[$F{STRK_PROS_KWD}]]></groupExpression>
+		</group>
+		<group name="BATH_SYN">
+			<groupExpression><![CDATA[$F{BATH_SYN}]]></groupExpression>
+		</group>
+		<group name="OS_SYN">
+			<groupExpression><![CDATA[$F{OS_SYN}]]></groupExpression>
+		</group>
+		<group name="YPHR_ESSO">
+			<groupExpression><![CDATA[$F{YPHR_ESSO}]]></groupExpression>
+		</group>
+		<group name="STRA_EPWNYMO">
+			<groupExpression><![CDATA[$F{STRA_EPWNYMO}]]></groupExpression>
+		</group>
+		<group name="STRA_ONOMA">
+			<groupExpression><![CDATA[$F{STRA_ONOMA}]]></groupExpression>
+		</group>
+		<group name="STRA_PATRWNYMO">
+			<groupExpression><![CDATA[$F{STRA_PATRWNYMO}]]></groupExpression>
+		</group>
+		<group name="STRA_MHTRONYMO">
+			<groupExpression><![CDATA[$F{STRA_MHTRONYMO}]]></groupExpression>
+		</group>
+		<group name="STRA_GRAF_KWD">
+			<groupExpression><![CDATA[$F{STRA_GRAF_KWD}]]></groupExpression>
+		</group>
+		<group name="STRA_ASM">
+			<groupExpression><![CDATA[$F{STRA_ASM}]]></groupExpression>
+		</group>
+		<group name="STRA_KLASH">
+			<groupExpression><![CDATA[$F{STRA_KLASH}]]></groupExpression>
+		</group>
+		<group name="MONA_LEK">
+			<groupExpression><![CDATA[$F{MONA_LEK}]]></groupExpression>
+		</group>
+		<group name="EIDI_LEK">
+			<groupExpression><![CDATA[$F{EIDI_LEK}]]></groupExpression>
+		</group>
+		<group name="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)">
+			<groupExpression><![CDATA[$F{DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')}]]></groupExpression>
+		</group>
+		<group name="KATA_EFED_LEK">
+			<groupExpression><![CDATA[$F{KATA_EFED_LEK}]]></groupExpression>
+		</group>
+		<group name="THRI_LEK">
+			<groupExpression><![CDATA[$F{THRI_LEK}]]></groupExpression>
+		</group>
+		<group name="EPAG_LEK">
+			<groupExpression><![CDATA[$F{EPAG_LEK}]]></groupExpression>
+		</group>
+		<group name="AFM">
+			<groupExpression><![CDATA[$F{AFM}]]></groupExpression>
+		</group>
+		<group name="ATOM_AR_AST_TAYT">
+			<groupExpression><![CDATA[$F{ATOM_AR_AST_TAYT}]]></groupExpression>
+		</group>
+		<group name="DOY_LEK">
+			<groupExpression><![CDATA[$F{DOY_LEK}]]></groupExpression>
+		</group>
+		<group name="OIKO_KATA_LEK">
+			<groupExpression><![CDATA[$F{OIKO_KATA_LEK}]]></groupExpression>
+		</group>
+		<group name="OIKO_TEKNA">
+			<groupExpression><![CDATA[$F{OIKO_TEKNA}]]></groupExpression>
+		</group>
+		<group name="SWMA_YPSOS">
+			<groupExpression><![CDATA[$F{SWMA_YPSOS}]]></groupExpression>
+		</group>
+		<group name="SWMA_BAROS">
+			<groupExpression><![CDATA[$F{SWMA_BAROS}]]></groupExpression>
+		</group>
+		<group name="SWMA_NO_STOLIS">
+			<groupExpression><![CDATA[$F{SWMA_NO_STOLIS}]]></groupExpression>
+		</group>
+		<group name="SWMA_NO_ARVI">
+			<groupExpression><![CDATA[$F{SWMA_NO_ARVI}]]></groupExpression>
+		</group>
+		<group name="EPIP_MORF_LEK">
+			<groupExpression><![CDATA[$F{EPIP_MORF_LEK}]]></groupExpression>
+		</group>
+		<group name="TOPO_LEK">
+			<groupExpression><![CDATA[$F{TOPO_LEK}]]></groupExpression>
+		</group>
+		<group name="NOMO_LEK">
+			<groupExpression><![CDATA[$F{NOMO_LEK}]]></groupExpression>
+		</group>
+		<group name="ATOM_DIEYTHYNSH">
+			<groupExpression><![CDATA[$F{ATOM_DIEYTHYNSH}]]></groupExpression>
+		</group>
+		<group name="ATOM_TAXKWD">
+			<groupExpression><![CDATA[$F{ATOM_TAXKWD}]]></groupExpression>
+		</group>
+		<group name="ATOM_THLEFWNO">
+			<groupExpression><![CDATA[$F{ATOM_THLEFWNO}]]></groupExpression>
+		</group>
+		<group name="ASTY_TMHM_LEK">
+			<groupExpression><![CDATA[$F{ASTY_TMHM_LEK}]]></groupExpression>
+		</group>
+		<group name="GLWS_LEK">
+			<groupExpression><![CDATA[$F{GLWS_LEK}]]></groupExpression>
+		</group>
+		<group name="XENH_GLWS_EPID_LEK">
+			<groupExpression><![CDATA[$F{XENH_GLWS_EPID_LEK}]]></groupExpression>
+		</group>
+		<group name="POLH GENNHSHS">
+			<groupExpression><![CDATA[$F{POLH GENNHSHS}]]></groupExpression>
+		</group>
+		<group name="NOMOS GENNHSHS">
+			<groupExpression><![CDATA[$F{NOMOS GENNHSHS}]]></groupExpression>
+		</group>
+		<group name="AIMA_SYN">
+			<groupExpression><![CDATA[$F{AIMA_SYN}]]></groupExpression>
+		</group>
+		<group name="SYG_ONOMA">
+			<groupExpression><![CDATA[$F{SYG_ONOMA}]]></groupExpression>
+		</group>
+		<group name="SYG_ODOS">
+			<groupExpression><![CDATA[$F{SYG_ODOS}]]></groupExpression>
+		</group>
+		<group name="SYG_ARITHMOS">
+			<groupExpression><![CDATA[$F{SYG_ARITHMOS}]]></groupExpression>
+		</group>
+		<group name="SYG_TK">
+			<groupExpression><![CDATA[$F{SYG_TK}]]></groupExpression>
+		</group>
+		<group name="SYG_THLEFONO">
+			<groupExpression><![CDATA[$F{SYG_THLEFONO}]]></groupExpression>
+		</group>
+		<group name="POLH SYGGENH">
+			<groupExpression><![CDATA[$F{POLH SYGGENH}]]></groupExpression>
+		</group>
+		<group name="NOMOS SYGGENH">
+			<groupExpression><![CDATA[$F{NOMOS SYGGENH}]]></groupExpression>
+		</group>
+		<group name="AT SYGGENH">
+			<groupExpression><![CDATA[$F{AT SYGGENH}]]></groupExpression>
+		</group>
+		<group name="EPAG_PROYPHRESIA">
+			<groupExpression><![CDATA[$F{EPAG_PROYPHRESIA}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="GLWSSES" uuid="43678745-c7d3-49e9-b6f4-e17b03a7c1ab">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="kends"/>
+		<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT GLWS.GLWS_LEK, EPID.XENH_GLWS_EPID_LEK
+FROM ken_stratevmenos STR
+         LEFT JOIN ken_xenes_glwsses LANG ON STR.STRK_PROS_KWD = LANG.STRK_PROS_KWD
+         LEFT JOIN glwssa GLWS ON LANG.GLWS_KWD = GLWS.GLWS_KWD
+         LEFT JOIN xenh_glwssa_epidosh EPID on LANG.XENH_GLWS_EPID_KWD = EPID.XENH_GLWS_EPID_KWD
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+		</queryString>
+		<field name="GLWS_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="GLWS_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="glwssa"/>
+		</field>
+		<field name="XENH_GLWS_EPID_LEK" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="XENH_GLWS_EPID_LEK"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="xenh_glwssa_epidosh"/>
+		</field>
+		<group name="GLWS_LEK">
+			<groupExpression><![CDATA[$F{GLWS_LEK}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="STRK_PROS_KWD" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT STR.STRK_PROS_KWD,
+       B.BATH_SYN,
+       O.OS_SYN,
+       YPHR.YPHR_ESSO,
+       STR.STRA_EPWNYMO,
+       STR.STRA_ONOMA,
+       STR.STRA_PATRWNYMO,
+       STR.STRA_MHTRONYMO,
+       STR.STRA_GRAF_KWD,
+       STR.STRA_ASM,
+       STR.STRA_KLASH,
+       M.MONA_LEK,
+        EPI.EPIT_STOIX_INTERNET_DKT,
+       EID.EIDI_LEK,
+       DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y'),
+       KAT.KATA_EFED_LEK,
+       THRI.THRI_LEK,
+       E.EPAG_LEK,
+       ATOM.AFM,
+       ATOM.AMKA,
+       ATOM.EFEDROS_EMAIL,
+       ATOM.ATOM_AR_AST_TAYT,
+       DOY.DOY_LEK,
+       STAT.OIKO_KATA_LEK,
+       OIK.OIKO_TEKNA,
+       SWM.SWMA_YPSOS,
+       SWM.SWMA_BAROS,
+       SWM.SWMA_NO_STOLIS,
+       SWM.SWMA_NO_ARVI,
+       EP.EPIP_MORF_LEK,
+       TOPO.TOPO_LEK,
+       NOM.NOMO_LEK,
+       ATOM.ATOM_DIEYTHYNSH,
+       ATOM.ATOM_TAXKWD,
+       ATOM.ATOM_THLEFWNO,
+       ASTY.ASTY_TMHM_LEK,
+       GLWS.GLWS_LEK,
+       EPID.XENH_GLWS_EPID_LEK,
+       TOPGEN.TOPO_LEK       AS "POLH GENNHSHS",
+       NOMGEN.NOMO_LEK       AS "NOMOS GENNHSHS",
+        TOPMHTRWA.TOPO_LEK  AS "POLH MHTRWA",
+  NOMMHTRWA.NOMO_LEK       AS "NOMOS MHTRWA",
+       AIM.AIMA_SYN,
+       SYG.SYG_ONOMA,
+       SYG.SYG_ODOS,
+       SYG.SYG_ARITHMOS,
+       SYG.SYG_TK,
+       SYG.SYG_THLEFONO,
+       TOPSYG.TOPO_LEK       AS "POLH SYGGENH",
+       NOMSYG.NOMO_LEK       AS "NOMOS SYGGENH",
+       ASTYSYG.ASTY_TMHM_LEK AS "AT SYGGENH",
+       EPAG.EPAG_PROYPHRESIA,
+       EXT.MONADA_TOPOTH     AS "TAGMA",
+       IPO.IPOMONADA,
+       ATOM.ATOM_KIN_THL
+FROM ken_stratevmenos STR
+         left join ken_atomika ATOM ON STR.STRK_PROS_KWD = ATOM.STRK_PROS_KWD
+         left join ken_yphresiaka YPHR ON STR.STRK_PROS_KWD = YPHR.STRK_PROS_KWD
+         left join ken_oikogeneiaka OIK ON STR.STRK_PROS_KWD = OIK.STRK_PROS_KWD
+          left join ken_epithymia EPI ON STR.STRK_PROS_KWD = EPI.STRK_PROS_KWD
+         left join ken_morfwsh MOR ON STR.STRK_PROS_KWD = MOR.STRK_PROS_KWD
+         left join ken_xenes_glwsses LANG ON STR.STRK_PROS_KWD = LANG.STRK_PROS_KWD
+         left join glwssa GLWS ON LANG.GLWS_KWD = GLWS.GLWS_KWD
+         left join xenh_glwssa_epidosh EPID ON LANG.EPIP_GLWS_KWD = EPID.XENH_GLWS_EPID_KWD
+         left join ken_iatrika IAT ON STR.STRK_PROS_KWD = IAT.STRK_PROS_KWD
+         left join aima AIM ON IAT.AIMA_KWD = AIM.AIMA_KWD
+         left join astynomiko_tmhma ASTY ON ATOM.ASTY_TMHM_DIAM_KWD = ASTY.ASTY_TMHM_KWD
+         left join toponymio TOPO ON ATOM.TOPO_DIAM_KWD = TOPO.TOPO_KWD
+         left join toponymio TOPGEN ON ATOM.TOPO_GENH_KWD = TOPGEN.TOPO_KWD
+         left join TOPONYMIO TOPMHTRWA ON ATOM.TOPO_MHTRWA_KWD = TOPMHTRWA.TOPO_KWD
+         left join ken_sygeneis SYG ON STR.STRK_PROS_KWD = SYG.STRK_PROS_KWD
+         left join toponymio TOPSYG ON SYG.SYG_POLI = TOPSYG.TOPO_KWD
+         left join nomos NOM ON TOPO.NOMO_KWD = NOM.NOMO_KWD
+         left join nomos NOMGEN ON TOPGEN.NOMO_KWD = NOMGEN.NOMO_KWD
+         left join nomos NOMSYG ON TOPSYG.NOMO_KWD = NOMSYG.NOMO_KWD
+         left join NOMOS NOMMHTRWA ON TOPMHTRWA.NOMO_KWD = NOMMHTRWA.NOMO_KWD
+         left join astynomiko_tmhma ASTYSYG ON SYG.SYG_ASTY_TMHM = ASTYSYG.ASTY_TMHM_KWD
+         left join epipedo_morfwshs EP ON MOR.EPIP_MORF_KWD = EP.EPIP_MORF_KWD
+         left join ken_swmatometrika SWM ON STR.STRK_PROS_KWD = SWM.STRK_PROS_KWD
+         left join oikogeneiakh_katastash STAT ON OIK.OIKO_KATA_KWD = STAT.OIKO_KATA_KWD
+         left join ken_epaggelmata EPAG ON STR.STRK_PROS_KWD = EPAG.STRK_PROS_KWD
+         left join epaggelma E ON EPAG.EPAG_KWD = E.EPAG_KWD
+         left join ken_yphresiaka YP ON STR.STRK_PROS_KWD = YP.STRK_PROS_KWD
+         left join bathmos B ON YP.BATH_KWD = B.BATH_KWD
+         left join os O ON YP.OS_KWD = O.OS_KWD
+         left join eidikothta EID ON YP.YPHR_EIDI_KWD = EID.EIDI_KWD
+         left join katastash_efedrou KAT ON STR.KATA_EFED_KWD = KAT.KATA_EFED_KWD
+         left join thriskia THRI ON ATOM.THRI_KWD = THRI.THRI_KWD
+         left join doy DOY ON ATOM.DOY_KWD = DOY.DOY_KWD
+         left join monada M ON YP.YPHR_META_MONA_KWD = M.MONA_KWD
+         left join ken_extra_stoixeia EXT ON STR.STRK_PROS_KWD = EXT.STRK_PROS_KWD
+         left join ipomonada IPO ON EXT.YPOMONADA_TOPOTH = IPO.STR_KW_IPOM
+WHERE STR.STRK_PROS_KWD = $P{STRK_PROS_KWD}]]>
+	</queryString>
+	<field name="STRK_PROS_KWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRK_PROS_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="BATH_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BATH_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="bathmos"/>
+	</field>
+	<field name="OS_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OS_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="os"/>
+	</field>
+	<field name="YPHR_ESSO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="YPHR_ESSO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_yphresiaka"/>
+	</field>
+	<field name="STRA_EPWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_EPWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_ONOMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_ONOMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_PATRWNYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_PATRWNYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_MHTRONYMO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_MHTRONYMO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_GRAF_KWD" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_GRAF_KWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_ASM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_ASM"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="STRA_KLASH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="STRA_KLASH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_stratevmenos"/>
+	</field>
+	<field name="MONA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MONA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="monada"/>
+	</field>
+	<field name="EPIT_STOIX_INTERNET_DKT" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="EPIT_STOIX_INTERNET_DKT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epithymia"/>
+	</field>
+	<field name="EIDI_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EIDI_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="eidikothta"/>
+	</field>
+	<field name="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)"/>
+	</field>
+	<field name="KATA_EFED_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="KATA_EFED_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="katastash_efedrou"/>
+	</field>
+	<field name="THRI_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="THRI_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="thriskia"/>
+	</field>
+	<field name="EPAG_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EPAG_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="epaggelma"/>
+	</field>
+	<field name="AFM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="AFM"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="AMKA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="AMKA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="EFEDROS_EMAIL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EFEDROS_EMAIL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="ATOM_AR_AST_TAYT" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_AR_AST_TAYT"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="DOY_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DOY_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="doy"/>
+	</field>
+	<field name="OIKO_KATA_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OIKO_KATA_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="oikogeneiakh_katastash"/>
+	</field>
+	<field name="OIKO_TEKNA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="OIKO_TEKNA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_oikogeneiaka"/>
+	</field>
+	<field name="SWMA_YPSOS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SWMA_YPSOS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+	</field>
+	<field name="SWMA_BAROS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SWMA_BAROS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+	</field>
+	<field name="SWMA_NO_STOLIS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SWMA_NO_STOLIS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+	</field>
+	<field name="SWMA_NO_ARVI" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SWMA_NO_ARVI"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_swmatometrika"/>
+	</field>
+	<field name="EPIP_MORF_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EPIP_MORF_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="epipedo_morfwshs"/>
+	</field>
+	<field name="TOPO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TOPO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMO_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMO_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="ATOM_DIEYTHYNSH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_DIEYTHYNSH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="ATOM_TAXKWD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_TAXKWD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="ATOM_THLEFWNO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_THLEFWNO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<field name="ASTY_TMHM_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ASTY_TMHM_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="astynomiko_tmhma"/>
+	</field>
+	<field name="GLWS_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="GLWS_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="glwssa"/>
+	</field>
+	<field name="XENH_GLWS_EPID_LEK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="XENH_GLWS_EPID_LEK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="xenh_glwssa_epidosh"/>
+	</field>
+	<field name="POLH GENNHSHS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="POLH GENNHSHS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMOS GENNHSHS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOS GENNHSHS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="POLH MHTRWA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="POLH MHTRWA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMOS MHTRWA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOS MHTRWA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="AIMA_SYN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="AIMA_SYN"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aima"/>
+	</field>
+	<field name="SYG_ONOMA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYG_ONOMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+	</field>
+	<field name="SYG_ODOS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYG_ODOS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+	</field>
+	<field name="SYG_ARITHMOS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYG_ARITHMOS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+	</field>
+	<field name="SYG_TK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYG_TK"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+	</field>
+	<field name="SYG_THLEFONO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SYG_THLEFONO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_sygeneis"/>
+	</field>
+	<field name="POLH SYGGENH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="POLH SYGGENH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="toponymio"/>
+	</field>
+	<field name="NOMOS SYGGENH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOMOS SYGGENH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="nomos"/>
+	</field>
+	<field name="AT SYGGENH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="AT SYGGENH"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="astynomiko_tmhma"/>
+	</field>
+	<field name="EPAG_PROYPHRESIA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EPAG_PROYPHRESIA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_epaggelmata"/>
+	</field>
+	<field name="TAGMA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="TAGMA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_extra_stoixeia"/>
+	</field>
+	<field name="IPOMONADA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="IPOMONADA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ipomonada"/>
+	</field>
+	<field name="ATOM_KIN_THL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ATOM_KIN_THL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ken_atomika"/>
+	</field>
+	<group name="STRK_PROS_KWD">
+		<groupExpression><![CDATA[$F{STRK_PROS_KWD}]]></groupExpression>
+	</group>
+	<group name="BATH_SYN">
+		<groupExpression><![CDATA[$F{BATH_SYN}]]></groupExpression>
+	</group>
+	<group name="OS_SYN">
+		<groupExpression><![CDATA[$F{OS_SYN}]]></groupExpression>
+	</group>
+	<group name="YPHR_ESSO">
+		<groupExpression><![CDATA[$F{YPHR_ESSO}]]></groupExpression>
+	</group>
+	<group name="STRA_EPWNYMO">
+		<groupExpression><![CDATA[$F{STRA_EPWNYMO}]]></groupExpression>
+	</group>
+	<group name="STRA_ONOMA">
+		<groupExpression><![CDATA[$F{STRA_ONOMA}]]></groupExpression>
+	</group>
+	<group name="STRA_PATRWNYMO">
+		<groupExpression><![CDATA[$F{STRA_PATRWNYMO}]]></groupExpression>
+	</group>
+	<group name="STRA_MHTRONYMO">
+		<groupExpression><![CDATA[$F{STRA_MHTRONYMO}]]></groupExpression>
+	</group>
+	<group name="STRA_GRAF_KWD">
+		<groupExpression><![CDATA[$F{STRA_GRAF_KWD}]]></groupExpression>
+	</group>
+	<group name="STRA_ASM">
+		<groupExpression><![CDATA[$F{STRA_ASM}]]></groupExpression>
+	</group>
+	<group name="STRA_KLASH">
+		<groupExpression><![CDATA[$F{STRA_KLASH}]]></groupExpression>
+	</group>
+	<group name="MONA_LEK">
+		<groupExpression><![CDATA[$F{MONA_LEK}]]></groupExpression>
+	</group>
+	<group name="EIDI_LEK">
+		<groupExpression><![CDATA[$F{EIDI_LEK}]]></groupExpression>
+	</group>
+	<group name="DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, &apos;%d/%m/%Y&apos;)">
+		<groupExpression><![CDATA[$F{DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')}]]></groupExpression>
+	</group>
+	<group name="KATA_EFED_LEK">
+		<groupExpression><![CDATA[$F{KATA_EFED_LEK}]]></groupExpression>
+	</group>
+	<group name="THRI_LEK">
+		<groupExpression><![CDATA[$F{THRI_LEK}]]></groupExpression>
+	</group>
+	<group name="EPAG_LEK">
+		<groupExpression><![CDATA[$F{EPAG_LEK}]]></groupExpression>
+	</group>
+	<group name="AFM">
+		<groupExpression><![CDATA[$F{AFM}]]></groupExpression>
+	</group>
+	<group name="ATOM_AR_AST_TAYT">
+		<groupExpression><![CDATA[$F{ATOM_AR_AST_TAYT}]]></groupExpression>
+	</group>
+	<group name="DOY_LEK">
+		<groupExpression><![CDATA[$F{DOY_LEK}]]></groupExpression>
+	</group>
+	<group name="OIKO_KATA_LEK">
+		<groupExpression><![CDATA[$F{OIKO_KATA_LEK}]]></groupExpression>
+	</group>
+	<group name="OIKO_TEKNA">
+		<groupExpression><![CDATA[$F{OIKO_TEKNA}]]></groupExpression>
+	</group>
+	<group name="SWMA_YPSOS">
+		<groupExpression><![CDATA[$F{SWMA_YPSOS}]]></groupExpression>
+	</group>
+	<group name="SWMA_BAROS">
+		<groupExpression><![CDATA[$F{SWMA_BAROS}]]></groupExpression>
+	</group>
+	<group name="SWMA_NO_STOLIS">
+		<groupExpression><![CDATA[$F{SWMA_NO_STOLIS}]]></groupExpression>
+	</group>
+	<group name="SWMA_NO_ARVI">
+		<groupExpression><![CDATA[$F{SWMA_NO_ARVI}]]></groupExpression>
+	</group>
+	<group name="EPIP_MORF_LEK">
+		<groupExpression><![CDATA[$F{EPIP_MORF_LEK}]]></groupExpression>
+	</group>
+	<group name="TOPO_LEK">
+		<groupExpression><![CDATA[$F{TOPO_LEK}]]></groupExpression>
+	</group>
+	<group name="NOMO_LEK">
+		<groupExpression><![CDATA[$F{NOMO_LEK}]]></groupExpression>
+	</group>
+	<group name="ATOM_DIEYTHYNSH">
+		<groupExpression><![CDATA[$F{ATOM_DIEYTHYNSH}]]></groupExpression>
+	</group>
+	<group name="ATOM_TAXKWD">
+		<groupExpression><![CDATA[$F{ATOM_TAXKWD}]]></groupExpression>
+	</group>
+	<group name="ATOM_THLEFWNO">
+		<groupExpression><![CDATA[$F{ATOM_THLEFWNO}]]></groupExpression>
+	</group>
+	<group name="ASTY_TMHM_LEK">
+		<groupExpression><![CDATA[$F{ASTY_TMHM_LEK}]]></groupExpression>
+	</group>
+	<group name="GLWS_LEK">
+		<groupExpression><![CDATA[$F{GLWS_LEK}]]></groupExpression>
+	</group>
+	<group name="XENH_GLWS_EPID_LEK">
+		<groupExpression><![CDATA[$F{XENH_GLWS_EPID_LEK}]]></groupExpression>
+	</group>
+	<group name="POLH GENNHSHS">
+		<groupExpression><![CDATA[$F{POLH GENNHSHS}]]></groupExpression>
+	</group>
+	<group name="NOMOS GENNHSHS">
+		<groupExpression><![CDATA[$F{NOMOS GENNHSHS}]]></groupExpression>
+	</group>
+	<group name="AIMA_SYN">
+		<groupExpression><![CDATA[$F{AIMA_SYN}]]></groupExpression>
+	</group>
+	<group name="SYG_ONOMA">
+		<groupExpression><![CDATA[$F{SYG_ONOMA}]]></groupExpression>
+	</group>
+	<group name="SYG_ODOS">
+		<groupExpression><![CDATA[$F{SYG_ODOS}]]></groupExpression>
+	</group>
+	<group name="SYG_ARITHMOS">
+		<groupExpression><![CDATA[$F{SYG_ARITHMOS}]]></groupExpression>
+	</group>
+	<group name="SYG_TK">
+		<groupExpression><![CDATA[$F{SYG_TK}]]></groupExpression>
+	</group>
+	<group name="SYG_THLEFONO">
+		<groupExpression><![CDATA[$F{SYG_THLEFONO}]]></groupExpression>
+	</group>
+	<group name="POLH SYGGENH">
+		<groupExpression><![CDATA[$F{POLH SYGGENH}]]></groupExpression>
+	</group>
+	<group name="NOMOS SYGGENH">
+		<groupExpression><![CDATA[$F{NOMOS SYGGENH}]]></groupExpression>
+	</group>
+	<group name="AT SYGGENH">
+		<groupExpression><![CDATA[$F{AT SYGGENH}]]></groupExpression>
+	</group>
+	<group name="EPAG_PROYPHRESIA">
+		<groupExpression><![CDATA[$F{EPAG_PROYPHRESIA}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="0" width="130" height="15" uuid="05951994-67bb-4866-a954-c81c6161929a"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Μονάδα Κατάταξης :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="130" y="0" width="96" height="15" uuid="6b5832a8-bdcd-42cf-8c7f-4efd4492312b"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MONA_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="226" y="15" width="100" height="15" uuid="88f3aef9-b1fb-4e5a-bf95-f63389759c2b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΔΕΛΤΙΟ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="178" y="30" width="199" height="15" uuid="f759f405-00f2-4c93-aa7c-d9a45a7c148d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ΑΤΟΜΙΚΩΝ ΣΤΟΙΧΕΙΩΝ ΟΠΛΙΤΗ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="15" width="54" height="15" uuid="df5f433a-e8cd-410a-b1d5-7502334d2ceb"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Τάγμα :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="30" width="78" height="15" uuid="2738959e-0e30-42a0-8fc8-0a58702fc7b0"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Υπομονάδα :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="54" y="15" width="172" height="15" uuid="1ea6eed5-25d6-4b35-87b1-519e431fa75b"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TAGMA} == null ? "-" : $F{TAGMA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="78" y="30" width="100" height="15" uuid="38d55bfe-5b41-4512-8216-7fa81c895722"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IPOMONADA} == null ? "-" : $F{IPOMONADA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<summary>
+		<band height="595" splitType="Stretch">
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="281" width="555" height="15" uuid="c7b5e4f6-9d11-40dc-9112-cad90f11ed29"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Λοιπά Στοιχεία]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="296" width="104" height="15" uuid="bc8fc76a-6505-483c-b0e6-2bf3d9ea8cd1"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Θρήσκευμα :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="311" width="104" height="15" uuid="81df891f-d1f9-429c-a383-c1b65d6dcdd1"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Επάγγελμα :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="326" width="164" height="15" uuid="11949c4d-a03b-4c6e-8f77-398462a209be"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Οικογενειακή Κατάσταση :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="341" width="224" height="15" uuid="43771678-e09e-4bda-b97b-3f8e5600b1ca"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Αριθμός Αστυν. Δελτίου Ταυτότητας :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="254" y="311" width="190" height="15" uuid="bfe6995c-9c3c-4745-bbec-c154340b9d10"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Χρόνος προϋπηρεσίας (μήνες) :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="223" y="296" width="50" height="15" uuid="055c4b5d-4103-4a4b-b153-2f614fef34c9"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ΑΦΜ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="372" y="296" width="38" height="15" uuid="4bf662bd-4507-4a12-a1c9-37c063086d6e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ΔΟΥ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="334" y="326" width="50" height="15" uuid="405c0d88-75f2-4441-80c2-ac06f82276e7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Τέκνα :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="334" y="341" width="100" height="15" uuid="32e8524b-f06e-4767-a03d-ec537410769a"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ομάδα Αίματος :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="356" width="137" height="15" uuid="e3d82fa0-5049-4a7a-8f2e-498eb8cfcccb"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Διεύθυνση Διαμονής]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="137" y="356" width="50" height="15" uuid="622c778c-e359-4f94-bb92-4de7c0a7c94e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Πόλη :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="313" y="356" width="50" height="15" uuid="11e27e91-1be2-4b90-95f5-edfd38eb5db7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Νομός :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="386" width="184" height="15" uuid="8a3c0e5e-e25c-40d4-b9dc-e0e86cdcf243"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Αρμόδια Αστυνομική Αρχή :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="297" y="371" width="30" height="15" uuid="0e8f6028-e2da-4692-b2a1-6228ff6928fd"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Τ.Κ.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="374" y="371" width="70" height="15" uuid="1c37df53-4d48-4eed-bc9e-b3689040207d"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Τηλέφωνο :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="371" width="109" height="15" uuid="215e614c-1910-4b73-b90a-b8099146e2bf"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Οδός - Αριθμός :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="417" width="555" height="15" uuid="12cd2867-8119-4ea0-acc4-5f31c6e1bd93"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Συγγενικό Πρόσωπο που θα ειδοποιηθεί σε περίπτωση ανάγκης]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="104" y="296" width="119" height="15" uuid="f1bd39ca-37b9-4839-a618-0da0a0ff03d3"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{THRI_LEK} == null ? "-" : $F{THRI_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="104" y="311" width="150" height="15" uuid="de189f4c-b517-4174-816d-20f1710b2b6e"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPAG_LEK} == null ? "-" : $F{EPAG_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="273" y="296" width="99" height="15" uuid="19aa7cff-fa47-45cf-b4a6-ef4c2a84a2fa"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AFM} == null ? "-" : $F{AFM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="410" y="296" width="145" height="15" uuid="4f27b4ba-6dd5-43a6-b390-270f940db11e"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DOY_LEK} == null ? "-" : $F{DOY_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="224" y="341" width="110" height="15" uuid="1bb4802a-f436-4e80-9f8e-c003b7a8c69a"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ATOM_AR_AST_TAYT} == null ? "-" : $F{ATOM_AR_AST_TAYT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="384" y="326" width="171" height="15" uuid="4990a442-0b7f-479b-aece-91fb51ed9089"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OIKO_TEKNA} == null ? "-" : $F{OIKO_TEKNA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="164" y="326" width="170" height="15" uuid="7b9a0180-7d67-455e-b3e1-c97d23c6b69b"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OIKO_KATA_LEK} == null ? "-" : $F{OIKO_KATA_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="434" y="341" width="121" height="15" uuid="2729faa0-02c4-40d5-9ee3-fdd024204eff"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AIMA_SYN} == null ? "-" : $F{AIMA_SYN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="187" y="356" width="126" height="15" uuid="413cb5f3-9a4c-4aa3-aef5-1b4f5f8ed33c"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOPO_LEK} == null ? "-" : $F{TOPO_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="363" y="356" width="192" height="15" uuid="6a8dfaa9-a736-41b9-ad6a-15ffd368313e"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMO_LEK} == null ? "-" : $F{NOMO_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="109" y="371" width="188" height="15" uuid="1032d5e9-d2f6-45b8-870d-b86bd3bd8bf0"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ATOM_DIEYTHYNSH} == null ? "-" : $F{ATOM_DIEYTHYNSH}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="327" y="371" width="47" height="15" uuid="ab498faa-92c6-4d3f-8ae7-1e3122a9182b"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ATOM_TAXKWD} == null ? "-" : $F{ATOM_TAXKWD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="444" y="371" width="111" height="30" uuid="bbd6ab4a-b2b8-4e6a-93ea-23044a556d23"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{ATOM_THLEFWNO} == null ? "-" : $F{ATOM_THLEFWNO}) + " - " + ($F{ATOM_KIN_THL} == null ? "0" : $F{ATOM_KIN_THL})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="184" y="386" width="260" height="15" uuid="e030005a-2a9e-4402-8d0e-5abfb6168ee8"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ASTY_TMHM_LEK} == null ? "-" : $F{ASTY_TMHM_LEK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="444" y="311" width="111" height="15" uuid="e10a0706-0e82-4ede-b7fe-c385e768c0d0"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPAG_PROYPHRESIA} == null ? "-" : $F{EPAG_PROYPHRESIA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="432" width="108" height="14" uuid="9c592b61-d057-4bce-b359-d9c125bb6b10"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Ονοματεπώνυμο :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="108" y="432" width="447" height="14" uuid="4e54761a-c431-4bbc-9e69-b6685a8bc0fd"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SYG_ONOMA} == null ? "-" : $F{SYG_ONOMA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="447" width="58" height="14" uuid="681efbd6-5aa7-483a-8742-28ba58948e9c"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Πόλη :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="58" y="447" width="190" height="14" uuid="e7f53838-1f9f-4af0-9a9a-81f1f64a0a38"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{POLH SYGGENH} == null ? "-" : $F{POLH SYGGENH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="248" y="447" width="50" height="14" uuid="8a60bb99-8db2-4430-9ef5-a5b2d00f6f96"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Νομός :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="298" y="447" width="257" height="14" uuid="32707120-849d-429f-a215-87bef40bf97a"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMOS SYGGENH} == null ? "-" : $F{NOMOS SYGGENH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="462" width="58" height="14" uuid="72017988-9053-4b98-9100-585b9bc25937"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Οδός :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="248" y="462" width="60" height="14" uuid="de1253bf-98de-4367-a6db-43bb043cc4ae"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Αριθμός :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="308" y="462" width="85" height="14" uuid="c0f8bc8b-c6f6-45fa-a0bf-b7b674a56768"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SYG_ARITHMOS} == null ? "-" : $F{SYG_ARITHMOS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="393" y="462" width="35" height="14" uuid="a72a9463-976e-4b4e-963a-d1d4c9dd3c6d"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Τ.Κ.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="428" y="462" width="127" height="14" uuid="464a8a29-191b-4c73-9af0-f64ea5c6dcf0"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SYG_TK} == null ? "-" : $F{SYG_TK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="243" y="477" width="150" height="15" uuid="1dcc09f8-0c01-48be-bffd-7eee02e36694"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Αρμόδια Αστυνομική Αρχή :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="78" y="477" width="164" height="15" uuid="3a84623f-e9b5-474f-bd7b-5de0fdca4723"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SYG_THLEFONO} == null ? "-" : $F{SYG_THLEFONO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="477" width="78" height="15" uuid="1315529f-145b-4911-9967-783dc9002560"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Τηλέφωνο :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="398" y="477" width="157" height="15" uuid="04605b28-f36c-4a3a-a50b-dd31780382a1"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AT SYGGENH} == null ? "-" : $F{AT SYGGENH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="418" y="492" width="137" height="15" uuid="c721f0c9-2b9b-43ea-848f-406280e1d52e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ημερών.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="328" y="492" width="65" height="15" uuid="31b5a56b-9169-4420-9b2e-35f44fb1e7d7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[μηνών και]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="492" width="298" height="15" uuid="1b9df372-a625-4b76-8d72-07a31cc617c4"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Πρόσθετη στρατεύσιμη στρατιωτική υποχρέωση]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="507" width="554" height="15" uuid="ef4bde87-64d6-45f6-a4a0-5f0cd6c0911f"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[1. Επιβεβαιώνω την ακρίβεια των παραπάνω στοιχείων.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="522" width="510" height="35" uuid="54e492a3-4324-4a48-ae8a-fa5b6383eb2b"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[2. Επιθυμώ    τη    γνωστοποίηση     των    σπουδαστικών    και    επαγγελματικών    μου    προσόντων    στην        ηλεκτρονική    σελίδα    του    Υπουργείου    Εθνικής    Άμυνας    στο    INTERNET,   για    υποβοήθηση    της    επαγγελματικής    μου   αποκατάστασης, μετά  την οριστική απόλυση από  τις   τάξεις   των  Ενόπλων  Δυνάμεων :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="557" width="555" height="15" uuid="cfc5f280-df58-4300-a4dc-728529af4b1b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(Ημερομηνία)...............................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="572" width="555" height="13" uuid="7b5fd6a3-c2a1-484f-9983-a9fb3563ff48"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(Υπογραφή Οπλίτη)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="3" width="85" height="15" uuid="fe6204d4-50b9-45ef-a928-121afeac5bfa"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ΚΛΑΔΟΣ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="3" width="470" height="15" uuid="ee767c9f-5dcc-45d9-9fc5-a2a3882ec098"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Σ.Ξ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="18" width="145" height="15" uuid="536218c1-1775-4314-8172-9d00e25d4be9"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Βαθμός - Όπλο/Σώμα :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="145" y="18" width="58" height="15" uuid="0a6fcf56-b24d-49c7-be42-b6cd6dc623ca"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BATH_SYN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="203" y="18" width="68" height="15" uuid="06679724-6f76-49b4-bedd-66d8f44b73f4"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$F{OS_SYN}+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="271" y="18" width="133" height="15" uuid="6c6e5acb-a69b-40d0-8b56-8fd5c1ab833e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Κατάσταση Εφέδρου :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="404" y="18" width="151" height="15" uuid="e412a2e0-fb7d-4e0b-acc0-570b4cc614a1"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KATA_EFED_LEK} == null ? "-" : $F{KATA_EFED_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="33" width="145" height="15" uuid="51bd5bb9-0a79-46bd-918e-56c3aeefc71f"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ειδικότητα :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="145" y="33" width="215" height="15" uuid="104e05e9-6ea7-4cad-b33e-a9ce279725c9"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EIDI_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="48" width="145" height="15" uuid="1069e655-1076-4184-9671-9f5c542c5346"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Επώνυμο :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="145" y="48" width="215" height="15" uuid="dc53a3e7-35e3-4dd9-aa47-7af5898364ad"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_EPWNYMO}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="360" y="33" width="195" height="74" uuid="7edde3c5-d096-4da2-947f-55cb67e693c1"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<staticText>
+					<reportElement style="defaultBold" x="0" y="2" width="195" height="15" uuid="4959d6a0-6dd7-4e50-8174-486798ac8ae1"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Στρατιωτικός Αριθμός (ΣΑ) :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="defaultBold" x="0" y="32" width="195" height="15" uuid="2819f086-4f71-4235-8548-02d86601a864"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ΕΣΣΟ :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="17" width="195" height="15" uuid="dd8ffb03-bd70-44db-99de-6811d8125235"/>
+					<textElement>
+						<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STRK_PROS_KWD}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="47" width="33" height="26" uuid="e93936d9-ee11-41ca-a3d9-64d71a96fc47"/>
+					<textElement>
+						<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{YPHR_ESSO} - ($F{YPHR_ESSO} % 10)) / 10]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="33" y="47" width="162" height="26" uuid="b27b6a60-6414-45e7-b92e-19ac295b01ec"/>
+					<textElement>
+						<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{YPHR_ESSO} % 10 == 1 ? "Α'" : $F{YPHR_ESSO} % 10 == 2 ? "Β'" : $F{YPHR_ESSO} % 10 == 3 ? "Γ'" :
+$F{YPHR_ESSO} % 10 == 4 ? "Δ'" : $F{YPHR_ESSO} % 10 == 5 ? "Ε'" : $F{YPHR_ESSO} % 10 == 6 ? "ΣΤ'" : "-"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="78" width="145" height="15" uuid="109814e3-2499-405c-b305-88e4649c838b"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Όνομα Πατέρα :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="145" y="78" width="215" height="15" uuid="cb216f8d-75f1-418d-99ce-08b0a329afa8"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_PATRWNYMO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="93" width="145" height="15" uuid="736ddbc4-a2ea-49b9-838b-bed1c70e256c"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Όνομα Μητέρας :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="145" y="93" width="215" height="15" uuid="3e1f65ab-61a3-4a8b-b73a-e885beafda1c"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_MHTRONYMO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="145" y="63" width="215" height="15" uuid="00784aed-7af8-4ef1-946a-4d3fecbdf727"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRA_ONOMA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="63" width="145" height="15" uuid="48b98fb3-18f8-4eaf-b7f7-bb49f32b9a56"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Όνομα :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="109" width="234" height="44" uuid="3c38f642-afa5-40b7-82ef-0710e75c86ae"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Γραμμένος σε                                                    Μητρώα Αρρένων :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="234" y="109" width="100" height="15" uuid="6d5a993d-01d9-4e9c-8174-aa64a63a4013"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Πόλη      :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="234" y="124" width="100" height="15" uuid="4120b04d-1f19-479e-8566-3db14decd7ad"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Νομός    :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="234" y="139" width="230" height="15" uuid="88ddc779-e4e0-4c6a-b24a-5b898b713362"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ημ/νία Γέννησης [Ημέρα-Μήνας-Έτος]:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="334" y="124" width="221" height="15" uuid="0bc0826d-b805-40db-a650-2e18ad6adc54"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMOS MHTRWA} == null ? "-" : $F{NOMOS MHTRWA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="334" y="109" width="221" height="15" uuid="cb302c62-d740-4bda-8606-ee5b09cbb0be"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{POLH MHTRWA} == null ? "-" : $F{POLH MHTRWA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="139" width="91" height="15" uuid="3301b2f3-b32f-4c28-9dda-ba4401fd7e1f"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')} == null ? "-" : $F{DATE_FORMAT(ATOM.ATOM_HMNIA_GENNHSHS, '%d/%m/%Y')}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="155" width="555" height="15" uuid="d9b52fd0-ec30-42a7-a64b-e748cf86006c"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Σωματομετρικά Στοιχεία]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="170" width="54" height="15" uuid="bf945d6f-3f2c-4ed8-8e3e-0c37b6728db1"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ύψος :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="54" y="170" width="83" height="15" uuid="890a0037-9f3e-40d7-bcc9-e37c5e69561c"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SWMA_YPSOS} == null ? "-" : $F{SWMA_YPSOS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="137" y="170" width="47" height="15" uuid="3b540d76-3621-4364-afe0-3bf6b5011039"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Βάρος :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="184" y="170" width="70" height="15" uuid="3aefc3f3-4440-40fa-aefd-b7062bf2d2c8"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SWMA_BAROS} == null ? "-" : $F{SWMA_BAROS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="254" y="170" width="70" height="15" uuid="0f587950-643b-494f-96c5-34b2fce15991"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Νο Στολής :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="324" y="170" width="75" height="15" uuid="6a74244b-7d78-4666-a6d6-e30b37cb8122"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SWMA_NO_STOLIS} == null ? "-" : $F{SWMA_NO_STOLIS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="400" y="170" width="85" height="15" uuid="6a9d4681-672b-4304-b6c4-7eb59df35164"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Νο Αρβυλών :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="485" y="170" width="70" height="15" uuid="6c8a995a-79e5-41f9-bacd-83536493963a"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SWMA_NO_ARVI} == null ? "-" : $F{SWMA_NO_ARVI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="186" width="555" height="15" uuid="4b06a41b-6195-4546-8ef5-6a9501368079"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Επίπεδο Σπουδών]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" x="0" y="201" width="144" height="15" uuid="2f700319-cae2-4dcb-81f3-c6bcfd8b2b29"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Γραμματικές Γνώσεις :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="144" y="201" width="255" height="15" uuid="14840f5f-edb7-4682-8f80-dd38f80433a4"/>
+				<textElement>
+					<font fontName="Arial" size="10" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIP_MORF_LEK} == null ? "-" : $F{EPIP_MORF_LEK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="defaultBold" x="399" y="201" width="156" height="15" uuid="135d6872-b48f-47b4-9234-ab7b757c5cad"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Μεταπτυχιακές Σπουδές :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="58" y="462" width="190" height="14" uuid="40e1ef63-912b-4bc2-9855-4f7e33572522"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SYG_ODOS} == null ? "-" : $F{SYG_ODOS}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="0" y="216" width="555" height="64" uuid="4928459a-e15d-4998-ad72-d31a47fb4a3a">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="GLWSSES" uuid="7f421c1d-206a-45f5-ae68-de6dca61d5e9">
+						<datasetParameter name="STRK_PROS_KWD">
+							<datasetParameterExpression><![CDATA[$P{STRK_PROS_KWD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="76977c4e-c4db-435d-a95a-95bdfde8bcc0">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement style="defaultBold" x="0" y="0" width="100" height="30" uuid="a2423e92-4067-414b-bc0d-20ac3d46268a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Ξένη Γλώσσα]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="cfa406c3-48bb-4c03-b704-57c886a0ddda"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{GLWS_LEK} == null ? "-" : $F{GLWS_LEK}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="8e9b954f-f553-4d5a-b784-9c72380aa128">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement style="defaultBold" x="0" y="0" width="100" height="30" uuid="24b24518-ae1a-4b48-a633-c43c76dd1df7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Επίπεδο Γνώσεως Γλώσσας]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="d46ec5ab-09a7-4417-9b22-1bc3e0985de0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{XENH_GLWS_EPID_LEK} == null ? "-" : $F{XENH_GLWS_EPID_LEK}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="298" y="492" width="30" height="15" uuid="f968e5a9-0dec-4559-a629-f76d313dfb23"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="393" y="492" width="25" height="15" uuid="cb89bad3-772f-4313-8b4f-147a70ac75bc"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="0" y="401" width="50" height="15" uuid="8b86df77-acd4-4fdd-940b-d4fda39ee1b4"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ΑΜΚΑ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="defaultBold" positionType="Float" x="287" y="401" width="50" height="15" uuid="8255199f-38d3-49bc-b006-5af9e3da743e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email :]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="51" y="401" width="236" height="15" uuid="4d9e79a2-9a5d-4012-aa02-799828222d1d"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AMKA}  == null ? "-" : $F{AMKA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="337" y="401" width="218" height="15" uuid="f4ff3a76-ae00-4708-b556-4385b18ac2d2"/>
+				<textElement>
+					<font fontName="Arial" size="12" pdfFontName="arial.ttf" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EFEDROS_EMAIL} == null ? "-" : $F{EFEDROS_EMAIL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="2" y="108" width="552" height="1" uuid="71adfcfb-03c2-415a-8f07-4b9dc7ae0618"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="3" y="154" width="552" height="1" uuid="ad6f74e4-e170-42fb-94a7-9df66df9b1a0"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="3" y="185" width="552" height="1" uuid="60caa66e-4fe6-4fd6-9c31-9147538ca40b"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="3" y="280" width="552" height="1" uuid="285721a2-56e5-482a-823b-7c2a0d364cd2"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="3" y="416" width="552" height="1" uuid="42c73c8a-9aa2-41c8-a8ce-5cbc90648d06"/>
+			</line>
+			<textField>
+				<reportElement x="510" y="523" width="44" height="34" uuid="28d564c3-9484-409d-a038-46c4ae4d6282"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EPIT_STOIX_INTERNET_DKT} == null ? "OXI" : $F{EPIT_STOIX_INTERNET_DKT}.booleanValue()==true ? "NAI" : "OXI "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

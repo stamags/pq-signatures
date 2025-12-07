@@ -1,0 +1,1 @@
+INSERT INTO `kends`.`ipografes` VALUES(9,'Ιατρός',19,19,'Αφροδιτή','Χρήστου');

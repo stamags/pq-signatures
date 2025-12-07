@@ -1,0 +1,3 @@
+ALTER TABLE `kends`.`ken_yphresiaka`
+    ADD COLUMN `EKTOS_ESSO` TINYINT(1) NULL AFTER `EKPROTHESMOS`;
+

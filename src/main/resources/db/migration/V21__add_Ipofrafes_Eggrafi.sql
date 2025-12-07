@@ -1,0 +1,1 @@
+INSERT INTO kends.ipografes(ID, KATHIKON, BATH_KWD, OS_KWD, EPWNYMO, ONOMA) values (8,'Τμχης 1ου Γραφείο',19,27,'Λάζος','Απόστολος');

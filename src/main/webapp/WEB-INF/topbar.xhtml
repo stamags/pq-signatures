@@ -1,0 +1,120 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:jsf="http://xmlns.jcp.org/jsf"
+        xmlns:pa="http://primefaces.org/manhattan">
+
+
+    <style type="text/css">
+        .ui-sticky {
+            top: 70px !important;
+        }
+
+        @media (max-width: 960px) {
+            .ui-sticky {
+                top: 110px !important;
+            }
+        }
+    </style>
+
+    <h:form id="messageForm">
+        <div class="layout-topbar ">
+            <a href="#" id="layout-menu-btn" class="menu-btn">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <!--<div class="topbar-search">
+                <input type="text" class="ui-widget"/>
+                <i class="fa fa-search"></i>
+            </div>-->
+
+            <div class="layout-topbar-menu-wrapper">
+                <ul class="topbar-menu">
+                    <li class="profile-item">
+                        <a href="#">
+                            <p:commandLink onclick="PF('testOverLay').show();" id="ttt">
+                                <!--<p:graphicImage name="#{LoginBean.avatarGender()}" library="manhattan-layout"-->
+                                <!--styleClass="rcorners1"/>-->
+
+                                <!--<h:graphicImage id="topAvatar" value="data:image/}" styleClass="rcorners1"/>-->
+                                <!--                                <h:graphicImage value="/resources/images/soldier.jpg" styleClass="rcorners1"/>-->
+                                <!--                                <h:graphicImage value="#{LoginBean.user.avatar}" style="width:100px;height:100px;" alt="User Photo"/>-->
+                                <!--                                <h:graphicImage value="#{LoginBean.user.avatar}" style="width:100px;height:100px;" alt="User Photo"></h:graphicImage>-->
+
+                                <span class="topbar-item-name profile-name">
+                                     <p:outputLabel value="#{LoginBean.user.name} #{LoginBean.user.surname}"/>
+                                      <img src="#{LoginBean.user.avatar}" alt="User Photo"></img>
+                                    <!--                                    <p:graphicImage name="#{LoginBean.user.avatar}" library="manhattan-layout" id="tt"/>-->
+                                 </span>
+                            </p:commandLink>
+
+                            <h:commandLink value="Login" immediate="true"
+                                           rendered="#{missionstimelineBean.episkeptis}"
+                                           action="#{AposindesiBean.aposindesiUser}"
+                                           style="font-size: medium;margin-left: 4px;width: 100%;margin-top: 10px/"/>
+
+                        </a>
+
+                        <!--<a href="#" class="topbar-menu-btn"  >-->
+
+
+                        <!--</a>-->
+
+
+                        <p:overlayPanel widgetVar="testOverLay" id="testOverLay" hideEffect="fade" for="ttt"
+                                        showEvent="click" style="width: 200px;margin-top: 20px">
+
+                            <!--<a href="#" class="rightpanel-btn">-->
+                            <!--<i class="topbar-icon fa fa-fw fa-lock">-->
+                            <!--</i>-->
+                            <!--<h:commandLink value="Αλλαγή Password" immediate="true"-->
+                            <!--action="/webContent/changePassword.jsf?faces-redirect=true"-->
+                            <!--style="font-size: medium;margin-left: 4px;width: 100%"/>-->
+                            <!--<br/>-->
+                            <!--<i class="topbar-icon fa fa-fw fa-gear">-->
+                            <!--</i>-->
+
+                            <br/>
+                            <i class="topbar-icon fa fa-fw fa fa-cog">
+                            </i>
+                            <h:commandLink value="Προτιμήσεις Χρήστη" immediate="true"
+                                           action="/webContent/userpreferences.jsf?faces-redirect=true"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"
+                                           rendered="#{!LoginBean.guest}"/>
+                            <br/>
+                            <br/>
+                            <!--                            <i class="topbar-icon fa fa-fw fa-envelope-o ">-->
+                            <!--                            </i>-->
+                            <!--                            <h:commandLink value="Messages" immediate="true"-->
+                            <!--                                           action="/webContent/messageUser.jsf?faces-redirect=true"-->
+                            <!--                                           style="font-size: medium;margin-left: 4px;width: 100%"/>-->
+                            <!--                            <br/>-->
+                            <i class="topbar-icon fa fa-fw fa-sign-out">
+                            </i>
+                            <h:commandLink value="Αποσύνδεση" immediate="true"
+                                           action="#{AposindesiBean.aposindesiUser}"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                        </p:overlayPanel>
+                    </li>
+
+                    <li>
+
+                        <!--<a href="#"-->
+                        <!--onclick="PF('sidebar2').show();PF('accordion').select(1);PF('accordion').unselect(0)">-->
+                        <!--<i class="topbar-icon swing fa fa-fw fa-envelope-o"></i>-->
+                        <!--<span class="topbar-badge rubberBand" style="background: #{MessagesBean.noMessages eq 0 ? '' : 'red'}"-->
+                        <!--jsf:id="txt_count">#{MessagesBean.noMessages eq 0 ? '0' : MessagesBean.noMessages}</span>-->
+                        <!--<span class="topbar-item-name">Messages</span>-->
+                        <!--</a>-->
+
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>
