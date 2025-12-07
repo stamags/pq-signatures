@@ -3,12 +3,12 @@ package manhattan.component;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIOutput;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.component.UIOutput;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.*;
 
 @ListenerFor(sourceClass = ManhattanMenu.class, systemEventClass = PostAddToViewEvent.class)
 public class ManhattanMenu extends AbstractMenu implements Widget, ComponentSystemEventListener {
@@ -106,9 +106,9 @@ public class ManhattanMenu extends AbstractMenu implements Widget, ComponentSyst
             for(String res : resources) {
                 UIComponent component = context.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
                 if(res.endsWith("css"))
-                    component.setRendererType("javax.faces.resource.Stylesheet");
+                    component.setRendererType("jakarta.faces.resource.Stylesheet");
                 else if(res.endsWith("js"))
-                    component.setRendererType("javax.faces.resource.Script");
+                    component.setRendererType("jakarta.faces.resource.Script");
 
                 component.getAttributes().put("library", "primefaces");
                 component.getAttributes().put("name", res);

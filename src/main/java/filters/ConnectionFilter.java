@@ -1,10 +1,10 @@
 package filters;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 import java.io.IOException;
-import javax.annotation.Resource;
-import javax.servlet.*;
-import javax.transaction.UserTransaction;
+import jakarta.annotation.Resource;
+import jakarta.servlet.*;
+import jakarta.transaction.UserTransaction;
 
 /**
  * Created by Γεώργιος on 28/12/2015.

@@ -7,8 +7,8 @@ package model;
 
 import org.hibernate.annotations.GenericGenerators;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;

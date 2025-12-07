@@ -11,8 +11,8 @@ import net.lingala.zip4j.model.enums.CompressionLevel;
 import net.lingala.zip4j.model.enums.CompressionMethod;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import java.io.*;
 import java.util.*;
 
@@ -157,51 +157,51 @@ public class GenericUtils {
     }
 
 
-    public static Map<String, String>  unlockZipWithCode(org.primefaces.model.UploadedFile uploadedFile, String password ) {
-        //KEY: Filename - VALUE: OutputStream
-        Map<String, OutputStream> inMemoryExtractedFiles = new HashMap<>();
-
-        //KEY: Filename - VALUE: OutputStream
-        Map<String, String> inMemoryFiles = new HashMap<>();
-
-        try
-        {
-            LocalFileHeader localFileHeader;
-
-            net.lingala.zip4j.io.inputstream.ZipInputStream zis = new net.lingala.zip4j.io.inputstream.ZipInputStream(uploadedFile.getInputstream(), password.toCharArray());
-            localFileHeader =  zis.getNextEntry();
-
-            while (localFileHeader != null) {
-                String fileName = localFileHeader.getFileName();
-                StringBuilder sb = new StringBuilder();
-
-                InputStreamReader is = new InputStreamReader(zis,"UTF-8");
-
-                BufferedReader br = new BufferedReader(is);
-                String read = br.readLine();
-
-                while (read != null) {
-                    sb.append(read);
-                    read = br.readLine();
-                }
-                inMemoryFiles.put(fileName, sb.toString());
-
-                localFileHeader = zis.getNextEntry();
-
-            }
-
-            zis.close();
-
-        } catch (ZipException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return inMemoryFiles;
-
-
-    }
+//    public static Map<String, String>  unlockZipWithCode(org.primefaces.model.UploadedFile uploadedFile, String password ) {
+//        //KEY: Filename - VALUE: OutputStream
+//        Map<String, OutputStream> inMemoryExtractedFiles = new HashMap<>();
+//
+//        //KEY: Filename - VALUE: OutputStream
+//        Map<String, String> inMemoryFiles = new HashMap<>();
+//
+//        try
+//        {
+//            LocalFileHeader localFileHeader;
+//
+//            net.lingala.zip4j.io.inputstream.ZipInputStream zis = new net.lingala.zip4j.io.inputstream.ZipInputStream(uploadedFile.getInputstream(), password.toCharArray());
+//            localFileHeader =  zis.getNextEntry();
+//
+//            while (localFileHeader != null) {
+//                String fileName = localFileHeader.getFileName();
+//                StringBuilder sb = new StringBuilder();
+//
+//                InputStreamReader is = new InputStreamReader(zis,"UTF-8");
+//
+//                BufferedReader br = new BufferedReader(is);
+//                String read = br.readLine();
+//
+//                while (read != null) {
+//                    sb.append(read);
+//                    read = br.readLine();
+//                }
+//                inMemoryFiles.put(fileName, sb.toString());
+//
+//                localFileHeader = zis.getNextEntry();
+//
+//            }
+//
+//            zis.close();
+//
+//        } catch (ZipException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return inMemoryFiles;
+//
+//
+//    }
 
 
 

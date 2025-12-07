@@ -4,13 +4,13 @@ package utils;
 import org.apache.commons.lang3.SystemUtils;
 import org.flywaydb.core.Flyway;
 
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 
 public class FlywayRunner implements ServletContextListener {
