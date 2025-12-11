@@ -3,23 +3,25 @@ package beans;
 
 import db.HashingUtil;
 import db.dbTransactions;
+import jakarta.annotation.ManagedBean;
+import jakarta.faces.view.ViewScoped;
 import model.*;
 import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
+//import jakarta.faces.bean.ManagedBean;
+//import jakarta.faces.bean.ViewScoped;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import java.io.*;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Named
+@ManagedBean
 @ViewScoped
 public class MissionstimelineBean implements Serializable {
 

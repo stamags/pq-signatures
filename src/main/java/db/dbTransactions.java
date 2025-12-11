@@ -746,21 +746,14 @@ public class dbTransactions {
         try {
             entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
             entityManager.getTransaction().begin();
-            
-            String finalQuery = "SELECT * " + query;
+            q = entityManager.createQuery(query);
+            String finalQuery = "SELECT {e*} " + query;
 
             // Applying pagination on query level. Otherwise, without HQL, the pagination is applied in the acquired resultset.
             if (page != null && pagesize != null) {
                 finalQuery = "SELECT * FROM (SELECT row_.*, rownum rownum_ FROM ( " + finalQuery + " ) row_) WHERE rownum_ > " + ((page - 1) * pagesize) + " AND rownum_ <= " + (((page - 1) * pagesize) + pagesize);
             }
-            
-            // Fix: Use createNativeQuery with Class object instead of addEntity
-            if (classname != null) {
-                Class<?> entityClass = Class.forName(classname);
-                q = entityManager.createNativeQuery(finalQuery, entityClass);
-            } else {
-                q = entityManager.createNativeQuery(finalQuery);
-            }
+            q = ((NativeQuery) entityManager.createNativeQuery(finalQuery)).addEntity("e", classname);
 
             if (params != null) {
                 int counter = 1;
