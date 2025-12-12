@@ -185,11 +185,20 @@
                 <version>1.41.6</version>
             </dependency>
 
-            <!--            <dependency>-->
-            <!--                <groupId>pearl</groupId>-->
-            <!--                <artifactId>manhattan-theme</artifactId>-->
-            <!--                <version>3.0.0</version>-->
-            <!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>pearl</groupId>-->
+<!--                <artifactId>manhattan-theme</artifactId>-->
+<!--                <version>5.1.0</version>-->
+<!--            </dependency>-->
+<!--            C:\Users\PX\IdeaProjects\pq-signatures\src\main\webapp\WEB-INF\lib-->
+
+            <dependency>
+                <groupId>pearl</groupId>
+                <artifactId>manhattan-theme</artifactId>
+                <version>7.0.0</version>
+                <scope>system</scope>
+                <systemPath>C:/Users/PX/IdeaProjects/pq-signatures/src/main/webapp/WEB-INF/lib/manhattan-theme-7.0.0-jakarta.jar</systemPath>
+            </dependency>
 
             <dependency>
                 <groupId>dom4j</groupId>
