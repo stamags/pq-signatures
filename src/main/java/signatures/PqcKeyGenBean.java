@@ -1,4 +1,4 @@
-package beans;
+package signatures;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -27,13 +27,13 @@ public class PqcKeyGenBean {
         String pubB64 = Base64.getEncoder().encodeToString(kp.getPublic().getEncoded());
         String privB64 = Base64.getEncoder().encodeToString(kp.getPrivate().getEncoded());
 
-        Files.writeString(outDir.resolve("public.key"), pubB64 + "\n", StandardCharsets.UTF_8);
-        Files.writeString(outDir.resolve("private.key"), privB64 + "\n", StandardCharsets.UTF_8);
+        Files.writeString(outDir.resolve("pqc-public.key"), pubB64 + "\n", StandardCharsets.UTF_8);
+        Files.writeString(outDir.resolve("pqc-private.key"), privB64 + "\n", StandardCharsets.UTF_8);
 
         System.out.println("Wrote keys to:");
-        System.out.println(" - " + outDir.resolve("public.key").toAbsolutePath());
-        System.out.println(" - " + outDir.resolve("private.key").toAbsolutePath());
-        System.out.println("Public bytes : " + kp.getPublic().getEncoded().length);
-        System.out.println("Private bytes: " + kp.getPrivate().getEncoded().length);
+        System.out.println(" - " + outDir.resolve("pqc-public.key").toAbsolutePath());
+        System.out.println(" - " + outDir.resolve("pqc-private.key").toAbsolutePath());
+        System.out.println("pqc-public bytes : " + kp.getPublic().getEncoded().length);
+        System.out.println("pqc-private bytes: " + kp.getPrivate().getEncoded().length);
     }
 }

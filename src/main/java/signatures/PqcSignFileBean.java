@@ -1,4 +1,4 @@
-package beans;
+package signatures;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -11,18 +11,9 @@ import java.security.Security;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.Security;
-import java.security.Signature;
 import java.security.MessageDigest;
 import java.security.Provider;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Instant;
-import java.util.Base64;
 
 public class PqcSignFileBean {
 

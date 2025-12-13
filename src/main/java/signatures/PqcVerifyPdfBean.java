@@ -1,4 +1,4 @@
-package beans;
+package signatures;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 

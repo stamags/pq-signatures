@@ -1,4 +1,4 @@
-package beans;
+package signatures;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -12,16 +12,7 @@ import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.Signature;
 import java.security.MessageDigest;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 public class PqcVerifyFileBean {
 
