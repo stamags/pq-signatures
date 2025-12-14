@@ -22,7 +22,8 @@ public class HybridSignPdfBean {
             }
 
             File pdf = new File(args[0]);
-            byte[] pdfBytes = Files.readAllBytes(pdf.toPath());
+//            byte[] pdfBytes = Files.readAllBytes(pdf.toPath());
+            byte[] toBeSigned = utils.PdfCanonicalUtil.canonicalBytesWithoutSignatures(pdf.getPath());
 
             // --- Load RSA keys ---
             PrivateKey rsaPrivate =
@@ -35,20 +36,26 @@ public class HybridSignPdfBean {
             // --- Sign with RSA ---
             Signature rsaSig = Signature.getInstance("SHA256withRSA");
             rsaSig.initSign(rsaPrivate);
-            rsaSig.update(pdfBytes);
+            rsaSig.update(toBeSigned);
             byte[] rsaSignature = rsaSig.sign();
 
             // --- Sign with Dilithium ---
             Signature pqSig = Signature.getInstance("DILITHIUM");
             pqSig.initSign(pqPrivate);
-            pqSig.update(pdfBytes);
+            pqSig.update(toBeSigned);
             byte[] pqSignature = pqSig.sign();
 
-            // --- Write signatures ---
-            try (PrintWriter out = new PrintWriter("data/pdf-signatures.txt")) {
-                out.println("RSA=" + Base64.getEncoder().encodeToString(rsaSignature));
-                out.println("PQC=" + Base64.getEncoder().encodeToString(pqSignature));
-            }
+//            // --- Write signatures ---
+//            try (PrintWriter out = new PrintWriter("data/pdf-signatures.txt")) {
+//                out.println("RSA=" + Base64.getEncoder().encodeToString(rsaSignature));
+//                out.println("PQC=" + Base64.getEncoder().encodeToString(pqSignature));
+//            }
+
+            java.util.Map<String, String> meta = new java.util.HashMap<>();
+            meta.put("RSA_SIGNATURE", Base64.getEncoder().encodeToString(rsaSignature));
+            meta.put("DILITHIUM_SIGNATURE", Base64.getEncoder().encodeToString(pqSignature));
+
+            utils.PdfMetadataUtil.writeMetadata(pdf.getPath(), meta);
 
             System.out.println("PDF signed successfully (RSA + PQC)");
         }

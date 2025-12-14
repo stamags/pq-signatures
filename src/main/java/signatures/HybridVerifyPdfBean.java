@@ -22,7 +22,9 @@ public class HybridVerifyPdfBean {
         }
 
         File pdf = new File(args[0]);
-        byte[] pdfBytes = Files.readAllBytes(pdf.toPath());
+//        byte[] pdfBytes = Files.readAllBytes(pdf.toPath());
+        byte[] toBeVerified = utils.PdfCanonicalUtil.canonicalBytesWithoutSignatures(pdf.getPath());
+
 
         PublicKey rsaPublic =
                 KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
@@ -55,13 +57,13 @@ public class HybridVerifyPdfBean {
         // --- Verify RSA ---
         Signature rsaSig = Signature.getInstance("SHA256withRSA");
         rsaSig.initVerify(rsaPublic);
-        rsaSig.update(pdfBytes);
+        rsaSig.update(toBeVerified);
         boolean rsaOK = rsaSig.verify(rsaSigBytes);
 
         // --- Verify PQC ---
         Signature pqSig = Signature.getInstance("DILITHIUM");
         pqSig.initVerify(pqPublic);
-        pqSig.update(pdfBytes);
+        pqSig.update(toBeVerified);
         boolean pqOK = pqSig.verify(pqSigBytes);
 
         System.out.println("RSA verify: " + rsaOK);

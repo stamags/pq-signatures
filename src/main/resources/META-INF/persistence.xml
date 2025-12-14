@@ -2,108 +2,18 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
   <persistence-unit name="ctodb" transaction-type="JTA">
     <!--  -->
-    <jta-data-source>java:jboss/datasources/kends</jta-data-source>
-    <class>model.Tblaudit</class>
-    <class>model.Tblmessages</class>
+    <jta-data-source>java:jboss/datasources/pqsignatures</jta-data-source>
     <class>model.Tbluser</class>
-    <class>model.Tblemployee</class>
-    <class>model.Tblmessagegroup</class>
     <class>model.Tblroles</class>
     <class>model.Tblrolerights</class>
     <class>model.Tblpages</class>
-    <class>model.Tblmessagesusers</class>
     <class>model.Tblelements</class>
     <!--  ******************************************************************-->
-    <class>model.Bathmos</class>
     <class>model.ParkingSlots</class>
     <class>model.ParkingFloor</class>
     <class>model.ParkingUser</class>
     <class>model.ParkingBooking</class>
     <class>model.ParkingUsersCar</class>
-    <class>model.TrapezikaIdrymata</class>
-    <class>model.EpipedoGlwssas</class>
-    <class>model.KenOikogeneiaka</class>
-    <class>model.KenYphresiaka</class>
-    <class>model.GeografikoDiamerisma</class>
-    <class>model.KatastashEfedrou</class>
-    <class>model.KenEpithymia</class>
-    <class>model.KenEpaggelmata</class>
-    <class>model.KenSygeneis</class>
-    <class>model.Eidikothta</class>
-    <class>model.Eparxia</class>
-    <class>model.XenhGlwssaEpidosh</class>
-    <class>model.OikogeneiakhKatastash</class>
-    <class>model.BathmosSyggeneias</class>
-    <class>model.Toponymio</class>
-    <class>model.HthikhAmoibh</class>
-    <class>model.KallikratisElstat</class>
-    <class>model.Pd13302</class>
-    <class>model.Nomos</class>
-    <class>model.KenStratevmenos</class>
-    <class>model.DeikthsMorfwshs</class>
-    <class>model.Doy</class>
-    <class>model.Stg</class>
-    <class>model.KenMorfwsh</class>
-    <class>model.Sxolh</class>
-    <class>model.KenSwmatometrika</class>
-    <class>model.Epaggelma</class>
-    <class>model.Poinh</class>
-    <class>model.Kratos</class>
-    <class>model.KenProtash</class>
-    <class>model.User</class>
-    <class>model.ProtAkatEldyk</class>
-    <class>model.KenDiplwmataPolitika</class>
-    <class>model.KenEpithymiesTopothethshs</class>
-    <class>model.KenEpithymiesMetatheshs</class>
-    <class>model.EpitrophApallagwn</class>
-    <class>model.KenXenesGlwsses</class>
-    <class>model.Aima</class>
-    <class>model.Os</class>
-    <class>model.EpipedoMorfwshs</class>
-    <class>model.AstynomikoTmhma</class>
-    <class>model.Kathgoria</class>
-    <class>model.KenEpithymiesEidikothtas</class>
-    <class>model.DiplwmaStrko</class>
-    <class>model.Anabolh</class>
-    <class>model.Akoh</class>
-    <class>model.Xwra</class>
-    <class>model.KathgoriaEfedrou</class>
-    <class>model.EidosApwleias</class>
-    <class>model.Thriskia</class>
-    <class>model.ApofashEpitrophs</class>
-    <class>model.KenIatrika</class>
-    <class>model.DiplwmaPolitiko</class>
-    <class>model.Omilia</class>
-    <class>model.Ipografes</class>
-    <class>model.IkanothtaEfedrou</class>
-    <class>model.Glwssa</class>
-    <class>model.GsoDiafPsychopathologia</class>
-    <class>model.Epidosh</class>
-    <class>model.Orash</class>
-    <class>model.Monada</class>
-    <class>model.KenAtomika</class>
-    <class>model.PoinhEidosStrat</class>
-    <class>model.KenIkanothtes</class>
-    <class>model.KenMoriaEfedrou</class>
-    <class>model.KenExtraStoixeia</class>
-    <class>model.IpologismosSwmatometrikwn</class>
-    <class>model.Tagma</class>
-    <class>model.Ipomonada</class>
-    <class>model.DiplwmataNauagoswsti</class>
-    <class>model.AaImport</class>
-    <class>model.XenesGlwssesGnwsEfedrouNew</class>
-    <class>model.KenAnaboles</class>
-    <class>model.SipoEnerga</class>
-    <class>model.DiatagiMetathesis</class>
-    <class>model.Sipo</class>
-    <class>model.DiaxeirsIipografwn</class>
-    <class>model.Yea</class>
-    <class>model.KenSyncError</class>
-    <class>model.SypoVersion</class>
-    <class>model.EdyethaProsklisis</class>
-    <class>model.customObjects.ReportObject</class>
-    <!--<class>model.KenSyncErrorId</class>-->
-    <class>model.Sximatismos</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>ALL</shared-cache-mode>
     <properties>
