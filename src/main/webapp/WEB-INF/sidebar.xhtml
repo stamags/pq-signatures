@@ -35,6 +35,19 @@
                     <h:form id="menuform">
                         <pm:menu>
 
+                            <p:submenu id="diaxeirisiIpografwn" label="Διαχείριση Υπογραφών" expanded="true"
+                                       icon="fa fa-fw fa-arrow-circle-down">
+                                <!--<p:column>-->
+
+                                <p:menuitem id="uploadArxeiou" value="Upload Αρχείου" icon="fa fa-calendar"
+                                            outcome="/webContent/uploadsign"
+                                            rendered="#{LoginBean.security.foundPageAccess('uploadsign')}"/>
+
+<!--                                <p:menuitem id="oiKratiseisMou" value="Οι κρατήσεις μου" icon="fa fa-eye"-->
+<!--                                            outcome="/webContent/oiKratiseisMou?faces-redirect=true"-->
+<!--                                            rendered="#{LoginBean.security.foundPageAccess('oiKratiseisMou')}"/>-->
+                            </p:submenu>
+
 
                             <p:submenu id="efedrosData" label="Μενού Κρατήσεων" expanded="true"
                                        icon="fa fa-fw fa-arrow-circle-down">

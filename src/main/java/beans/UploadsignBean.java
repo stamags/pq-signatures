@@ -1,14 +1,20 @@
 package beans;
 
-import jakarta.enterprise.context.ViewScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import model.DocumentFile;
+import model.DocumentSignature;
 import org.primefaces.model.file.UploadedFile;
+import rest.CryptoService;
+import utils.FacesUtil;
+import utils.FileStorageService;
+import db.dbTransactions;
 
 import java.io.Serializable;
 
 @Named
 @ViewScoped
-public class DocumentUiBean implements Serializable {
+public class UploadsignBean implements Serializable {
 
     private UploadedFile uploadedFile;
     private String scheme = "HYBRID";
@@ -27,18 +33,35 @@ public class DocumentUiBean implements Serializable {
             }
 
             byte[] pdfBytes = uploadedFile.getContent();
-            String filename = uploadedFile.getFileName();
-            String contentType = uploadedFile.getContentType();
 
-            // 1) Save PDF to DB -> returns documentId
-            // lastDocumentId = documentService.saveDocument(filename, contentType, pdfBytes);
+            // 1️⃣ Calculate SHA-256 hash
+            String sha256 = FileStorageService.calculateSha256(pdfBytes);
 
-            // 2) Sign -> returns signatureId
-            // lastSignatureId = documentService.signDocument(lastDocumentId, scheme);
+            // 2️⃣ Save DocumentFile metadata to DB (without file data)
+            DocumentFile doc = new DocumentFile();
+            doc.setFilename(uploadedFile.getFileName());
+            doc.setContentType(uploadedFile.getContentType());
+            doc.setFileSize((long) pdfBytes.length);
+            doc.setSha256(sha256);
 
-            // προσωρινά για να μην σπάει compile:
-            lastDocumentId = 1L;
-            lastSignatureId = 1L;
+            dbTransactions.storeObject(doc);
+            lastDocumentId = doc.getDocumentId();
+
+            // 3️⃣ Save file to filesystem
+            String storagePath = FileStorageService.saveFile(lastDocumentId, pdfBytes);
+            doc.setStoragePath(storagePath);
+            dbTransactions.storeWithMergeObject(doc); // Update with storage path
+
+            // 4️⃣ Reload DocumentFile from DB to ensure it's managed (not detached)
+            DocumentFile managedDoc = dbTransactions.getObjectById(DocumentFile.class, lastDocumentId);
+
+            // 5️⃣ Υπογραφή
+            DocumentSignature sig =
+                    CryptoService.signDocument(managedDoc, scheme);
+
+            dbTransactions.storeObject(sig);
+            lastSignatureId = sig.getSignatureId();
+
 
             FacesUtil.info("Upload & Sign completed. docId=" + lastDocumentId + ", sigId=" + lastSignatureId);
 

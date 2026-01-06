@@ -61,7 +61,7 @@ public class HybridVerifyPdfBean {
         boolean rsaOK = rsaSig.verify(rsaSigBytes);
 
         // --- Verify PQC ---
-        Signature pqSig = Signature.getInstance("DILITHIUM");
+        Signature pqSig = Signature.getInstance("DILITHIUM3", "BC");
         pqSig.initVerify(pqPublic);
         pqSig.update(toBeVerified);
         boolean pqOK = pqSig.verify(pqSigBytes);

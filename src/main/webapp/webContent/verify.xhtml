@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Verify PDF Signatures</title>
+</h:head>
+
+<h:body>
+
+    <h:form id="form">
+
+        <p:messages id="msgs" showDetail="true" closable="true"/>
+
+        <p:panel header="Verify Document Signatures" style="margin:20px">
+
+            <h:panelGrid columns="2" cellpadding="6">
+                <h:outputText value="Document ID:"/>
+                <p:inputText value="#{verifyUiBean.docId}" />
+
+                <h:outputText value=""/>
+                <p:commandButton value="Verify"
+                                 icon="pi pi-check"
+                                 action="#{verifyUiBean.verify}"
+                                 update="msgs res"
+                                 process="@form"/>
+            </h:panelGrid>
+
+            <p:spacer height="10"/>
+
+            <p:panel id="res" header="Verification Result" rendered="#{verifyUiBean.hasResult}">
+                <h:panelGrid columns="2" cellpadding="6">
+                    <h:outputText value="RSA verify:"/>
+                    <h:outputText value="#{verifyUiBean.rsaOk}"/>
+
+                    <h:outputText value="PQC verify:"/>
+                    <h:outputText value="#{verifyUiBean.pqcOk}"/>
+
+                    <h:outputText value="OVERALL:"/>
+                    <h:outputText value="#{verifyUiBean.overall}"/>
+                </h:panelGrid>
+            </p:panel>
+
+        </p:panel>
+
+    </h:form>
+
+    <f:metadata>
+        <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
+    </f:metadata>
+
+</h:body>
+</html>

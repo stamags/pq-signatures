@@ -40,7 +40,7 @@ public class HybridSignPdfBean {
             byte[] rsaSignature = rsaSig.sign();
 
             // --- Sign with Dilithium ---
-            Signature pqSig = Signature.getInstance("DILITHIUM");
+            Signature pqSig = Signature.getInstance("DILITHIUM3", "BC");
             pqSig.initSign(pqPrivate);
             pqSig.update(toBeSigned);
             byte[] pqSignature = pqSig.sign();
