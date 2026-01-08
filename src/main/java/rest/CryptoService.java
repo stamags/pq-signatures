@@ -39,7 +39,7 @@ public class CryptoService {
 
         if ("DILITHIUM".equals(scheme) || "HYBRID".equals(scheme)) {
             PrivateKey pqPriv =
-                    KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
+                    KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM3");
 
             Signature pq = Signature.getInstance("DILITHIUM3", "BC");
             pq.initSign(pqPriv);

@@ -1,67 +1,92 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
 
-<h:head>
-    <title>Upload and Sign PDF</title>
-</h:head>
+    <ui:define name="title">Upload and Sign PDF</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+    <ui:define name="content">
 
-<h:body>
 
-    <h:form id="form" enctype="multipart/form-data">
+        <p:panel header="Διαχείριση Υπογραφών">
+            <h:form id="form" enctype="multipart/form-data">
 
-        <p:messages id="msgs" showDetail="true" closable="true"/>
+                <p:messages id="msgs" showDetail="true" closable="true"/>
 
-        <p:panel header="Upload PDF and Sign (RSA / PQC / Hybrid)" style="margin:20px">
+<!--                <p:panel id="form-manualsync-1" style="width:90%; margin: 0 auto;"-->
+<!--                         header="Ανέβασμα Αρχείου  Pdf">-->
 
-            <p:outputLabel value="PDF File:"/>
-            <p:fileUpload id="pdf"
-                          value="#{uploadsignBean.uploadedFile}"
-                          mode="simple"
-                          skinSimple="true"
-                          allowTypes="/(\.|\/)(pdf)$/"
-                          label="Choose PDF"/>
+<!--                    <div class="info" style="margin-top: 10px">-->
+<!--                        <b>Θα πρέπει να ανεβάσετε το zip αρχείο το οποίο κατεβάσατε απο το ΕΣΕΠ</b> <br/>-->
+<!--                    </div>-->
 
-            <p:spacer height="10"/>
 
-            <p:outputLabel value="Scheme:"/>
-            <p:selectOneMenu value="#{uploadsignBean.scheme}" style="width:250px">
-                <f:selectItem itemLabel="HYBRID (RSA + DILITHIUM)" itemValue="HYBRID"/>
-                <f:selectItem itemLabel="RSA only" itemValue="RSA"/>
-                <f:selectItem itemLabel="PQC only (DILITHIUM)" itemValue="DILITHIUM"/>
-            </p:selectOneMenu>
+<!--                    <p:fileUpload mode="advanced"-->
+<!--                                  dragDropSupport="true"-->
+<!--                                  allowTypes="/(\.|\/)(pdf)$/"-->
+<!--                                  label="Αναζήτηση Αρχείου" uploadLabel="Μεταφόρτωση"-->
+<!--                                  cancelLabel="Ακύρωση" fileUploadListener="#{uploadsignBean.uploadedFile}"-->
+<!--                                  skinSimple="true"-->
+<!--                                  auto="true"-->
+<!--                                >-->
+<!--&lt;!&ndash;                        onstart="PF('pbAjax').setValue(0.0);PF('progressdlg').show();PF('pbAjax').start()"&ndash;&gt;-->
+<!--&lt;!&ndash;                        oncomplete="PF('progressdlg').hide();"&ndash;&gt;-->
+<!--                    </p:fileUpload>-->
+<!--                </p:panel>-->
 
-            <p:spacer height="10"/>
+                <p:panel header="Upload PDF and Sign (RSA / PQC / Hybrid)" style="margin:20px">
 
-            <p:commandButton value="Upload and  Sign"
-                             icon="pi pi-lock"
-                             action="#{uploadsignBean.uploadAndSign}"
-                             update="msgs resultPanel"
-                             process="@form"/>
+                    <p:outputLabel value="Επιλογή Αρχείου Pdf:"/>
+                    <p:fileUpload id="pdf"
+                                  value="#{uploadsignBean.uploadedFile}"
+                                  mode="simple"
+                                  skinSimple="true"
+                                  allowTypes="/(\.|\/)(pdf)$/"
+                                  label="Choose PDF"/>
 
-            <p:spacer height="10"/>
+                    <p:spacer height="10"/>
 
-            <p:panel id="resultPanel" rendered="#{uploadsignBean.lastDocumentId != null}"
-                     header="Result" style="margin-top:15px">
-                <h:panelGrid columns="2" cellpadding="6">
-                    <h:outputText value="Document ID:"/>
-                    <h:outputText value="#{uploadsignBean.lastDocumentId}"/>
+                    <p:outputLabel value="Scheme:"/>
+                    <p:selectOneMenu value="#{uploadsignBean.scheme}" style="width:250px">
+                        <f:selectItem itemLabel="HYBRID (RSA + DILITHIUM)" itemValue="HYBRID"/>
+                        <f:selectItem itemLabel="RSA only" itemValue="RSA"/>
+                        <f:selectItem itemLabel="PQC only (DILITHIUM)" itemValue="DILITHIUM"/>
+                    </p:selectOneMenu>
 
-                    <h:outputText value="Signature ID:"/>
-                    <h:outputText value="#{uploadsignBean.lastSignatureId}"/>
+                    <p:spacer height="10"/>
 
-                    <h:outputText value="Verify link:"/>
-                    <h:link outcome="verify.xhtml" value="Open verify page">
-                        <f:param name="docId" value="#{uploadsignBean.lastDocumentId}"/>
-                    </h:link>
-                </h:panelGrid>
-            </p:panel>
+                    <p:commandButton value="Upload and  Sign"
+                                     icon="pi pi-lock"
+                                     action="#{uploadsignBean.uploadAndSign}"
+                                     update="msgs resultPanel"
+                                     process="@form"/>
 
+                    <p:spacer height="10"/>
+
+                    <p:panel id="resultPanel" rendered="#{uploadsignBean.lastDocumentId != null}"
+                             header="Result" style="margin-top:15px">
+                        <h:panelGrid columns="2" cellpadding="6">
+                            <h:outputText value="Document ID:"/>
+                            <h:outputText value="#{uploadsignBean.lastDocumentId}"/>
+
+                            <h:outputText value="Signature ID:"/>
+                            <h:outputText value="#{uploadsignBean.lastSignatureId}"/>
+
+                            <h:outputText value="Verify link:"/>
+                            <h:link outcome="verify.xhtml" value="Open verify page">
+                                <f:param name="docId" value="#{uploadsignBean.lastDocumentId}"/>
+                            </h:link>
+                        </h:panelGrid>
+                    </p:panel>
+
+                </p:panel>
+
+            </h:form>
         </p:panel>
 
-    </h:form>
-
-</h:body>
-</html>
+    </ui:define>
+</ui:composition>

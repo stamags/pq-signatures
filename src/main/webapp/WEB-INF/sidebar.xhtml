@@ -1,8 +1,8 @@
 <ui:composition
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:ui="jakarta.faces.facelets"
         xmlns:p="http://primefaces.org/ui"
         xmlns:pm="http://primefaces.org/manhattan">
 
@@ -18,13 +18,14 @@
 
             <a href="missionstimeline.xhtml">
 <!--                <p:graphicImage name="images/landing/icon-cleancode.svg" library="manhattan-layout"/>-->
-                <p:graphicImage name="css/images/parking_logo.jpg" library="assets_aerial" />
+                <p:graphicImage name="css/images/background2.jpg" library="assets_aerial" />
 
                 <!--                <p:graphicImage name="images/pearl-rail.png" library="manhattan-layout" />-->
                 <!--                <p:graphicImage name="images/bg.png" library="manhattan-layout"/>-->
             </a>
             <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu">
-                <i class="fa"></i>
+<!--                <i class="fa"></i>-->
+                <i class="fa fa-bars"></i>
             </a>
         </div>
 
@@ -36,10 +37,11 @@
                         <pm:menu>
 
                             <p:submenu id="diaxeirisiIpografwn" label="Διαχείριση Υπογραφών" expanded="true"
-                                       icon="fa fa-fw fa-arrow-circle-down">
+                                       icon="fa fa-pencil">
+
                                 <!--<p:column>-->
 
-                                <p:menuitem id="uploadArxeiou" value="Upload Αρχείου" icon="fa fa-calendar"
+                                <p:menuitem id="uploadArxeiou" value="Upload Αρχείου" icon="fa fa-upload"
                                             outcome="/webContent/uploadsign"
                                             rendered="#{LoginBean.security.foundPageAccess('uploadsign')}"/>
 
@@ -53,7 +55,7 @@
                                        icon="fa fa-fw fa-arrow-circle-down">
                                 <!--<p:column>-->
 
-                                <p:menuitem id="kratisiThesis" value="Κράτηση Θέσης Parking" icon="fa fa-calendar"
+                                <p:menuitem id="kratisiThesis" value="Κράτηση Θέσης Parking" icon="ui-icon-calendar"
                                             outcome="/webContent/kratisiThesis"
                                             rendered="#{LoginBean.security.foundPageAccess('kratisiThesis')}"/>
 

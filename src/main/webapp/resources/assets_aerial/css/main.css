@@ -94,6 +94,25 @@
 			border-color: transparent;
 		}
 
+/* Login Title */
+.login-title{
+    color: #f5f7fa;
+    font-weight: 600;
+    letter-spacing: .4px;
+    text-align: center;
+
+    /* responsive font size */
+    font-size: clamp(24px, 3vw, 52px);
+    line-height: 1.15;
+
+    /* spacing */
+    margin: 40px auto 24px;
+    padding: 0 16px;
+
+    /* glow + readability */
+    text-shadow: 0 2px 8px rgba(0,0,0,.65);
+}
+
 /* Icon */
 
 	.icon {
@@ -171,29 +190,23 @@
 
 /* BG */
 
-	#bg {
-		/*-moz-animation: bg 60s linear infinite;*/
-		/*-webkit-animation: bg 60s linear infinite;*/
-		/*-ms-animation: bg 60s linear infinite;*/
-		/*animation: bg 60s linear infinite;*/
-		/*-moz-backface-visibility: hidden;*/
-		/*-webkit-backface-visibility: hidden;*/
-		/*-ms-backface-visibility: hidden;*/
-		/*backface-visibility: hidden;*/
-		/*-moz-transform: translate3d(0,0,0);*/
-		/*-webkit-transform: translate3d(0,0,0);*/
-		/*-ms-transform: translate3d(0,0,0);*/
-		/*transform: translate3d(0,0,0);*/
-	/* Set your background with this */
+#bg{
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
 
-		background: #348cb2 url("images/parking_logo.jpg") bottom left;
-		background-repeat: repeat-x;
-		height: 160%;
-		left: 0;
-		opacity: 0.8;
-		position: fixed;
-		top: 0;
-	}
+    width: 100vw !important;
+    height: 100vh !important;
+
+    background-image: url("images/background3.jpg") !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+
+    transform: none !important;   /* αν κάπου έμενε transform από animation */
+}
 
 	@-moz-keyframes bg {
 		0% {

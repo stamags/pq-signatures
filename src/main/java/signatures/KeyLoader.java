@@ -70,7 +70,7 @@ public class KeyLoader {
         // For DILITHIUM/DILITHIUM3, use BC provider
         KeyFactory kf;
         if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
-            kf = KeyFactory.getInstance("DILITHIUM", "BC");
+            kf = KeyFactory.getInstance("DILITHIUM3", "BC");
         } else {
             kf = KeyFactory.getInstance(algorithm);
         }
@@ -85,7 +85,7 @@ public class KeyLoader {
         // For DILITHIUM/DILITHIUM3, use BC provider
         KeyFactory kf;
         if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
-            kf = KeyFactory.getInstance("DILITHIUM", "BC");
+            kf = KeyFactory.getInstance("DILITHIUM3", "BC");
         } else {
             kf = KeyFactory.getInstance(algorithm);
         }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
       xmlns:p="http://primefaces.org/ui"
       lang="en">
 
@@ -18,9 +18,16 @@
     <h:outputScript name="js/layout.js" library="manhattan-layout"/>
 
     <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/icons/favicon.ico"/>
+
+    <!-- FontAwesome for icons - must load before other CSS -->
+    <link rel="stylesheet" href="#{request.contextPath}/resources/assets_aerial/css/font-awesome.min.css" type="text/css"/>
+
     <link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.css" type="text/css" media="screen"/>
 
     <h:outputStylesheet name="css/primeflex/primeflex.css"/>
+
+    <!-- FontAwesome for icons -->
+    <h:outputStylesheet library="css" name="font-awesome.min.css"/>
 
     <!--[if IE 6]><link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.ie6.css" type="text/css" media="screen" /><![endif]-->
     <!--[if IE 7]><link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.ie7.css" type="text/css" media="screen" /><![endif]-->
