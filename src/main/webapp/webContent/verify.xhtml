@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
 
-<h:head>
-    <title>Verify PDF Signatures</title>
-</h:head>
 
-<h:body>
+
+
+    <ui:define name="title">Verify PDF</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
 
     <h:form id="form">
 
@@ -31,25 +36,26 @@
             <p:spacer height="10"/>
 
             <p:panel id="res" header="Verification Result" rendered="#{verifyUiBean.hasResult}">
-                <h:panelGrid columns="2" cellpadding="6">
-                    <h:outputText value="RSA verify:"/>
+                <h:panelGrid columns="2" cellpadding="10" style="width:100%">
+                    <h:outputText value="RSA Signature:" style="font-weight:bold"/>
                     <h:outputText value="#{verifyUiBean.rsaOk}"/>
 
-                    <h:outputText value="PQC verify:"/>
+                    <h:outputText value="PQC Signature (DILITHIUM):" style="font-weight:bold"/>
                     <h:outputText value="#{verifyUiBean.pqcOk}"/>
 
-                    <h:outputText value="OVERALL:"/>
-                    <h:outputText value="#{verifyUiBean.overall}"/>
+                    <h:outputText value="OVERALL RESULT:" style="font-weight:bold;font-size:14px"/>
+                    <h:outputText value="#{verifyUiBean.overall}" style="font-size:14px;font-weight:bold"/>
                 </h:panelGrid>
             </p:panel>
 
         </p:panel>
 
+        <f:metadata>
+            <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
+        </f:metadata>
+
     </h:form>
 
-    <f:metadata>
-        <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
-    </f:metadata>
 
-</h:body>
-</html>
+    </ui:define>
+</ui:composition>

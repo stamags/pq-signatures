@@ -3,6 +3,7 @@ package beans;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import utils.FacesUtil;
+import rest.DocumentService;
 
 import java.io.Serializable;
 
@@ -17,6 +18,11 @@ public class VerifyBean implements Serializable {
     private String pqcOk;
     private String overall;
 
+    private DocumentService documentService;
+
+    public VerifyBean() {
+        this.documentService = new DocumentService();
+    }
 
     public void verify() {
         try {
@@ -25,30 +31,62 @@ public class VerifyBean implements Serializable {
                 return;
             }
 
-            // VerificationResult res = documentService.verify(docId);
+            // Καλούμε το DocumentService για επαλήθευση
+            DocumentService.VerificationResult result = documentService.verify(docId);
 
-            // προσωρινά:
-            boolean rsa = true;
-            boolean pqc = true;
+            // Μετατρέπουμε Boolean (που μπορεί να είναι null) σε String
+            if (result.rsaOk == null) {
+                rsaOk = "N/A (no RSA signature)";
+            } else {
+                rsaOk = result.rsaOk ? "OK ✅" : "FAIL ❌";
+            }
 
-            rsaOk = rsa ? "OK" : "FAIL";
-            pqcOk = pqc ? "OK" : "FAIL";
-            overall = (rsa && pqc) ? "OK" : "FAIL";
+            if (result.pqcOk == null) {
+                pqcOk = "N/A (no PQC signature)";
+            } else {
+                pqcOk = result.pqcOk ? "OK ✅" : "FAIL ❌";
+            }
+
+//            rsaOk = rsa ? "OK" : "FAIL";
+//            pqcOk = pqc ? "OK" : "FAIL";
+//            overall = (rsa && pqc) ? "OK" : "FAIL";
+            overall = result.overall ? "OK ✅" : "FAIL ❌";
 
             hasResult = true;
-            FacesUtil.info("Verification done for docId=" + docId);
+//            FacesUtil.info("Verification done for docId=" + docId);
+            FacesUtil.info("Verification completed for docId=" + docId);
 
+        } catch (IllegalArgumentException e) {
+            hasResult = false;
+            FacesUtil.error(e.getMessage());
         } catch (Exception e) {
-            FacesUtil.error("Error: " + e.getMessage());
+            hasResult = false;
+            FacesUtil.error("Verification error: " + e.getMessage());
+            e.printStackTrace(); // για debugging
         }
     }
 
-    public boolean isHasResult() { return hasResult; }
+    public boolean isHasResult() {
+        return hasResult;
+    }
 
-    public Long getDocId() { return docId; }
-    public void setDocId(Long docId) { this.docId = docId; }
+    public Long getDocId() {
+        return docId;
+    }
 
-    public String getRsaOk() { return rsaOk; }
-    public String getPqcOk() { return pqcOk; }
-    public String getOverall() { return overall; }
+    public void setDocId(Long docId) {
+        this.docId = docId;
+    }
+
+    public String getRsaOk() {
+        return rsaOk;
+    }
+
+    public String getPqcOk() {
+        return pqcOk;
+    }
+
+    public String getOverall() {
+        return overall;
+    }
 }
