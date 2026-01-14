@@ -1,5 +1,7 @@
 package beans;
 
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import utils.FacesUtil;
@@ -27,7 +29,8 @@ public class VerifyBean implements Serializable {
     public void verify() {
         try {
             if (docId == null) {
-                FacesUtil.error("Please provide a Document ID.");
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Παρακαλώ προσθέστε τον αριθμό id του εγγράφου", "");
+                FacesContext.getCurrentInstance().addMessage("fail", facesMessage);
                 return;
             }
 

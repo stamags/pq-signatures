@@ -81,13 +81,13 @@ public class DocumentService {
     public VerificationResult verify(Long docId) throws Exception {
         DocumentFile doc = db.dbTransactions.getObjectById(DocumentFile.class, docId);
         if (doc == null) {
-            throw new IllegalArgumentException("Document not found: " + docId);
+            throw new IllegalArgumentException("Δεν βρέθηκε το έγγραφο με ID  :  " + docId);
         }
 
         // Θα παίρνεις την τελευταία signature εγγραφή (π.χ. με query)
         DocumentSignature sig = findLatestSignatureForDoc(docId);
         if (sig == null) {
-            throw new IllegalArgumentException("No signature found for document: " + docId);
+            throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο με ID :   " + docId);
         }
 
         PublicKey rsaPublic = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
