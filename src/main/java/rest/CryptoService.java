@@ -3,6 +3,7 @@ package rest;
 import model.DocumentFile;
 import model.DocumentSignature;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 import signatures.KeyLoader;
 import utils.FileStorageService;
 
@@ -14,7 +15,12 @@ import java.security.Signature;
 public class CryptoService {
 
     static {
-        Security.addProvider(new BouncyCastleProvider());
+        if (Security.getProvider("BC") == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        if (Security.getProvider("BCPQC") == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
+        }
     }
 
     public static DocumentSignature signDocument(
@@ -39,9 +45,9 @@ public class CryptoService {
 
         if ("DILITHIUM".equals(scheme) || "HYBRID".equals(scheme)) {
             PrivateKey pqPriv =
-                    KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM3");
+                    KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
 
-            Signature pq = Signature.getInstance("DILITHIUM3", "BC");
+            Signature pq = Signature.getInstance("DILITHIUM", "BCPQC");
             pq.initSign(pqPriv);
             pq.update(data);
             sig.setPqcSignature(pq.sign());
@@ -73,7 +79,7 @@ public class CryptoService {
             PublicKey pqPub =
                     KeyLoader.loadPublicKey("data/pqc-public.key", "DILITHIUM");
 
-            Signature pq = Signature.getInstance("DILITHIUM3", "BC");
+            Signature pq = Signature.getInstance("DILITHIUM", "BCPQC");
             pq.initVerify(pqPub);
             pq.update(data);
             pqcOk = pq.verify(sig.getPqcSignature());

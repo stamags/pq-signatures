@@ -1,6 +1,7 @@
 package signatures;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,9 +18,11 @@ import java.util.Base64;
 public class KeyLoader {
 
     static {
-        // Ensure BouncyCastle provider is available
         if (Security.getProvider("BC") == null) {
             Security.addProvider(new BouncyCastleProvider());
+        }
+        if (Security.getProvider("BCPQC") == null) {
+            Security.addProvider(new BouncyCastlePQCProvider());
         }
     }
 
@@ -70,7 +73,7 @@ public class KeyLoader {
         // For DILITHIUM/DILITHIUM3, use BC provider
         KeyFactory kf;
         if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
-            kf = KeyFactory.getInstance("DILITHIUM3", "BC");
+            kf = KeyFactory.getInstance("DILITHIUM", "BCPQC");
         } else {
             kf = KeyFactory.getInstance(algorithm);
         }
@@ -85,7 +88,7 @@ public class KeyLoader {
         // For DILITHIUM/DILITHIUM3, use BC provider
         KeyFactory kf;
         if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
-            kf = KeyFactory.getInstance("DILITHIUM3", "BC");
+            kf = KeyFactory.getInstance("DILITHIUM", "BCPQC");
         } else {
             kf = KeyFactory.getInstance(algorithm);
         }
