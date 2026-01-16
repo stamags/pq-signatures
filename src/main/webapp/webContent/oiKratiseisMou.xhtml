@@ -1,9 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:a4j="http://primefaces.org/ui"
                 template="../WEB-INF/template.xhtml">
 
     <ui:define name="title">ΚΕΠΥΕΣ</ui:define>
@@ -47,7 +46,8 @@
                                  scrollable="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
                                  currentPageReportTemplate="Βρέθηκαν {totalRecords} Κρατήσεις!"
-                                 rowStyleClass="#{OiKratiseisMouBean.parkingBookingList.get(it).hasArrived ne true ? null: 'false'}">
+                                >
+<!--                        rowStyleClass="#{OiKratiseisMouBean.parkingBookingList.get(it).hasArrived ne true ? null: 'false'}"-->
 
                         <f:facet name="{Exporters}">
                             <p:commandButton value="Εξαγωγή Αποτελεσμάτων" icon="ui-icon-document" ajax="false"
@@ -136,7 +136,7 @@
                             <f:facet name="filter">
                                 <p:selectOneMenu onchange="PF('oiKratiseisMouTable').filter()"
                                                  styleClass="ui-selectcheckboxmenu-items">
-                                    <f:converter converterId="javax.faces.Boolean"/>
+                                    <f:converter converterId="jakarta.faces.Boolean"/>
                                     <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>
                                     <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>
                                     <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>

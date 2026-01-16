@@ -5,7 +5,7 @@ import jakarta.inject.Named;
 import model.DocumentFile;
 import model.DocumentSignature;
 import org.primefaces.model.file.UploadedFile;
-import rest.CryptoService;
+import rest.DocumentService;
 import utils.FacesUtil;
 import utils.FileStorageService;
 import db.dbTransactions;
@@ -57,7 +57,7 @@ public class UploadsignBean implements Serializable {
 
             // 5️⃣ Υπογραφή
             DocumentSignature sig =
-                    CryptoService.signDocument(managedDoc, scheme);
+                    DocumentService.signDocument(managedDoc, scheme);
 
             dbTransactions.storeObject(sig);
             lastSignatureId = sig.getSignatureId();

@@ -6,57 +6,194 @@
                 template="../WEB-INF/template.xhtml">
 
 
-
-
     <ui:define name="title">Verify PDF</ui:define>
     <ui:define name="header">
         <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
     </ui:define>
 
     <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="Ολα τα Αρχεία">
 
-    <h:form id="form">
+                <style type="text/css">
+                    .false {
+                        background-color: #f9bbbc !important;
+                        background-image: none !important;
+                        color: #000000 !important;
+                    }
+                </style>
 
-        <p:messages id="msgs" showDetail="true" showSummary="false" closable="true"/>
+
+                <br/>
+
+                <p:messages id="msgs" showDetail="true" showSummary="false" closable="true"/>
+                <p:growl id="msgs1" showDetail="true" life="3000"/>
+                <p:outputPanel id="stoixeia" style="width: 100%">
+                    <p:dataTable id="taArxeiamouTable"
+                                 value="#{verifyUiBean.documentFileList}"
+                                 var="record"
+                                 rowIndexVar="it"
+                                 filterEvent="enter"
+                                 paginator="true"
+                                 rows="10"
+                                 styleClass="aligncenter"
+                                 editable="false"
+                                 widgetVar="taArxeiamouTable"
+                                 rowKey="#{record}"
+                                 scrollable="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 currentPageReportTemplate="Βρέθηκαν {totalRecords} αποθηκευμένα αρχεία!"
+                    >
+                        <!--                        rowStyleClass="#{OiKratiseisMouBean.parkingBookingList.get(it).hasArrived ne true ? null: 'false'}"-->
+
+                        <f:facet name="{Exporters}">
+                            <p:commandButton value="Εξαγωγή Αποτελεσμάτων" icon="ui-icon-document" ajax="false"
+                                             style="margin-left: 30px">
+                                <p:dataExporter type="xls" target="taArxeiamouTable" fileName="taArxeiaMou"/>
+                            </p:commandButton>
+                        </f:facet>
 
 
-        <p:panel header="Verify Document Signatures" style="margin:20px">
+                        <p:column headerText="Α/Α" style="width: 60px!important;">
+                            <h:outputText value="#{it+1}"/>
+                        </p:column>
 
-            <h:panelGrid columns="2" cellpadding="6">
-                <h:outputText value="Document ID:"/>
-                <p:inputText value="#{verifyUiBean.docId}" />
+                        <!--<p:aj   ax event="rowEdit" listener="#{EmployeesBean.onRowEdit}" update=":form:msgs1"/>-->
+                        <!--<p:ajax event="rowEditCancel" listener="#{EmployeesBean.onRowCancel}" update=":form:msgs1"/>-->
 
-                <h:outputText value=""/>
-                <p:commandButton value="Verify"
-                                 icon="pi pi-check"
-                                 action="#{verifyUiBean.verify}"
-                                 update="msgs res"
-                                 process="@form"/>
-            </h:panelGrid>
+                        <p:column headerText="ID" sortBy="#{record.documentId }"
+                                  filterBy="#{record.documentId}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px"
+                                  exportable="true">
+                            <h:outputText
+                                    value="#{record.documentId}">
+                            </h:outputText>
+                        </p:column>
 
-            <p:spacer height="10"/>
+                        <p:column headerText="Όνομα Αρχείου:" sortBy="#{record.filename }"
+                                  filterBy="#{record.filename}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px"
+                                  exportable="true">
+                            <h:outputText
+                                    value="#{record.filename}">
+                            </h:outputText>
+                        </p:column>
 
-            <p:panel id="res" header="Verification Result" rendered="#{verifyUiBean.hasResult}">
-                <h:panelGrid columns="2" cellpadding="10" style="width:100%">
-                    <h:outputText value="RSA Signature:" style="font-weight:bold"/>
-                    <h:outputText value="#{verifyUiBean.rsaOk}"/>
 
-                    <h:outputText value="PQC Signature (DILITHIUM):" style="font-weight:bold"/>
-                    <h:outputText value="#{verifyUiBean.pqcOk}"/>
 
-                    <h:outputText value="OVERALL RESULT:" style="font-weight:bold;font-size:14px"/>
-                    <h:outputText value="#{verifyUiBean.overall}" style="font-size:14px;font-weight:bold"/>
-                </h:panelGrid>
+                        <p:column headerText="Ημερομηνία Αποθήκευσης:" sortBy="#{record.uploadTime}"
+                                  filterBy="#{record.uploadTime}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.uploadTime}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Τύπος Αρχείου" sortBy="#{record.contentType}"
+                                  filterBy="#{record.contentType}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.contentType}"/>
+                        </p:column>
+
+                        <p:column headerText="Μέγεθος Αρχείου" sortBy="#{record.fileSize}"
+                                  filterBy="#{record.fileSize}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px">
+                            <h:outputText
+                                    value="#{record.fileSize}"/>
+                        </p:column>
+
+
+<!--                        <p:column headerText="Τοποθεσία Αποθήκευσης"-->
+<!--                                  filterBy="#{record.hasArrived}"-->
+<!--                                  filterMatchMode="equals"-->
+<!--                                  style="width: 100px;height: auto">-->
+<!--                            <f:facet name="filter">-->
+<!--                                <p:selectOneMenu onchange="PF('taArxeiamouTable').filter()"-->
+<!--                                                 styleClass="ui-selectcheckboxmenu-items">-->
+<!--                                    <f:converter converterId="jakarta.faces.Boolean"/>-->
+<!--                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>-->
+<!--                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>-->
+<!--                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>-->
+<!--                                </p:selectOneMenu>-->
+<!--                            </f:facet>-->
+<!--                            <h:outputText-->
+<!--                                    value="#{record.hasArrived? 'ΝΑΙ' : 'ΟΧΙ' }"/>-->
+<!--                        </p:column>-->
+
+
+                        <p:column headerText="Τοποθεσία Αποθήκευσης" sortBy="#{record.storagePath}"
+                                  filterBy="#{record.storagePath}"
+                                  filterMatchMode="contains"
+                                  style="width: 150px;height: auto">
+                            <h:outputText
+                                    value="#{record.storagePath}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Επιλογή Αρχείου" style="width: 100px;height: auto">
+                            <p:commandLink action="#{verifyUiBean.epilogiArxeiou(record)}"
+                                           update="form:taArxeiamouTable form:docId form:msgs1">
+
+                                <h:graphicImage name="/icons/pencil.png"
+                                                title="Ακύρωση"/>
+                            </p:commandLink>
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:outputPanel>
+
             </p:panel>
 
-        </p:panel>
 
-        <f:metadata>
-            <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
-        </f:metadata>
 
-    </h:form>
 
+
+            <p:panel header="Verify Document Signatures" style="margin:20px">
+
+                <h:panelGrid columns="2" cellpadding="6">
+                    <h:outputText value="Document ID:"/>
+                    <p:inputText id="docId" value="#{verifyUiBean.docId}"/>
+
+                    <h:outputText value=""/>
+                    <p:commandButton value="Verify"
+                                     icon="pi pi-check"
+                                     action="#{verifyUiBean.verify}"
+                                     update="msgs res"
+                                     process="@form"/>
+                </h:panelGrid>
+
+                <p:spacer height="10"/>
+
+                <p:panel id="res" header="Verification Result" rendered="#{verifyUiBean.hasResult}">
+                    <h:panelGrid columns="2" cellpadding="10" style="width:100%">
+                        <h:outputText value="RSA Signature:" style="font-weight:bold"/>
+                        <h:outputText value="#{verifyUiBean.rsaOk}"/>
+
+                        <h:outputText value="PQC Signature (DILITHIUM):" style="font-weight:bold"/>
+                        <h:outputText value="#{verifyUiBean.pqcOk}"/>
+
+                        <h:outputText value="OVERALL RESULT:" style="font-weight:bold;font-size:14px"/>
+                        <h:outputText value="#{verifyUiBean.overall}" style="font-size:14px;font-weight:bold"/>
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:panel>
+
+            <f:metadata>
+                <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
+            </f:metadata>
+
+
+        </h:form>
 
     </ui:define>
 </ui:composition>
