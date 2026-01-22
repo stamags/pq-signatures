@@ -6,6 +6,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import signatures.KeyLoader;
 import db.JPAUtil;
 import utils.FileStorageService;
+import utils.PdfSignatureEmbedder;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -80,6 +81,15 @@ public class DocumentService {
             sig.setPqcSignature(pq.sign());
         }
 
+        // Embed signature into PDF file
+        try {
+            PdfSignatureEmbedder.embedSignature(doc.getDocumentId(), sig);
+        } catch (Exception e) {
+            // Log warning but don't fail - signature is still in database
+            System.err.println("Warning: Failed to embed signature in PDF: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         return sig;
     }
 
@@ -139,10 +149,30 @@ public class DocumentService {
             throw new IllegalArgumentException("Δεν βρέθηκε το έγγραφο με ID  :  " + docId);
         }
 
-        // Θα παίρνεις την τελευταία signature εγγραφή (π.χ. με query)
-        DocumentSignature sig = findLatestSignatureForDoc(docId);
+//        // Θα παίρνεις την τελευταία signature εγγραφή (π.χ. με query)
+//        DocumentSignature sig = findLatestSignatureForDoc(docId);
+//        if (sig == null) {
+//            throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο με ID :   " + docId);
+//        }
+        // Try to read signature from PDF first (embedded), otherwise from database
+        DocumentSignature sig = null;
+        try {
+            sig = PdfSignatureEmbedder.readEmbeddedSignature(docId);
+            if (sig != null) {
+                // Set document reference for embedded signature
+                sig.setDocumentId(doc);
+            }
+        } catch (Exception e) {
+            // If reading from PDF fails, continue to database lookup
+            System.err.println("Info: Could not read embedded signature from PDF: " + e.getMessage());
+        }
+
+        // Fall back to database if no embedded signature found
         if (sig == null) {
-            throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο με ID :   " + docId);
+            sig = findLatestSignatureForDoc(docId);
+            if (sig == null) {
+                throw new IllegalArgumentException("No signature found for document: " + docId);
+            }
         }
 
         PublicKey rsaPublic = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
