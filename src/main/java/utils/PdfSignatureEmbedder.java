@@ -25,8 +25,8 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Utility class for embedding signatures into PDF files.
- * Signatures are embedded as Base64-encoded strings in PDF custom metadata.
+ * Utility class για την ενσωμάτωση υπογραφών σε αρχεία PDF.
+ * Οι υπογραφές ενσωματώνονται ως Base64-encoded strings στα custom metadata του PDF.
  */
 public class PdfSignatureEmbedder {
 
@@ -36,37 +36,37 @@ public class PdfSignatureEmbedder {
     private static final String METADATA_KEY_SIGN_TIME = "SIGNATURE_TIME";
 
     /**
-     * Embeds a signature into a PDF file.
-     * Creates a proper PDF cryptographic signature (PAdES) with RSA if available,
-     * and also embeds custom metadata for DILITHIUM and hybrid schemes.
+     * Ενσωματώνει μια υπογραφή σε ένα αρχείο PDF.
+     * Δημιουργεί μια σωστή PDF cryptographic signature (PAdES) με RSA αν είναι διαθέσιμη,
+     * και επίσης ενσωματώνει custom metadata για DILITHIUM και hybrid schemes.
      *
-     * @param pdfPath Path to the PDF file
-     * @param signature The signature to embed
-     * @throws Exception if embedding fails
+     * @param pdfPath Διαδρομή προς το αρχείο PDF
+     * @param signature Η υπογραφή προς ενσωμάτωση
+     * @throws Exception αν η ενσωμάτωση αποτύχει
      */
     public static void embedSignature(String pdfPath, DocumentSignature signature) throws Exception {
-        // First, add custom metadata and annotations
+        // Πρώτα, προσθέτουμε custom metadata και annotations
         try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
             PDDocumentInformation info = doc.getDocumentInformation();
 
-            // Embed scheme
+            // Ενσωμάτωση σχήματος υπογραφής
             if (signature.getScheme() != null) {
                 info.setCustomMetadataValue(METADATA_KEY_SCHEME, signature.getScheme());
             }
 
-            // Embed RSA signature (Base64 encoded) - for verification purposes
+            // Ενσωμάτωση RSA υπογραφής (Base64 encoded) - για σκοπούς επαλήθευσης
             if (signature.getRsaSignature() != null && signature.getRsaSignature().length > 0) {
                 String rsaBase64 = Base64.getEncoder().encodeToString(signature.getRsaSignature());
                 info.setCustomMetadataValue(METADATA_KEY_RSA_SIGNATURE, rsaBase64);
             }
 
-            // Embed PQC/DILITHIUM signature (Base64 encoded)
+            // Ενσωμάτωση PQC/DILITHIUM υπογραφής (Base64 encoded)
             if (signature.getPqcSignature() != null && signature.getPqcSignature().length > 0) {
                 String pqcBase64 = Base64.getEncoder().encodeToString(signature.getPqcSignature());
                 info.setCustomMetadataValue(METADATA_KEY_PQC_SIGNATURE, pqcBase64);
             }
 
-            // Embed sign time
+            // Ενσωμάτωση χρόνου υπογραφής
             if (signature.getSignTime() != null) {
                 info.setCustomMetadataValue(METADATA_KEY_SIGN_TIME,
                         String.valueOf(signature.getSignTime().getTime()));
@@ -74,60 +74,60 @@ public class PdfSignatureEmbedder {
 
             doc.setDocumentInformation(info);
 
-            // Add visible signature annotation
+            // Προσθήκη οπτικού signature annotation
             addVisibleSignatureAnnotation(doc, signature);
 
             doc.save(pdfPath);
         }
 
-        // Now add proper PDF cryptographic signature if RSA signature exists
+        // Τώρα προσθέτουμε σωστή PDF cryptographic signature αν υπάρχει RSA υπογραφή
         if (signature.getRsaSignature() != null && signature.getRsaSignature().length > 0) {
             addPdfCryptographicSignature(pdfPath, signature);
         }
     }
 
     /**
-     * Adds a proper PDF cryptographic signature (PAdES compatible) to the PDF.
-     * This creates a signature that Adobe Reader will recognize as "Signed".
-     * Uses PDFBox 2.0.14 API with direct signing approach.
+     * Προσθέτει μια σωστή PDF cryptographic signature (PAdES compatible) στο PDF.
+     * Αυτό δημιουργεί μια υπογραφή που το Adobe Reader θα αναγνωρίσει ως "Signed".
+     * Χρησιμοποιεί PDFBox 2.0.14 API με external signing approach.
      *
-     * @param pdfPath Path to the PDF file
-     * @param signature The signature information
-     * @throws Exception if signing fails
+     * @param pdfPath Διαδρομή προς το αρχείο PDF
+     * @param signature Οι πληροφορίες της υπογραφής
+     * @throws Exception αν η υπογραφή αποτύχει
      */
     private static void addPdfCryptographicSignature(String pdfPath, DocumentSignature signature) throws Exception {
-        // Create temporary file for incremental save
+        // Δημιουργία προσωρινού αρχείου για incremental save
         Path tempPath = Files.createTempFile("pdf_sign_", ".pdf");
         Path originalPath = Paths.get(pdfPath);
 
         try {
-            // Load document and prepare for signing
+            // Φόρτωση εγγράφου και προετοιμασία για υπογραφή
             PDDocument doc = PDDocument.load(new File(pdfPath));
 
             try {
-                // Get the last page for signature appearance
+                // Λήψη της τελευταίας σελίδας για εμφάνιση υπογραφής
                 int pageCount = doc.getNumberOfPages();
                 if (pageCount == 0) {
-                    throw new Exception("PDF has no pages");
+                    throw new Exception("Το PDF δεν έχει σελίδες");
                 }
-                // Note: Visual signature rectangle not needed for external signing
-                // PDFBox will handle signature field creation automatically
+                // Σημείωση: Οπτικό signature rectangle δεν χρειάζεται για external signing
+                // Το PDFBox θα χειριστεί αυτόματα τη δημιουργία signature field
 
-                // Create signature dictionary - MUST be created before signing
+                // Δημιουργία signature dictionary - ΠΡΕΠΕΙ να δημιουργηθεί πριν την υπογραφή
                 PDSignature pdSignature = new PDSignature();
 
-                // Set signature properties
+                // Ορισμός ιδιοτήτων υπογραφής
                 Calendar cal = Calendar.getInstance();
                 if (signature.getSignTime() != null) {
                     cal.setTime(signature.getSignTime());
                 }
                 pdSignature.setSignDate(cal);
 
-                // Set signature filter and subfilter for PAdES
+                // Ορισμός signature filter και subfilter για PAdES
                 pdSignature.setFilter(PDSignature.FILTER_ADOBE_PPKLITE);
                 pdSignature.setSubFilter(PDSignature.SUBFILTER_ETSI_CADES_DETACHED);
 
-                // Set signature name
+                // Ορισμός ονόματος υπογραφής
                 String signerName = "PQ-Signatures System";
                 if (signature.getScheme() != null) {
                     signerName += " (" + signature.getScheme() + ")";
@@ -136,77 +136,77 @@ public class PdfSignatureEmbedder {
                 pdSignature.setReason("Digital Signature");
                 pdSignature.setLocation("Greece");
 
-                // CRITICAL FIX: Do NOT create signature field before signing in PDFBox 2.0.14
-                // The saveIncrementalForExternalSigning requires the signature to be added to document first
-                // Add signature to document - this tells PDFBox to prepare for signing
+                // Προσθήκη υπογραφής στο έγγραφο πρώτα - αυτό προετοιμάζει το PDF για υπογραφή
+                // Αυτό λέει στο PDFBox να δημιουργήσει το signature field και να προετοιμάσει το byteRange
                 doc.addSignature(pdSignature, new RsaSignatureInterface());
 
-                // Use external signing - this is the correct approach for PDFBox 2.0.14
+                // Χρήση external signing - αυτή είναι η σωστή προσέγγιση για PDFBox 2.0.14
                 try (FileOutputStream output = new FileOutputStream(tempPath.toFile())) {
-                    // Create external signing container - this prepares the PDF for signing
-                    // It will automatically create signature field and set up byteRange
+                    // Δημιουργία external signing container - αυτό προετοιμάζει το PDF για υπογραφή
+                    // Θα δημιουργήσει αυτόματα το signature field και θα ρυθμίσει το byteRange
                     org.apache.pdfbox.pdmodel.interactive.digitalsignature.ExternalSigningSupport externalSigning =
                             doc.saveIncrementalForExternalSigning(output);
 
-                    // Get content to sign (returns InputStream)
+                    // Λήψη περιεχομένου προς υπογραφή (επιστρέφει InputStream)
                     java.io.InputStream contentToSign = externalSigning.getContent();
 
-                    // Sign the content using our signature interface
+                    // Υπογραφή περιεχομένου χρησιμοποιώντας το signature interface μας
                     RsaSignatureInterface signatureInterface = new RsaSignatureInterface();
                     byte[] signatureBytes = signatureInterface.sign(contentToSign);
 
-                    // Set the signature bytes back - this completes the signing and sets byteRange
+                    // Ορισμός των signature bytes πίσω - αυτό ολοκληρώνει την υπογραφή και ορίζει το byteRange
                     externalSigning.setSignature(signatureBytes);
+
                 } catch (Exception e) {
-                    // If external signing fails, log and continue without PDF signature
-                    System.err.println("Warning: Could not create PDF cryptographic signature: " + e.getMessage());
-                    System.err.println("PDF will have custom metadata signatures but may not show as 'Signed' in Adobe Reader");
+                    // Αν το external signing αποτύχει, καταγράφουμε και συνεχίζουμε χωρίς PDF signature
+                    System.err.println("Warning: Δεν ήταν δυνατή η δημιουργία PDF cryptographic signature: " + e.getMessage());
+                    System.err.println("Το PDF θα έχει custom metadata signatures αλλά μπορεί να μην εμφανίζεται ως 'Signed' στο Adobe Reader");
                     e.printStackTrace();
-                    // Don't throw - allow the process to continue with metadata-only signatures
+                    // Μην πετάξουμε exception - επιτρέπουμε τη συνέχιση με metadata-only signatures
                     Files.deleteIfExists(tempPath);
-                    return; // Exit early, keep original file
+                    return; // Έξοδος νωρίς, κρατάμε το αρχικό αρχείο
                 }
             } finally {
-                // CRITICAL: Close document BEFORE trying to replace the file
+                // ΚΡΙΣΙΜΟ: Κλείσιμο εγγράφου ΠΡΙΝ από την προσπάθεια αντικατάστασης του αρχείου
                 doc.close();
             }
 
-            // Now that document is closed, replace original file with signed version
+            // Τώρα που το έγγραφο είναι κλειστό, αντικαθιστούμε το αρχικό αρχείο με την υπογεγραμμένη έκδοση
             Files.move(tempPath, originalPath, StandardCopyOption.REPLACE_EXISTING);
 
         } catch (Exception e) {
-            // Clean up temp file on error
+            // Καθαρισμός προσωρινού αρχείου σε περίπτωση σφάλματος
             try {
                 Files.deleteIfExists(tempPath);
             } catch (IOException ignored) {}
-            // Don't throw - allow metadata-only signatures to work
-            System.err.println("Warning: PDF cryptographic signature failed: " + e.getMessage());
+            // Μην πετάξουμε exception - επιτρέπουμε τη λειτουργία metadata-only signatures
+            System.err.println("Warning: Η PDF cryptographic signature απέτυχε: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     /**
-     * Adds a visible signature annotation to the PDF document.
-     * The annotation appears on the last page of the document.
+     * Προσθέτει ένα οπτικό signature annotation στο PDF έγγραφο.
+     * Το annotation εμφανίζεται στην τελευταία σελίδα του εγγράφου.
      *
-     * @param doc The PDF document
-     * @param signature The signature information
-     * @throws IOException if adding annotation fails
+     * @param doc Το PDF έγγραφο
+     * @param signature Οι πληροφορίες της υπογραφής
+     * @throws IOException αν η προσθήκη annotation αποτύχει
      */
     private static void addVisibleSignatureAnnotation(PDDocument doc, DocumentSignature signature) throws IOException {
         int pageCount = doc.getNumberOfPages();
         if (pageCount == 0) {
-            return; // No pages to add annotation to
+            return; // Δεν υπάρχουν σελίδες για προσθήκη annotation
         }
 
-        PDPage page = doc.getPage(pageCount - 1); // Last page
+        PDPage page = doc.getPage(pageCount - 1); // Τελευταία σελίδα
         PDRectangle pageSize = page.getMediaBox();
 
-        // Create signature text annotation
+        // Δημιουργία signature text annotation
         PDAnnotationText annotation = new PDAnnotationText();
         annotation.setAnnotationName("DigitalSignature");
 
-        // Build signature text
+        // Κατασκευή κειμένου υπογραφής
         StringBuilder sigText = new StringBuilder();
         sigText.append("ΨΗΦΙΑΚΗ ΥΠΟΓΡΑΦΗ\n");
         sigText.append("==================\n\n");
@@ -231,23 +231,23 @@ public class PdfSignatureEmbedder {
         annotation.setContents(sigText.toString());
         annotation.setSubject("Ψηφιακή Υπογραφή");
 
-        // Position annotation at bottom-right of the page
+        // Τοποθέτηση annotation στην κάτω δεξιά γωνία της σελίδας
         float width = 200;
         float height = 100;
-        float x = pageSize.getWidth() - width - 20; // 20 points from right edge
-        float y = 20; // 20 points from bottom
+        float x = pageSize.getWidth() - width - 20; // 20 points από το δεξί άκρο
+        float y = 20; // 20 points από το κάτω μέρος
 
         PDRectangle rect = new PDRectangle(x, y, width, height);
         annotation.setRectangle(rect);
 
-        // Set appearance (optional, for better visibility)
+        // Ορισμός εμφάνισης (προαιρετικό, για καλύτερη ορατότητα)
         annotation.setOpen(false);
         annotation.setColor(new org.apache.pdfbox.pdmodel.graphics.color.PDColor(
-                new float[]{0.0f, 0.5f, 0.0f}, // Green color
+                new float[]{0.0f, 0.5f, 0.0f}, // Πράσινο χρώμα
                 org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB.INSTANCE
         ));
 
-        // Add annotation to page
+        // Προσθήκη annotation στη σελίδα
         List<PDAnnotation> annotations = page.getAnnotations();
         if (annotations == null) {
             annotations = new ArrayList<>();
@@ -255,7 +255,7 @@ public class PdfSignatureEmbedder {
         }
         annotations.add(annotation);
 
-        // Also add a visible signature  field in the form (if form exists or create one)
+        // Επίσης προσθήκη οπτικού signature field στη φόρμα (αν υπάρχει φόρμα ή δημιουργία μιας)
         try {
             PDAcroForm acroForm = doc.getDocumentCatalog().getAcroForm();
             if (acroForm == null) {
@@ -263,32 +263,32 @@ public class PdfSignatureEmbedder {
                 doc.getDocumentCatalog().setAcroForm(acroForm);
             }
 
-            // Create signature field
+            // Δημιουργία signature field
             PDSignatureField sigField = new PDSignatureField(acroForm);
             sigField.setPartialName("DigitalSignature_" + System.currentTimeMillis());
-            // Note: Widget methods are deprecated in PDFBox 2.0.14, but still functional
-            // For newer versions, use setWidgets() method instead
+            // Σημείωση: Τα Widget methods είναι deprecated στο PDFBox 2.0.14, αλλά εξακολουθούν να λειτουργούν
+            // Για νεότερες εκδόσεις, χρησιμοποιήστε τη μέθοδο setWidgets() αντί
             @SuppressWarnings("deprecation")
             var widget = sigField.getWidget();
             widget.setRectangle(rect);
             widget.setPage(page);
             widget.setAppearanceState("Signed");
 
-            // Add to form
+            // Προσθήκη στη φόρμα
             acroForm.getFields().add(sigField);
         } catch (Exception e) {
-            // If signature field creation fails, continue with text annotation only
-            System.err.println("Warning: Could not create signature field: " + e.getMessage());
+            // Αν η δημιουργία signature field αποτύχει, συνεχίζουμε μόνο με text annotation
+            System.err.println("Warning: Δεν ήταν δυνατή η δημιουργία signature field: " + e.getMessage());
         }
     }
 
     /**
-     * Embeds a signature into a PDF file using document ID.
-     * Reads the file path from FileStorageService.
+     * Ενσωματώνει μια υπογραφή σε ένα αρχείο PDF χρησιμοποιώντας document ID.
+     * Διαβάζει τη διαδρομή αρχείου από το FileStorageService.
      *
-     * @param documentId The document ID
-     * @param signature The signature to embed
-     * @throws Exception if embedding fails
+     * @param documentId Το document ID
+     * @param signature Η υπογραφή προς ενσωμάτωση
+     * @throws Exception αν η ενσωμάτωση αποτύχει
      */
     public static void embedSignature(Long documentId, DocumentSignature signature) throws Exception {
         Path filePath = FileStorageService.getFilePath(documentId);
@@ -299,11 +299,11 @@ public class PdfSignatureEmbedder {
     }
 
     /**
-     * Reads embedded signatures from a PDF file.
+     * Διαβάζει ενσωματωμένες υπογραφές από ένα αρχείο PDF.
      *
-     * @param pdfPath Path to the PDF file
-     * @return DocumentSignature with embedded data, or null if no signatures found
-     * @throws Exception if reading fails
+     * @param pdfPath Διαδρομή προς το αρχείο PDF
+     * @return DocumentSignature με ενσωματωμένα δεδομένα, ή null αν δεν βρεθούν υπογραφές
+     * @throws Exception αν η ανάγνωση αποτύχει
      */
     public static DocumentSignature readEmbeddedSignature(String pdfPath) throws Exception {
         try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
@@ -314,7 +314,7 @@ public class PdfSignatureEmbedder {
             String pqcBase64 = info.getCustomMetadataValue(METADATA_KEY_PQC_SIGNATURE);
             String signTimeStr = info.getCustomMetadataValue(METADATA_KEY_SIGN_TIME);
 
-            // If no signatures found, return null
+            // Αν δεν βρεθούν υπογραφές, επιστροφή null
             if (scheme == null && rsaBase64 == null && pqcBase64 == null) {
                 return null;
             }
@@ -337,7 +337,7 @@ public class PdfSignatureEmbedder {
                     long timestamp = Long.parseLong(signTimeStr);
                     sig.setSignTime(new java.util.Date(timestamp));
                 } catch (NumberFormatException e) {
-                    // Ignore invalid timestamp
+                    // Αγνόηση μη έγκυρου timestamp
                 }
             }
 
@@ -346,11 +346,11 @@ public class PdfSignatureEmbedder {
     }
 
     /**
-     * Reads embedded signatures from a PDF file using document ID.
+     * Διαβάζει ενσωματωμένες υπογραφές από ένα αρχείο PDF χρησιμοποιώντας document ID.
      *
-     * @param documentId The document ID
-     * @return DocumentSignature with embedded data, or null if no signatures found
-     * @throws Exception if reading fails
+     * @param documentId Το document ID
+     * @return DocumentSignature με ενσωματωμένα δεδομένα, ή null αν δεν βρεθούν υπογραφές
+     * @throws Exception αν η ανάγνωση αποτύχει
      */
     public static DocumentSignature readEmbeddedSignature(Long documentId) throws Exception {
         Path filePath = FileStorageService.getFilePath(documentId);
@@ -361,10 +361,10 @@ public class PdfSignatureEmbedder {
     }
 
     /**
-     * Checks if a PDF file has embedded signatures.
+     * Ελέγχει αν ένα αρχείο PDF έχει ενσωματωμένες υπογραφές.
      *
-     * @param pdfPath Path to the PDF file
-     * @return true if signatures are embedded, false otherwise
+     * @param pdfPath Διαδρομή προς το αρχείο PDF
+     * @return true αν υπάρχουν ενσωματωμένες υπογραφές, false διαφορετικά
      */
     public static boolean hasEmbeddedSignature(String pdfPath) {
         try {
@@ -376,10 +376,10 @@ public class PdfSignatureEmbedder {
     }
 
     /**
-     * Checks if a PDF file has embedded signatures using document ID.
+     * Ελέγχει αν ένα αρχείο PDF έχει ενσωματωμένες υπογραφές χρησιμοποιώντας document ID.
      *
-     * @param documentId The document ID
-     * @return true if signatures are embedded, false otherwise
+     * @param documentId Το document ID
+     * @return true αν υπάρχουν ενσωματωμένες υπογραφές, false διαφορετικά
      */
     public static boolean hasEmbeddedSignature(Long documentId) {
         try {

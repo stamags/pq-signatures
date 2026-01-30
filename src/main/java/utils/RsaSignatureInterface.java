@@ -9,8 +9,8 @@ import java.security.PrivateKey;
 import java.security.Signature;
 
 /**
- * SignatureInterface implementation for RSA signing using PDFBox.
- * This creates a proper PDF cryptographic signature (PAdES compatible).
+ * Υλοποίηση SignatureInterface για RSA υπογραφή χρησιμοποιώντας PDFBox.
+ * Αυτό δημιουργεί μια σωστή PDF cryptographic signature (PAdES compatible).
  */
 public class RsaSignatureInterface implements SignatureInterface {
 
@@ -26,7 +26,7 @@ public class RsaSignatureInterface implements SignatureInterface {
             Signature signature = Signature.getInstance("SHA256withRSA");
             signature.initSign(privateKey);
 
-            // Read content and update signature
+            // Ανάγνωση περιεχομένου και ενημέρωση υπογραφής
             byte[] buffer = new byte[8192];
             int bytesRead;
             while ((bytesRead = content.read(buffer)) != -1) {
@@ -35,7 +35,7 @@ public class RsaSignatureInterface implements SignatureInterface {
 
             return signature.sign();
         } catch (Exception e) {
-            throw new IOException("Failed to sign content", e);
+            throw new IOException("Αποτυχία υπογραφής περιεχομένου", e);
         }
     }
 }

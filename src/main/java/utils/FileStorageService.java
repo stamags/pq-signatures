@@ -6,10 +6,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 
 /**
- * Service for storing and retrieving files from filesystem.
- * Files are stored in: {storage.base}/uploads/{documentId}.pdf
+ * Service για αποθήκευση και ανάκτηση αρχείων από το filesystem.
+ * Τα αρχεία αποθηκεύονται σε: {storage.base}/uploads/{documentId}.pdf
  */
 public class FileStorageService {
 
@@ -17,8 +18,8 @@ public class FileStorageService {
     private static final String UPLOADS_SUBDIR = "uploads";
 
     /**
-     * Get the base storage directory.
-     * Can be configured via system property: pq.signatures.storage.base
+     * Λήψη του βασικού καταλόγου αποθήκευσης.
+     * Μπορεί να ρυθμιστεί μέσω system property: pq.signatures.storage.base
      */
     public static String getStorageBase() {
         String base = System.getProperty("pq.signatures.storage.base");
@@ -29,21 +30,21 @@ public class FileStorageService {
     }
 
     /**
-     * Get the uploads directory path.
+     * Λήψη της διαδρομής του καταλόγου uploads.
      */
     public static Path getUploadsDirectory() {
         return Paths.get(getStorageBase(), UPLOADS_SUBDIR);
     }
 
     /**
-     * Get the file path for a document ID.
+     * Λήψη της διαδρομής αρχείου για ένα document ID.
      */
     public static Path getFilePath(Long documentId) {
         return getUploadsDirectory().resolve(documentId + ".pdf");
     }
 
     /**
-     * Save file to filesystem and return the storage path.
+     * Αποθήκευση αρχείου στο filesystem και επιστροφή της διαδρομής αποθήκευσης.
      */
     public static String saveFile(Long documentId, byte[] fileData) throws IOException {
         Path uploadsDir = getUploadsDirectory();
@@ -56,18 +57,18 @@ public class FileStorageService {
     }
 
     /**
-     * Read file from filesystem.
+     * Ανάγνωση αρχείου από το filesystem.
      */
     public static byte[] readFile(Long documentId) throws IOException {
         Path filePath = getFilePath(documentId);
         if (!Files.exists(filePath)) {
-            throw new IOException("File not found for document ID: " + documentId);
+            throw new IOException("Το αρχείο δεν βρέθηκε για document ID: " + documentId);
         }
         return Files.readAllBytes(filePath);
     }
 
     /**
-     * Delete file from filesystem.
+     * Διαγραφή αρχείου από το filesystem.
      */
     public static boolean deleteFile(Long documentId) {
         try {
@@ -79,7 +80,7 @@ public class FileStorageService {
     }
 
     /**
-     * Check if file exists.
+     * Έλεγχος αν το αρχείο υπάρχει.
      */
     public static boolean fileExists(Long documentId) {
         Path filePath = getFilePath(documentId);
@@ -87,16 +88,18 @@ public class FileStorageService {
     }
 
     /**
-     * Calculate SHA-256 hash of file data.
+     * Υπολογισμός SHA-256 hash των δεδομένων αρχείου.
+     */
+    /**
+     * Calculates the SHA-256 hash of the given data and returns it
+     * και επειδή χρησημοποιούμε java21 χρησιμοποιούμε την μέθοδο HexFormat.of()
      */
     public static String calculateSha256(byte[] data) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] digest = md.digest(data);
-        StringBuilder sb = new StringBuilder(digest.length * 2);
-        for (byte b : digest) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+
+        byte[] hash = sha256.digest(data);
+
+        return HexFormat.of().formatHex(hash);
     }
 }
 

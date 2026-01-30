@@ -28,34 +28,34 @@ public class UploadsignBean implements Serializable {
     public void uploadAndSign() {
         try {
             if (uploadedFile == null || uploadedFile.getContent() == null || uploadedFile.getContent().length == 0) {
-                FacesUtil.error("Please select a PDF file.");
+                FacesUtil.error("Παρακαλώ επιλέξτε ένα αρχείο PDF.");
                 return;
             }
 
             byte[] pdfBytes = uploadedFile.getContent();
 
-            // 1️⃣ Calculate SHA-256 hash
+            // Υπολογισμός SHA-256 hash
             String sha256 = FileStorageService.calculateSha256(pdfBytes);
 
-            // 2️⃣ Save DocumentFile metadata to DB (without file data)
-            DocumentFile doc = new DocumentFile();
-            doc.setFilename(uploadedFile.getFileName());
-            doc.setContentType(uploadedFile.getContentType());
-            doc.setFileSize((long) pdfBytes.length);
-            doc.setSha256(sha256);
+            // Αποθήκευση DocumentFile metadata στη βάση δεδομένων (χωρίς δεδομένα αρχείου)
+            DocumentFile docNew = new DocumentFile();
+            docNew.setFilename(uploadedFile.getFileName());
+            docNew.setContentType(uploadedFile.getContentType());
+            docNew.setFileSize((long) pdfBytes.length);
+            docNew.setSha256(sha256);
 
-            dbTransactions.storeObject(doc);
-            lastDocumentId = doc.getDocumentId();
+            dbTransactions.storeObject(docNew);
+            lastDocumentId = docNew.getDocumentId();
 
-            // 3️⃣ Save file to filesystem
+            //Αποθήκευση αρχείου στο filesystem
             String storagePath = FileStorageService.saveFile(lastDocumentId, pdfBytes);
-            doc.setStoragePath(storagePath);
-            dbTransactions.storeWithMergeObject(doc); // Update with storage path
+            docNew.setStoragePath(storagePath);
+            dbTransactions.storeWithMergeObject(docNew); // Ενημέρωση με διαδρομή αποθήκευσης
 
-            // 4️⃣ Reload DocumentFile from DB to ensure it's managed (not detached)
+            //Επαναφόρτωση DocumentFile από τη βάση δεδομένων για να είναι managed (όχι detached)
             DocumentFile managedDoc = dbTransactions.getObjectById(DocumentFile.class, lastDocumentId);
 
-            // 5️⃣ Υπογραφή
+            // Υπογραφή
             DocumentSignature sig =
                     DocumentService.signDocument(managedDoc, scheme);
 
@@ -63,20 +63,35 @@ public class UploadsignBean implements Serializable {
             lastSignatureId = sig.getSignatureId();
 
 
-            FacesUtil.info("Upload & Sign completed. docId=" + lastDocumentId + ", sigId=" + lastSignatureId);
+            FacesUtil.info("Upload & Sign ολοκληρώθηκε. docId=" + lastDocumentId + ", sigId=" + lastSignatureId);
 
         } catch (Exception e) {
-            FacesUtil.error("Error: " + e.getMessage());
+            FacesUtil.error("Σφάλμα: " + e.getMessage());
         }
     }
 
     // getters/setters
-    public UploadedFile getUploadedFile() { return uploadedFile; }
-    public void setUploadedFile(UploadedFile uploadedFile) { this.uploadedFile = uploadedFile; }
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
+    }
 
-    public String getScheme() { return scheme; }
-    public void setScheme(String scheme) { this.scheme = scheme; }
+    public void setUploadedFile(UploadedFile uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
 
-    public Long getLastDocumentId() { return lastDocumentId; }
-    public Long getLastSignatureId() { return lastSignatureId; }
+    public String getScheme() {
+        return scheme;
+    }
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+
+    public Long getLastDocumentId() {
+        return lastDocumentId;
+    }
+
+    public Long getLastSignatureId() {
+        return lastSignatureId;
+    }
 }

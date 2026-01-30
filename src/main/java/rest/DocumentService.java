@@ -20,20 +20,21 @@ public class DocumentService {
     }
 
     public DocumentService() {
-        // Default constructor - uses static dbTransactions methods
+        // Προεπιλεγμένος constructor - χρησιμοποιεί static dbTransactions methods
     }
 
     public Long saveDocument(String filename, String contentType, byte[] pdfBytes) throws Exception {
         if (filename == null || filename.trim().isEmpty()) {
-            throw new IllegalArgumentException("Το αρχείο δεν μπορεί να είναι κενό");
+            throw new IllegalArgumentException("Filename cannot be null or empty");
         }
         if (pdfBytes == null || pdfBytes.length == 0) {
-            throw new IllegalArgumentException("Τα PDF bytes δεν μπορεί να είναι κενά");
+            throw new IllegalArgumentException("PDF bytes cannot be null or empty");
         }
-        // Calculate SHA-256
+
+        // Υπολογισμός SHA-256
         String sha256 = FileStorageService.calculateSha256(pdfBytes);
-        
-        // Save metadata to DB
+
+        // Αποθήκευση metadata στη βάση δεδομένων
         DocumentFile doc = new DocumentFile();
         doc.setFilename(filename);
         doc.setContentType(contentType);
@@ -42,19 +43,19 @@ public class DocumentService {
 
         db.dbTransactions.storeObject(doc);
         Long docId = doc.getDocumentId();
-        
-        // Save file to filesystem
+
+        // Αποθήκευση αρχείου στο filesystem
         String storagePath = FileStorageService.saveFile(docId, pdfBytes);
         doc.setStoragePath(storagePath);
-        db.dbTransactions.storeWithMergeObject(doc); // Update with storage path
-        
+        db.dbTransactions.storeWithMergeObject(doc); // Ενημέρωση με διαδρομή αποθήκευσης
+
         return docId;
     }
 
     public static DocumentSignature signDocument(
             DocumentFile doc, String scheme) throws Exception {
 
-        // Read file from filesystem
+        // Ανάγνωση αρχείου από το filesystem
         byte[] data = FileStorageService.readFile(doc.getDocumentId());
 
         DocumentSignature sig = new DocumentSignature();
@@ -75,110 +76,59 @@ public class DocumentService {
             PrivateKey pqPriv =
                     KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
 
-            Signature pq = Signature.getInstance("DILITHIUM", "BCPQC");
+            Signature pq = Signature.getInstance("DILITHIUM3", "BC");
             pq.initSign(pqPriv);
             pq.update(data);
             sig.setPqcSignature(pq.sign());
         }
 
-        // Embed signature into PDF file
+        // Ενσωμάτωση υπογραφής στο αρχείο PDF
         try {
             PdfSignatureEmbedder.embedSignature(doc.getDocumentId(), sig);
         } catch (Exception e) {
-            // Log warning but don't fail - signature is still in database
-            System.err.println("Warning: Failed to embed signature in PDF: " + e.getMessage());
+            // Καταγραφή warning αλλά μην αποτύχει - η υπογραφή είναι ακόμα στη βάση δεδομένων
+            System.err.println("Warning: Αποτυχία ενσωμάτωσης υπογραφής στο PDF: " + e.getMessage());
             e.printStackTrace();
         }
 
         return sig;
     }
 
-//    public Long signDocument(Long docId, String scheme) throws Exception {
-//        if (docId == null) {
-//            throw new IllegalArgumentException("Το Document ID δεν μπορεί να είναι κενό");
-//        }
-//        if (scheme == null || scheme.trim().isEmpty()) {
-//            throw new IllegalArgumentException("Το Signature scheme δεν μπορεί να είναι κενό");
-//        }
-//
-//        DocumentFile doc = db.dbTransactions.getObjectById(DocumentFile.class, docId);
-//        if (doc == null) {
-//            throw new IllegalArgumentException("Το αρχείο δεν βρεθηκε.ID αρχείου : " + docId);
-//        }
-//
-//
-//
-//        // keys from files (όπως ήδη κάνεις)
-//        PrivateKey rsaPrivate = KeyLoader.loadPrivateKey("data/rsa-private.key", "RSA");
-//        PrivateKey pqPrivate  = KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
-//
-//        // Read file from filesystem
-//        byte[] data = FileStorageService.readFile(docId);
-//
-//
-//        DocumentSignature sig = new DocumentSignature();
-//        sig.setDocumentId(doc);
-//        sig.setScheme(scheme);
-//
-//        if ("RSA".equalsIgnoreCase(scheme) || "HYBRID".equalsIgnoreCase(scheme)) {
-//            Signature rsa = Signature.getInstance("SHA256withRSA");
-//            rsa.initSign(rsaPrivate);
-//            rsa.update(data);
-//            sig.setRsaSignature(rsa.sign());
-////            sig.setRsaAlg("SHA256withRSA");
-//        }
-//
-//        if ("DILITHIUM".equalsIgnoreCase(scheme) || "HYBRID".equalsIgnoreCase(scheme)) {
-//            Signature pq = Signature.getInstance("DILITHIUM3", "BC");
-//            pq.initSign(pqPrivate);
-//            pq.update(data);
-//            sig.setPqcSignature(pq.sign());
-////            sig.setPqcAlg("DILITHIUM3");
-//        }
-//
-//        db.dbTransactions.storeObject(sig);
-//        return sig.getSignatureId();
-//    }
-
     public VerificationResult verify(Long docId) throws Exception {
         if (docId == null) {
-            throw new IllegalArgumentException("Το Document ID δεν μπορεί να είναι κενό");
-        }
-        DocumentFile doc = db.dbTransactions.getObjectById(DocumentFile.class, docId);
-        if (doc == null) {
-            throw new IllegalArgumentException("Δεν βρέθηκε το έγγραφο με ID  :  " + docId);
+            throw new IllegalArgumentException("Document ID cannot be null");
         }
 
-//        // Θα παίρνεις την τελευταία signature εγγραφή (π.χ. με query)
-//        DocumentSignature sig = findLatestSignatureForDoc(docId);
-//        if (sig == null) {
-//            throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο με ID :   " + docId);
-//        }
-        // Try to read signature from PDF first (embedded), otherwise from database
+        DocumentFile doc = db.dbTransactions.getObjectById(DocumentFile.class, docId);
+        if (doc == null) {
+            throw new IllegalArgumentException("Document not found: " + docId);
+        }
+
+        // Προσπάθεια ανάγνωσης υπογραφής από PDF πρώτα (ενσωματωμένη), αλλιώς από τη βάση δεδομένων
         DocumentSignature sig = null;
         try {
             sig = PdfSignatureEmbedder.readEmbeddedSignature(docId);
             if (sig != null) {
-                // Set document reference for embedded signature
+                // Ορισμός αναφοράς εγγράφου για ενσωματωμένη υπογραφή
                 sig.setDocumentId(doc);
             }
         } catch (Exception e) {
-            // If reading from PDF fails, continue to database lookup
-            System.err.println("Info: Could not read embedded signature from PDF: " + e.getMessage());
+            // Αν η ανάγνωση από PDF αποτύχει, συνεχίζουμε με αναζήτηση στη βάση δεδομένων
+            System.err.println("Info: Δεν ήταν δυνατή η ανάγνωση ενσωματωμένης υπογραφής από PDF: " + e.getMessage());
         }
 
-        // Fall back to database if no embedded signature found
+        // Fallback στη βάση δεδομένων αν δεν βρεθεί ενσωματωμένη υπογραφή
         if (sig == null) {
             sig = findLatestSignatureForDoc(docId);
             if (sig == null) {
-                throw new IllegalArgumentException("No signature found for document: " + docId);
+                throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο: " + docId);
             }
         }
 
         PublicKey rsaPublic = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
         PublicKey pqPublic  = KeyLoader.loadPublicKey("data/pqc-public.key", "DILITHIUM");
 
-        // Read file from filesystem
+        // Ανάγνωση αρχείου από το filesystem
         byte[] data = FileStorageService.readFile(docId);
 
         Boolean rsaOk = null;
