@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationText;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
+import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureInterface;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField;
 
@@ -110,8 +111,6 @@ public class PdfSignatureEmbedder {
                 if (pageCount == 0) {
                     throw new Exception("Το PDF δεν έχει σελίδες");
                 }
-                // Σημείωση: Οπτικό signature rectangle δεν χρειάζεται για external signing
-                // Το PDFBox θα χειριστεί αυτόματα τη δημιουργία signature field
 
                 // Δημιουργία signature dictionary - ΠΡΕΠΕΙ να δημιουργηθεί πριν την υπογραφή
                 PDSignature pdSignature = new PDSignature();
@@ -136,9 +135,9 @@ public class PdfSignatureEmbedder {
                 pdSignature.setReason("Digital Signature");
                 pdSignature.setLocation("Greece");
 
-                // Προσθήκη υπογραφής στο έγγραφο πρώτα - αυτό προετοιμάζει το PDF για υπογραφή
-                // Αυτό λέει στο PDFBox να δημιουργήσει το signature field και να προετοιμάσει το byteRange
-                doc.addSignature(pdSignature, new RsaSignatureInterface());
+                // Προσθήκη signature dictionary στο έγγραφο (χωρίς SignatureInterface)
+                // Αυτό προετοιμάζει το PDF για external signing
+                doc.addSignature(pdSignature, (SignatureInterface) null);
 
                 // Χρήση external signing - αυτή είναι η σωστή προσέγγιση για PDFBox 2.0.14
                 try (FileOutputStream output = new FileOutputStream(tempPath.toFile())) {
@@ -151,6 +150,7 @@ public class PdfSignatureEmbedder {
                     java.io.InputStream contentToSign = externalSigning.getContent();
 
                     // Υπογραφή περιεχομένου χρησιμοποιώντας το signature interface μας
+                    // Αυτό επιστρέφει πλήρες CMS/PKCS#7 SignedData με certificate
                     RsaSignatureInterface signatureInterface = new RsaSignatureInterface();
                     byte[] signatureBytes = signatureInterface.sign(contentToSign);
 
@@ -255,31 +255,8 @@ public class PdfSignatureEmbedder {
         }
         annotations.add(annotation);
 
-        // Επίσης προσθήκη οπτικού signature field στη φόρμα (αν υπάρχει φόρμα ή δημιουργία μιας)
-        try {
-            PDAcroForm acroForm = doc.getDocumentCatalog().getAcroForm();
-            if (acroForm == null) {
-                acroForm = new PDAcroForm(doc);
-                doc.getDocumentCatalog().setAcroForm(acroForm);
-            }
-
-            // Δημιουργία signature field
-            PDSignatureField sigField = new PDSignatureField(acroForm);
-            sigField.setPartialName("DigitalSignature_" + System.currentTimeMillis());
-            // Σημείωση: Τα Widget methods είναι deprecated στο PDFBox 2.0.14, αλλά εξακολουθούν να λειτουργούν
-            // Για νεότερες εκδόσεις, χρησιμοποιήστε τη μέθοδο setWidgets() αντί
-            @SuppressWarnings("deprecation")
-            var widget = sigField.getWidget();
-            widget.setRectangle(rect);
-            widget.setPage(page);
-            widget.setAppearanceState("Signed");
-
-            // Προσθήκη στη φόρμα
-            acroForm.getFields().add(sigField);
-        } catch (Exception e) {
-            // Αν η δημιουργία signature field αποτύχει, συνεχίζουμε μόνο με text annotation
-            System.err.println("Warning: Δεν ήταν δυνατή η δημιουργία signature field: " + e.getMessage());
-        }
+        // ΣΗΜΕΙΩΣΗ: ΔΕΝ δημιουργούμε PDSignatureField εδώ γιατί θα δημιουργηθεί από το addPdfCryptographicSignature
+        // με σωστή υπογραφή. Αν δημιουργήσουμε ένα unsigned field εδώ, θα εμφανίζεται ως unsigned στο PDF.
     }
 
     /**
