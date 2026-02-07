@@ -111,22 +111,22 @@
                         </p:column>
 
 
-<!--                        <p:column headerText="Τοποθεσία Αποθήκευσης"-->
-<!--                                  filterBy="#{record.hasArrived}"-->
-<!--                                  filterMatchMode="equals"-->
-<!--                                  style="width: 100px;height: auto">-->
-<!--                            <f:facet name="filter">-->
-<!--                                <p:selectOneMenu onchange="PF('taArxeiamouTable').filter()"-->
-<!--                                                 styleClass="ui-selectcheckboxmenu-items">-->
-<!--                                    <f:converter converterId="jakarta.faces.Boolean"/>-->
-<!--                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>-->
-<!--                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>-->
-<!--                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>-->
-<!--                                </p:selectOneMenu>-->
-<!--                            </f:facet>-->
-<!--                            <h:outputText-->
-<!--                                    value="#{record.hasArrived? 'ΝΑΙ' : 'ΟΧΙ' }"/>-->
-<!--                        </p:column>-->
+                        <!--                        <p:column headerText="Τοποθεσία Αποθήκευσης"-->
+                        <!--                                  filterBy="#{record.hasArrived}"-->
+                        <!--                                  filterMatchMode="equals"-->
+                        <!--                                  style="width: 100px;height: auto">-->
+                        <!--                            <f:facet name="filter">-->
+                        <!--                                <p:selectOneMenu onchange="PF('taArxeiamouTable').filter()"-->
+                        <!--                                                 styleClass="ui-selectcheckboxmenu-items">-->
+                        <!--                                    <f:converter converterId="jakarta.faces.Boolean"/>-->
+                        <!--                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>-->
+                        <!--                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>-->
+                        <!--                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>-->
+                        <!--                                </p:selectOneMenu>-->
+                        <!--                            </f:facet>-->
+                        <!--                            <h:outputText-->
+                        <!--                                    value="#{record.hasArrived? 'ΝΑΙ' : 'ΟΧΙ' }"/>-->
+                        <!--                        </p:column>-->
 
 
                         <p:column headerText="Τοποθεσία Αποθήκευσης" sortBy="#{record.storagePath}"
@@ -140,7 +140,7 @@
 
                         <p:column headerText="Επιλογή Αρχείου" style="width: 100px;height: auto">
                             <p:commandLink action="#{verifyUiBean.epilogiArxeiou(record)}"
-                                           update="form:taArxeiamouTable form:docId form:msgs1">
+                                           update=":form:taArxeiamouTable :form:docId :form:msgs1">
 
                                 <h:graphicImage name="/icons/pencil.png"
                                                 title="Ακύρωση"/>
@@ -165,27 +165,30 @@
 
                     <h:outputText value=""/>
                     <p:commandButton value="Verify"
-                                     icon="pi pi-check"
                                      action="#{verifyUiBean.verify}"
-                                     update="msgs res"
-                                     process="@form"/>
+                                     process="@form"
+                                     update=":form:msgs :form:resWrapper" />
                 </h:panelGrid>
 
                 <p:spacer height="10"/>
 
-                <p:panel id="res" header="Verification Result" rendered="#{verifyUiBean.hasResult}">
-                    <h:panelGrid columns="2" cellpadding="10" style="width:100%">
-                        <h:outputText value="RSA Signature:" style="font-weight:bold"/>
-                        <h:outputText value="#{verifyUiBean.rsaOk}"/>
-
-                        <h:outputText value="PQC Signature (DILITHIUM):" style="font-weight:bold"/>
-                        <h:outputText value="#{verifyUiBean.pqcOk}"/>
-
-                        <h:outputText value="OVERALL RESULT:" style="font-weight:bold;font-size:14px"/>
-                        <h:outputText value="#{verifyUiBean.overall}" style="font-size:14px;font-weight:bold"/>
-                    </h:panelGrid>
-                </p:panel>
-
+                <p:outputPanel id="resWrapper" layout="block">
+                    <p:panel id="res" header="Αποτέλεσμα Επαλήθευσης"
+                             rendered="#{verifyUiBean.hasResult}"
+                             style="margin-top: 1rem;">
+                        <p:dataTable id="signatureInfoTable"
+                                     value="#{verifyUiBean.signatureInfoList}"
+                                     var="info"
+                                     emptyMessage="Δεν βρέθηκαν στοιχεία υπογραφής">
+                            <p:column headerText="Ιδιότητα" style="width:40%;font-weight:bold">
+                                <h:outputText value="#{info.property}" />
+                            </p:column>
+                            <p:column headerText="Τιμή" style="width:60%">
+                                <h:outputText value="#{info.value}" style="#{info.valueStyle}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:outputPanel>
             </p:panel>
 
             <f:metadata>

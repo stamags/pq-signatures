@@ -5,12 +5,20 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.common.PDStream;
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
+import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationText;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureInterface;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField;
+import org.apache.pdfbox.cos.COSArray;
+import org.apache.pdfbox.cos.COSDictionary;
+import org.apache.pdfbox.cos.COSFloat;
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.util.Matrix;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -135,36 +143,96 @@ public class PdfSignatureEmbedder {
                 pdSignature.setReason("Digital Signature");
                 pdSignature.setLocation("Greece");
 
+                // Δημιουργία signature field με visual appearance ΠΡΙΝ την υπογραφή
+                PDPage firstPage = doc.getPage(0);
+                PDRectangle pageSize = firstPage.getMediaBox();
+
+                float sigWidth = pageSize.getWidth() - 40;
+                float sigHeight = 80;
+                float sigX = 20;
+                float sigY = pageSize.getHeight() - sigHeight - 20;
+                PDRectangle sigRect = new PDRectangle(sigX, sigY, sigWidth, sigHeight);
+
+                // Δημιουργία signature field
+                PDAcroForm acroForm = doc.getDocumentCatalog().getAcroForm();
+                if (acroForm == null) {
+                    acroForm = new PDAcroForm(doc);
+                    doc.getDocumentCatalog().setAcroForm(acroForm);
+                }
+
+                // Δημιουργία SignatureOptions με preferredSignatureSize για CMS
+                // Το CMS/PKCS#7 μπορεί να είναι μεγάλο (ειδικά με certificate chain)
+                org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions signatureOptions =
+                        new org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions();
+                signatureOptions.setPreferredSignatureSize(30000); // 30KB για CMS με cert chain
+                signatureOptions.setPage(0); // Πρώτη σελίδα
+
                 // Προσθήκη signature dictionary στο έγγραφο (χωρίς SignatureInterface)
                 // Αυτό προετοιμάζει το PDF για external signing
-                doc.addSignature(pdSignature, (SignatureInterface) null);
+                // Το PDFBox θα δημιουργήσει το signature field αυτόματα
+                doc.addSignature(pdSignature, (SignatureInterface) null, signatureOptions);
+
+                // Μετά το addSignature, βρίσκουμε το signature field που δημιουργήθηκε
+                PDSignatureField sigField = null;
+                for (org.apache.pdfbox.pdmodel.interactive.form.PDField field : acroForm.getFields()) {
+                    if (field instanceof PDSignatureField) {
+                        sigField = (PDSignatureField) field;
+                        break;
+                    }
+                }
+
+                if (sigField != null) {
+                    // Δημιουργία visual appearance στο signature field που δημιουργήθηκε
+                    createSignatureAppearance(doc, sigField, sigRect, signature);
+
+                    // Ενημέρωση widget annotation
+                    @SuppressWarnings("deprecation")
+                    var widget = sigField.getWidget();
+                    if (widget != null) {
+                        widget.setRectangle(sigRect);
+                        widget.setPage(firstPage);
+
+                        // Προσθήκη στη σελίδα αν δεν υπάρχει ήδη
+                        List<PDAnnotation> annotations = firstPage.getAnnotations();
+                        if (annotations == null) {
+                            annotations = new ArrayList<>();
+                            firstPage.setAnnotations(annotations);
+                        }
+                        boolean found = false;
+                        for (PDAnnotation ann : annotations) {
+                            if (ann == widget) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            annotations.add(widget);
+                        }
+                    }
+                }
 
                 // Χρήση external signing - αυτή είναι η σωστή προσέγγιση για PDFBox 2.0.14
+                // Το appearance είναι ήδη προσθεμένο στο signature field, οπότε θα συμπεριληφθεί στο signed content
                 try (FileOutputStream output = new FileOutputStream(tempPath.toFile())) {
-                    // Δημιουργία external signing container - αυτό προετοιμάζει το PDF για υπογραφή
-                    // Θα δημιουργήσει αυτόματα το signature field και θα ρυθμίσει το byteRange
+                    // Δημιουργία external signing container
                     org.apache.pdfbox.pdmodel.interactive.digitalsignature.ExternalSigningSupport externalSigning =
                             doc.saveIncrementalForExternalSigning(output);
 
-                    // Λήψη περιεχομένου προς υπογραφή (επιστρέφει InputStream)
+                    // Λήψη περιεχομένου προς υπογραφή
                     java.io.InputStream contentToSign = externalSigning.getContent();
 
-                    // Υπογραφή περιεχομένου χρησιμοποιώντας το signature interface μας
-                    // Αυτό επιστρέφει πλήρες CMS/PKCS#7 SignedData με certificate
+                    // Υπογραφή περιεχομένου
                     RsaSignatureInterface signatureInterface = new RsaSignatureInterface();
                     byte[] signatureBytes = signatureInterface.sign(contentToSign);
 
-                    // Ορισμός των signature bytes πίσω - αυτό ολοκληρώνει την υπογραφή και ορίζει το byteRange
+                    // Ορισμός των signature bytes
                     externalSigning.setSignature(signatureBytes);
 
                 } catch (Exception e) {
-                    // Αν το external signing αποτύχει, καταγράφουμε και συνεχίζουμε χωρίς PDF signature
                     System.err.println("Warning: Δεν ήταν δυνατή η δημιουργία PDF cryptographic signature: " + e.getMessage());
-                    System.err.println("Το PDF θα έχει custom metadata signatures αλλά μπορεί να μην εμφανίζεται ως 'Signed' στο Adobe Reader");
                     e.printStackTrace();
-                    // Μην πετάξουμε exception - επιτρέπουμε τη συνέχιση με metadata-only signatures
                     Files.deleteIfExists(tempPath);
-                    return; // Έξοδος νωρίς, κρατάμε το αρχικό αρχείο
+                    return;
                 }
             } finally {
                 // ΚΡΙΣΙΜΟ: Κλείσιμο εγγράφου ΠΡΙΝ από την προσπάθεια αντικατάστασης του αρχείου
@@ -182,6 +250,352 @@ public class PdfSignatureEmbedder {
             // Μην πετάξουμε exception - επιτρέπουμε τη λειτουργία metadata-only signatures
             System.err.println("Warning: Η PDF cryptographic signature απέτυχε: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Προσθέτει visual appearance στο υπογεγραμμένο PDF ΜΕΤΑ την υπογραφή.
+     * Αυτό εξασφαλίζει ότι το appearance συνδέεται με το σωστό signature field.
+     *
+     * @param pdfPath Διαδρομή προς το υπογεγραμμένο PDF
+     * @param signature Οι πληροφορίες της υπογραφής
+     * @throws Exception αν η προσθήκη appearance αποτύχει
+     */
+    private static void addSignatureAppearanceAfterSigning(String pdfPath, DocumentSignature signature) throws Exception {
+        try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
+            // Εύρεση του signature field που δημιουργήθηκε από το external signing
+            PDAcroForm acroForm = doc.getDocumentCatalog().getAcroForm();
+            if (acroForm == null) {
+                return; // Δεν υπάρχει φόρμα
+            }
+
+            PDSignatureField sigField = null;
+            for (org.apache.pdfbox.pdmodel.interactive.form.PDField field : acroForm.getFields()) {
+                if (field instanceof PDSignatureField) {
+                    sigField = (PDSignatureField) field;
+                    break;
+                }
+            }
+
+            if (sigField == null) {
+                return; // Δεν βρέθηκε signature field
+            }
+
+            // Λήψη της πρώτης σελίδας
+            PDPage firstPage = doc.getPage(0);
+            PDRectangle pageSize = firstPage.getMediaBox();
+
+            // Ορισμός rectangle για την υπογραφή στην κορυφή
+            float sigWidth = pageSize.getWidth() - 40;
+            float sigHeight = 80;
+            float sigX = 20;
+            float sigY = pageSize.getHeight() - sigHeight - 20;
+            PDRectangle sigRect = new PDRectangle(sigX, sigY, sigWidth, sigHeight);
+
+            // Δημιουργία visual appearance
+            createSignatureAppearance(doc, sigField, sigRect, signature);
+
+            // Ενημέρωση widget annotation
+            @SuppressWarnings("deprecation")
+            var widget = sigField.getWidget();
+            if (widget != null) {
+                widget.setRectangle(sigRect);
+                widget.setPage(firstPage);
+
+                // Προσθήκη στη σελίδα αν δεν υπάρχει ήδη
+                List<PDAnnotation> annotations = firstPage.getAnnotations();
+                if (annotations == null) {
+                    annotations = new ArrayList<>();
+                    firstPage.setAnnotations(annotations);
+                }
+                boolean found = false;
+                for (PDAnnotation ann : annotations) {
+                    if (ann == widget) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    annotations.add(widget);
+                }
+            }
+
+            // Αποθήκευση
+            doc.save(pdfPath);
+        }
+    }
+
+    /**
+     * Δημιουργεί visual appearance για το signature field στην κορυφή του PDF.
+     * Παρόμοιο με το gov.gr signature appearance.
+     *
+     * @param doc Το PDF έγγραφο
+     * @param sigField Το signature field
+     * @param rect Το rectangle όπου θα εμφανιστεί η υπογραφή
+     * @param signature Οι πληροφορίες της υπογραφής
+     * @throws IOException αν η δημιουργία appearance αποτύχει
+     */
+    private static void createSignatureAppearance(PDDocument doc, PDSignatureField sigField,
+                                                  PDRectangle rect, DocumentSignature signature) throws IOException {
+        // Δημιουργία appearance stream
+        PDStream appearanceStream = new PDStream(doc);
+
+        float width = rect.getWidth();
+        float height = rect.getHeight();
+
+        // Γράφουμε PDF content stream commands απευθείας
+        try (java.io.OutputStream os = appearanceStream.createOutputStream();
+             java.io.PrintWriter writer = new java.io.PrintWriter(
+                     new java.io.OutputStreamWriter(os, java.nio.charset.StandardCharsets.ISO_8859_1))) {
+
+            // Background με ανοιχτό γκρι
+            writer.println("0.95 0.95 0.95 rg"); // setNonStrokingColorRGB
+            writer.println("0 0 " + width + " " + height + " re"); // rectangle
+            writer.println("f"); // fill
+
+            // Border
+            writer.println("0.3 0.3 0.3 RG"); // setStrokingColorRGB
+            writer.println("1 w"); // setLineWidth
+            writer.println("1 1 " + (width - 2) + " " + (height - 2) + " re"); // rectangle
+            writer.println("S"); // stroke
+
+            // Fonts - Χρήση Font mapping (/F1 = Helvetica, /F2 = Helvetica-Bold)
+            // Αυτά πρέπει να αντιστοιχούν στο Resources/Font dictionary που θα προσθέσουμε
+            writer.println("/F2 12 Tf"); // Helvetica-Bold για τίτλο
+            writer.println("0.0 0.4 0.0 rg"); // πράσινο χρώμα
+
+            // Τίτλος "DIGITAL SIGNATURE"
+            float yPos = height - 15;
+            float xPos = 10;
+            writer.println("BT"); // beginText
+            writer.println(xPos + " " + yPos + " Td"); // text position
+            writer.println("(DIGITAL SIGNATURE) Tj"); // showText
+            writer.println("ET"); // endText
+
+            yPos -= 18;
+
+            // Font Regular για το υπόλοιπο
+            writer.println("/F1 10 Tf"); // Helvetica Regular
+            writer.println("0.0 0.0 0.0 rg"); // μαύρο χρώμα
+
+            // Σχήμα υπογραφής
+            if (signature.getScheme() != null) {
+                writer.println("BT");
+                writer.println(xPos + " " + yPos + " Td");
+                writer.println("(Scheme: " + signature.getScheme() + ") Tj");
+                writer.println("ET");
+                yPos -= 14;
+            }
+
+            // Υπογραφές
+            StringBuilder sigInfo = new StringBuilder();
+            if (signature.getRsaSignature() != null && signature.getRsaSignature().length > 0) {
+                sigInfo.append("RSA Signed");
+            }
+            if (signature.getPqcSignature() != null && signature.getPqcSignature().length > 0) {
+                if (sigInfo.length() > 0) sigInfo.append(" | ");
+                sigInfo.append("DILITHIUM Signed");
+            }
+
+            if (sigInfo.length() > 0) {
+                writer.println("/F1 9 Tf"); // Helvetica Regular, μικρότερο μέγεθος
+                writer.println("BT");
+                writer.println(xPos + " " + yPos + " Td");
+                writer.println("(" + sigInfo.toString() + ") Tj");
+                writer.println("ET");
+                yPos -= 14;
+            }
+
+            // Ημερομηνία
+            if (signature.getSignTime() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                writer.println("/F1 9 Tf"); // Helvetica Regular, μικρότερο μέγεθος
+                writer.println("0.3 0.3 0.3 rg"); // γκρι χρώμα
+                writer.println("BT");
+                writer.println(xPos + " " + yPos + " Td");
+                writer.println("(Date: " + sdf.format(signature.getSignTime()) + ") Tj");
+                writer.println("ET");
+            }
+        }
+
+        // Σύνδεση appearance με το signature field χρησιμοποιώντας low-level API
+        // Στο PDFBox 2.0.14, χρησιμοποιούμε COSDictionary απευθείας
+        COSDictionary appearanceDict = new COSDictionary();
+
+        // Μετατροπή PDRectangle σε COSArray για BBox
+        // Το BBox πρέπει να είναι σε user space coordinates [0 0 width height]
+        COSArray bboxArray = new COSArray();
+        bboxArray.add(new COSFloat(0.0f)); // lower-left X
+        bboxArray.add(new COSFloat(0.0f)); // lower-left Y
+        bboxArray.add(new COSFloat(width)); // upper-right X
+        bboxArray.add(new COSFloat(height)); // upper-right Y
+
+        // Μετατροπή Matrix σε COSArray (identity matrix: [1 0 0 1 0 0])
+        COSArray matrixArray = new COSArray();
+        matrixArray.add(new COSFloat(1.0f)); // a
+        matrixArray.add(new COSFloat(0.0f)); // b
+        matrixArray.add(new COSFloat(0.0f)); // c
+        matrixArray.add(new COSFloat(1.0f)); // d
+        matrixArray.add(new COSFloat(0.0f)); // e
+        matrixArray.add(new COSFloat(0.0f)); // f
+
+        // Δημιουργία Resources dictionary με Font mapping
+        // Χρειάζεται για να εμφανίζονται τα fonts στο appearance stream
+        COSDictionary resourcesDict = new COSDictionary();
+        COSDictionary fontDict = new COSDictionary();
+
+        // Χρήση Standard14Fonts - Helvetica και Helvetica-Bold
+        // Στο PDFBox 2.0.14, χρησιμοποιούμε PDType1Font για να δημιουργήσουμε σωστό Font resource
+        org.apache.pdfbox.pdmodel.font.PDType1Font fontHelvetica =
+                org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA;
+        org.apache.pdfbox.pdmodel.font.PDType1Font fontHelveticaBold =
+                org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD;
+
+        // Προσθήκη fonts στο Font dictionary
+        // Τα Standard14Fonts μπορούν να χρησιμοποιηθούν απευθείας ως resources
+        fontDict.setItem(COSName.getPDFName("F1"), fontHelvetica.getCOSObject());
+        fontDict.setItem(COSName.getPDFName("F2"), fontHelveticaBold.getCOSObject());
+
+        resourcesDict.setItem(COSName.getPDFName("Font"), fontDict);
+
+        // Σύνδεση του stream με το appearance dictionary
+        COSDictionary streamDict = appearanceStream.getCOSObject();
+        streamDict.setItem(COSName.TYPE, COSName.XOBJECT);
+        streamDict.setItem(COSName.SUBTYPE, COSName.FORM);
+        streamDict.setItem(COSName.BBOX, bboxArray);
+        streamDict.setItem(COSName.MATRIX, matrixArray);
+        streamDict.setItem(COSName.getPDFName("Resources"), resourcesDict);
+
+        // Προσθήκη στο normal appearance - απευθείας stream
+        appearanceDict.setItem(COSName.getPDFName("N"), streamDict);
+
+        // ΚΡΙΣΙΜΟ: Το /AP πρέπει να μπει ΜΟΝΟ στο widget annotation, όχι στο signature field
+        // Πολλοί PDF readers αγνοούν το /AP στο field dictionary
+        @SuppressWarnings("deprecation")
+        var widget = sigField.getWidget();
+        if (widget != null) {
+            widget.setRectangle(rect);
+            // Σύνδεση appearance ΜΟΝΟ με το widget annotation
+            widget.getCOSObject().setItem(COSName.getPDFName("AP"), appearanceDict);
+        }
+    }
+
+    /**
+     * Προσθέτει ένα οπτικό box απευθείας στη σελίδα ΜΕΤΑ την υπογραφή.
+     * Αυτό είναι workaround για το πρόβλημα με το appearance stream.
+     * Χρησιμοποιεί incremental update, οπότε δεν αλλάζει το signed content.
+     *
+     * @param pdfPath Διαδρομή προς το υπογεγραμμένο PDF
+     * @param signature Οι πληροφορίες της υπογραφής
+     * @throws Exception αν η προσθήκη αποτύχει
+     */
+    private static void addVisualSignatureBoxAfterSigning(String pdfPath, DocumentSignature signature) throws Exception {
+        try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
+            PDPage firstPage = doc.getPage(0);
+            PDRectangle pageSize = firstPage.getMediaBox();
+
+            float sigWidth = pageSize.getWidth() - 40;
+            float sigHeight = 80;
+            float sigX = 20;
+            float sigY = pageSize.getHeight() - sigHeight - 20;
+            PDRectangle sigRect = new PDRectangle(sigX, sigY, sigWidth, sigHeight);
+
+            addVisualSignatureBox(doc, firstPage, sigRect, signature);
+
+            // Αποθήκευση με incremental update
+            doc.save(pdfPath);
+        }
+    }
+
+    /**
+     * Προσθέτει ένα οπτικό box απευθείας στη σελίδα για να φαίνεται η υπογραφή.
+     * Αυτό είναι workaround για το πρόβλημα με το appearance stream.
+     *
+     * @param doc Το PDF έγγραφο
+     * @param page Η σελίδα όπου θα προστεθεί το box
+     * @param rect Το rectangle όπου θα εμφανιστεί η υπογραφή
+     * @param signature Οι πληροφορίες της υπογραφής
+     * @throws IOException αν η προσθήκη αποτύχει
+     */
+    private static void addVisualSignatureBox(PDDocument doc, PDPage page, PDRectangle rect, DocumentSignature signature) throws IOException {
+        try (org.apache.pdfbox.pdmodel.PDPageContentStream contentStream =
+                     new org.apache.pdfbox.pdmodel.PDPageContentStream(doc, page,
+                             org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode.APPEND, true, true)) {
+
+            float width = rect.getWidth();
+            float height = rect.getHeight();
+            float x = rect.getLowerLeftX();
+            float y = rect.getLowerLeftY();
+
+            // Background με ανοιχτό γκρι
+            contentStream.setNonStrokingColor(new PDColor(new float[]{0.95f, 0.95f, 0.95f}, PDDeviceRGB.INSTANCE));
+            contentStream.addRect(x, y, width, height);
+            contentStream.fill();
+
+            // Border
+            contentStream.setStrokingColor(new PDColor(new float[]{0.3f, 0.3f, 0.3f}, PDDeviceRGB.INSTANCE));
+            contentStream.setLineWidth(1);
+            contentStream.addRect(x + 1, y + 1, width - 2, height - 2);
+            contentStream.stroke();
+
+            // Fonts - στο PDFBox 2.0.14 χρησιμοποιούμε PDType1Font απευθείας
+            org.apache.pdfbox.pdmodel.font.PDType1Font fontBold = org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA_BOLD;
+            org.apache.pdfbox.pdmodel.font.PDType1Font fontRegular = org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA;
+
+            float yPos = y + height - 15;
+            float xPos = x + 10;
+
+            // Τίτλος "DIGITAL SIGNATURE"
+            contentStream.beginText();
+            contentStream.setFont(fontBold, 12);
+            contentStream.setNonStrokingColor(new PDColor(new float[]{0.0f, 0.4f, 0.0f}, PDDeviceRGB.INSTANCE));
+            contentStream.newLineAtOffset(xPos, yPos);
+            contentStream.showText("DIGITAL SIGNATURE");
+            contentStream.endText();
+
+            yPos -= 18;
+
+            // Σχήμα υπογραφής
+            if (signature.getScheme() != null) {
+                contentStream.beginText();
+                contentStream.setFont(fontRegular, 10);
+                contentStream.setNonStrokingColor(new PDColor(new float[]{0.0f, 0.0f, 0.0f}, PDDeviceRGB.INSTANCE));
+                contentStream.newLineAtOffset(xPos, yPos);
+                contentStream.showText("Scheme: " + signature.getScheme());
+                contentStream.endText();
+                yPos -= 14;
+            }
+
+            // Υπογραφές
+            StringBuilder sigInfo = new StringBuilder();
+            if (signature.getRsaSignature() != null && signature.getRsaSignature().length > 0) {
+                sigInfo.append("RSA Signed");
+            }
+            if (signature.getPqcSignature() != null && signature.getPqcSignature().length > 0) {
+                if (sigInfo.length() > 0) sigInfo.append(" | ");
+                sigInfo.append("DILITHIUM Signed");
+            }
+
+            if (sigInfo.length() > 0) {
+                contentStream.beginText();
+                contentStream.setFont(fontRegular, 9);
+                contentStream.setNonStrokingColor(new PDColor(new float[]{0.0f, 0.0f, 0.0f}, PDDeviceRGB.INSTANCE));
+                contentStream.newLineAtOffset(xPos, yPos);
+                contentStream.showText(sigInfo.toString());
+                contentStream.endText();
+                yPos -= 14;
+            }
+
+            // Ημερομηνία
+            if (signature.getSignTime() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                contentStream.beginText();
+                contentStream.setFont(fontRegular, 9);
+                contentStream.setNonStrokingColor(new PDColor(new float[]{0.3f, 0.3f, 0.3f}, PDDeviceRGB.INSTANCE));
+                contentStream.newLineAtOffset(xPos, yPos);
+                contentStream.showText("Date: " + sdf.format(signature.getSignTime()));
+                contentStream.endText();
+            }
         }
     }
 

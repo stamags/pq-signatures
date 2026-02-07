@@ -152,7 +152,7 @@ public class DocumentService {
                 (rsaOk == null || rsaOk) &&
                         (pqcOk == null || pqcOk);
 
-        return new VerificationResult(rsaOk, pqcOk, overall);
+        return new VerificationResult(rsaOk, pqcOk, overall, sig, doc);
     }
 
     @SuppressWarnings("unchecked")
@@ -183,11 +183,15 @@ public class DocumentService {
         public final Boolean rsaOk;
         public final Boolean pqcOk;
         public final boolean overall;
+        public final DocumentSignature signature;
+        public final DocumentFile document;
 
-        public VerificationResult(Boolean rsaOk, Boolean pqcOk, boolean overall) {
+        public VerificationResult(Boolean rsaOk, Boolean pqcOk, boolean overall, DocumentSignature signature, DocumentFile document) {
             this.rsaOk = rsaOk;
             this.pqcOk = pqcOk;
             this.overall = overall;
+            this.signature = signature;
+            this.document = document;
         }
     }
 }
