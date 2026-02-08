@@ -5,14 +5,13 @@ import db.HashingUtil;
 import db.dbTransactions;
 import jakarta.annotation.ManagedBean;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 import model.*;
 import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
-//import jakarta.faces.bean.ManagedBean;
-//import jakarta.faces.bean.ViewScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import java.io.*;
@@ -21,7 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@ManagedBean
+@Named("missionstimelineBean")
 @ViewScoped
 public class MissionstimelineBean implements Serializable {
 
@@ -31,6 +30,10 @@ public class MissionstimelineBean implements Serializable {
     private BigInteger eleytheresTheseisParking1ouOrofou;
     private BigInteger eleytheresTheseisParking2ouOrofou;
     private BigInteger eleytheresTheseisParking3ouOrofou;
+    private Long sinoloAnevasmenwnEggrafwn;
+    private BigInteger sinoloYpogegrammenwnEggrafwnMeRSA;
+    private BigInteger sinoloYpogegrammenwnEggrafwnMePQC;
+    private BigInteger sinoloYpogegrammenwnEggrafwnHybridika;
     private String currenDate;
     private String currenDateFront;
     private List<ParkingFloor> parkingFloorList = new ArrayList<>();
@@ -108,31 +111,58 @@ public class MissionstimelineBean implements Serializable {
             current.executeScript("PF('dlg4').show();");
         }
 
+//        //Βρίσκουμε πόσες θέσεις είναι ελεύθερες. Όσα User_id δεν είναι μέσα στο πίνακα booking για την συγκεκριμένη ημερομηνία
+//        String eleytheresTheseisParkingQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//        eleytheresTheseisParking = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParkingQuery);
+//
+//        String eleytheresTheseisParking1ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where  p.FLOOR_ID = 1 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//
+//        eleytheresTheseisParking1ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking1ouOrofouQuery);
+//
+//        String eleytheresTheseisParking2ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where  p.FLOOR_ID = 2 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//        eleytheresTheseisParking2ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking2ouOrofouQuery);
+//
+//        String eleytheresTheseisParking3ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where  p.FLOOR_ID = 3 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//        eleytheresTheseisParking3ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking3ouOrofouQuery);
+
+
+
+
         //Βρίσκουμε πόσες θέσεις είναι ελεύθερες. Όσα User_id δεν είναι μέσα στο πίνακα booking για την συγκεκριμένη ημερομηνία
-        String eleytheresTheseisParkingQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
-                "from parking_slots p\n" +
-                "where   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+        String sinoloAnevasmenwnEggrafwnQuery = "select (e.p)  from (select count(p.DOCUMENT_ID) AS P \n" +
+                "from  pqsignatures.document_file p ) e" ;
+        sinoloAnevasmenwnEggrafwn = (Long) dbTransactions.getObjectsBySqlQry1(sinoloAnevasmenwnEggrafwnQuery);
 
-        eleytheresTheseisParking = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParkingQuery);
-
-        String eleytheresTheseisParking1ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
-                "from parking_slots p\n" +
-                "where  p.FLOOR_ID = 1 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
-
-
-        eleytheresTheseisParking1ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking1ouOrofouQuery);
-
-        String eleytheresTheseisParking2ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
-                "from parking_slots p\n" +
-                "where  p.FLOOR_ID = 2 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
-
-        eleytheresTheseisParking2ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking2ouOrofouQuery);
-
-        String eleytheresTheseisParking3ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
-                "from parking_slots p\n" +
-                "where  p.FLOOR_ID = 3 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
-
-        eleytheresTheseisParking3ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking3ouOrofouQuery);
+//        String eleytheresTheseisParking1ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where  p.FLOOR_ID = 1 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//
+//        eleytheresTheseisParking1ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking1ouOrofouQuery);
+//
+//        String eleytheresTheseisParking2ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where  p.FLOOR_ID = 2 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//        eleytheresTheseisParking2ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking2ouOrofouQuery);
+//
+//        String eleytheresTheseisParking3ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
+//                "from parking_slots p\n" +
+//                "where  p.FLOOR_ID = 3 AND   p.slot_id not in (select b.user_id from parking_booking b where b.start_time>='" + currenDate + "' ) ) e";
+//
+//        eleytheresTheseisParking3ouOrofou = (BigInteger) db.dbTransactions.getObjectsBySqlQry1(eleytheresTheseisParking3ouOrofouQuery);
 
 
     }
@@ -306,5 +336,50 @@ public class MissionstimelineBean implements Serializable {
 
     public void setEpiskeptis(Boolean episkeptis) {
         isEpiskeptis = episkeptis;
+    }
+
+    public ParkingSlots getParkingSlots() {return parkingSlots;}
+
+    public void setParkingSlots(ParkingSlots parkingSlots) {this.parkingSlots = parkingSlots;}
+
+    public List<ParkingSlots> getParkingSLotsList() {return parkingSLotsList;}
+
+    public void setParkingSLotsList(List<ParkingSlots> parkingSLotsList) {this.parkingSLotsList = parkingSLotsList;}
+
+    public List<ParkingFloor> getParkingFloorList() {return parkingFloorList;}
+
+    public void setParkingFloorList(List<ParkingFloor> parkingFloorList) {this.parkingFloorList = parkingFloorList;}
+
+
+    public Long getSinoloAnevasmenwnEggrafwn() {
+        return sinoloAnevasmenwnEggrafwn;
+    }
+
+    public void setSinoloAnevasmenwnEggrafwn(Long sinoloAnevasmenwnEggrafwn) {
+        this.sinoloAnevasmenwnEggrafwn = sinoloAnevasmenwnEggrafwn;
+    }
+
+    public BigInteger getSinoloYpogegrammenwnEggrafwnMeRSA() {
+        return sinoloYpogegrammenwnEggrafwnMeRSA;
+    }
+
+    public void setSinoloYpogegrammenwnEggrafwnMeRSA(BigInteger sinoloYpogegrammenwnEggrafwnMeRSA) {
+        this.sinoloYpogegrammenwnEggrafwnMeRSA = sinoloYpogegrammenwnEggrafwnMeRSA;
+    }
+
+    public BigInteger getSinoloYpogegrammenwnEggrafwnMePQC() {
+        return sinoloYpogegrammenwnEggrafwnMePQC;
+    }
+
+    public void setSinoloYpogegrammenwnEggrafwnMePQC(BigInteger sinoloYpogegrammenwnEggrafwnMePQC) {
+        this.sinoloYpogegrammenwnEggrafwnMePQC = sinoloYpogegrammenwnEggrafwnMePQC;
+    }
+
+    public BigInteger getSinoloYpogegrammenwnEggrafwnHybridika() {
+        return sinoloYpogegrammenwnEggrafwnHybridika;
+    }
+
+    public void setSinoloYpogegrammenwnEggrafwnHybridika(BigInteger sinoloYpogegrammenwnEggrafwnHybridika) {
+        this.sinoloYpogegrammenwnEggrafwnHybridika = sinoloYpogegrammenwnEggrafwnHybridika;
     }
 }

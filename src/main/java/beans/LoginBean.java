@@ -531,4 +531,15 @@ public class LoginBean implements Serializable {
     public void setGuest(Boolean guest) {
         isGuest = guest;
     }
+
+    /**
+     * Επιστρέφει true αν ο χρήστης είναι επισκέπτης (idRole = 4)
+     * @return true αν είναι επισκέπτης, false διαφορετικά
+     */
+    public Boolean getEpiskeptis() {
+        if (user != null && user.getIdRole() != null) {
+            return user.getIdRole().getIdRole().equals(4);
+        }
+        return false;
+    }
 }
