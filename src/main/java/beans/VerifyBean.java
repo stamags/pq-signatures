@@ -30,7 +30,8 @@ public class VerifyBean implements Serializable {
     private String rsaOk;
     private String pqcOk;
     private String overall;
-
+    private String hasIncrementalUpdates;
+    private String coversWholeFile;
     private DocumentService documentService;
 
     private DocumentSignature signature;
@@ -96,6 +97,19 @@ public class VerifyBean implements Serializable {
 
             overall = result.overall ? "OK ✅" : "FAIL ❌";
 
+            // Πληροφορίες για incremental updates και coverage
+            if (result.hasIncrementalUpdates != null) {
+                hasIncrementalUpdates = result.hasIncrementalUpdates ? "Ναι ⚠️" : "Όχι ✅";
+            } else {
+                hasIncrementalUpdates = "N/A";
+            }
+
+            if (result.coversWholeFile != null) {
+                coversWholeFile = result.coversWholeFile ? "Ναι ✅" : "Όχι ⚠️";
+            } else {
+                coversWholeFile = "N/A";
+            }
+
             // Δημιουργία λίστας με πληροφορίες για τον πίνακα
             buildSignatureInfoList();
 
@@ -147,24 +161,47 @@ public class VerifyBean implements Serializable {
             signatureInfoList.add(new SignatureInfoRow("Ημερομηνία Υπογραφής",
                     signature.getSignTime() != null ? sdf.format(signature.getSignTime()) : "N/A"));
 
-            // Πληροφορίες Υπογραφών (αν υπάρχουν)
-            signatureInfoList.add(new SignatureInfoRow("RSA Υπογραφή Υπάρχει",
-                    signature.getRsaSignature() != null && signature.getRsaSignature().length > 0
-                            ? "Ναι (" + signature.getRsaSignature().length + " bytes)" : "Όχι"));
-            signatureInfoList.add(new SignatureInfoRow("PQC Υπογραφή Υπάρχει",
-                    signature.getPqcSignature() != null && signature.getPqcSignature().length > 0
-                            ? "Ναι (" + signature.getPqcSignature().length + " bytes)" : "Όχι"));
         } else {
             signatureInfoList.add(new SignatureInfoRow("Στάτους Υπογραφής", "Δεν βρέθηκε υπογραφή"));
         }
 
         // Κατάσταση Επαλήθευσης (πάντα προσθέτουμε)
-        signatureInfoList.add(new SignatureInfoRow("RSA Υπογραφή",
-                rsaOk != null ? rsaOk : "N/A"));
-        signatureInfoList.add(new SignatureInfoRow("PQC Υπογραφή (DILITHIUM)",
-                pqcOk != null ? pqcOk : "N/A"));
+        // Αν υπάρχουν bytes, υπάρχει υπογραφή - το σημαντικό είναι αν είναι έγκυρη
+        if (signature != null) {
+            boolean hasRsa = signature.getRsaSignature() != null && signature.getRsaSignature().length > 0;
+            boolean hasPqc = signature.getPqcSignature() != null && signature.getPqcSignature().length > 0;
+
+            if (hasRsa) {
+                signatureInfoList.add(new SignatureInfoRow("RSA Υπογραφή",
+                        rsaOk != null ? rsaOk : "N/A"));
+            } else {
+                signatureInfoList.add(new SignatureInfoRow("RSA Υπογραφή", "Δεν υπάρχει"));
+            }
+
+            if (hasPqc) {
+                signatureInfoList.add(new SignatureInfoRow("PQC Υπογραφή (DILITHIUM)",
+                        pqcOk != null ? pqcOk : "N/A"));
+            } else {
+                signatureInfoList.add(new SignatureInfoRow("PQC Υπογραφή (DILITHIUM)", "Δεν υπάρχει"));
+            }
+        } else {
+            signatureInfoList.add(new SignatureInfoRow("RSA Υπογραφή", "N/A"));
+            signatureInfoList.add(new SignatureInfoRow("PQC Υπογραφή (DILITHIUM)", "N/A"));
+        }
+
         signatureInfoList.add(new SignatureInfoRow("Συνολικό Αποτέλεσμα",
                 overall != null ? overall : "N/A"));
+
+        // Πληροφορίες για ακεραιότητα PDF
+        if (hasIncrementalUpdates != null && !hasIncrementalUpdates.equals("N/A")) {
+            signatureInfoList.add(new SignatureInfoRow("Υπάρχουν Ενημερώσεις Μετά την Υπογραφή",
+                    hasIncrementalUpdates));
+        }
+
+        if (coversWholeFile != null && !coversWholeFile.equals("N/A")) {
+            signatureInfoList.add(new SignatureInfoRow("Καλύπτει Όλο το Αρχείο",
+                    coversWholeFile));
+        }
 
         // Debug: Εκτύπωση στο console για debugging
         System.out.println("DEBUG: buildSignatureInfoList - signatureInfoList size: " + signatureInfoList.size());
@@ -239,5 +276,13 @@ public class VerifyBean implements Serializable {
             signatureInfoList = new ArrayList<>();
         }
         return signatureInfoList;
+    }
+
+    public String getHasIncrementalUpdates() {
+        return hasIncrementalUpdates;
+    }
+
+    public String getCoversWholeFile() {
+        return coversWholeFile;
     }
 }

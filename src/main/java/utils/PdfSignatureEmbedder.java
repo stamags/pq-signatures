@@ -53,26 +53,18 @@ public class PdfSignatureEmbedder {
      * @param signature Η υπογραφή προς ενσωμάτωση
      * @throws Exception αν η ενσωμάτωση αποτύχει
      */
-    public static void embedSignature(String pdfPath, DocumentSignature signature) throws Exception {
-        // Πρώτα, προσθέτουμε custom metadata και annotations
+    /**
+     * Προετοιμάζει το PDF για υπογραφή προσθέτοντας metadata/annotations και signature field.
+     * Αυτή η μέθοδος ΔΕΝ προσθέτει τις υπογραφές, μόνο το signature field.
+     */
+    public static void prepareSignatureField(String pdfPath, DocumentSignature signature) throws Exception {
+        // Προσθέτουμε custom metadata και annotations (χωρίς υπογραφές ακόμα)
         try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
             PDDocumentInformation info = doc.getDocumentInformation();
 
             // Ενσωμάτωση σχήματος υπογραφής
             if (signature.getScheme() != null) {
                 info.setCustomMetadataValue(METADATA_KEY_SCHEME, signature.getScheme());
-            }
-
-            // Ενσωμάτωση RSA υπογραφής (Base64 encoded) - για σκοπούς επαλήθευσης
-            if (signature.getRsaSignature() != null && signature.getRsaSignature().length > 0) {
-                String rsaBase64 = Base64.getEncoder().encodeToString(signature.getRsaSignature());
-                info.setCustomMetadataValue(METADATA_KEY_RSA_SIGNATURE, rsaBase64);
-            }
-
-            // Ενσωμάτωση PQC/DILITHIUM υπογραφής (Base64 encoded)
-            if (signature.getPqcSignature() != null && signature.getPqcSignature().length > 0) {
-                String pqcBase64 = Base64.getEncoder().encodeToString(signature.getPqcSignature());
-                info.setCustomMetadataValue(METADATA_KEY_PQC_SIGNATURE, pqcBase64);
             }
 
             // Ενσωμάτωση χρόνου υπογραφής
@@ -86,12 +78,134 @@ public class PdfSignatureEmbedder {
             // Προσθήκη οπτικού signature annotation
             addVisibleSignatureAnnotation(doc, signature);
 
+            // Δημιουργία signature dictionary και προσθήκη signature field
+            PDSignature pdSignature = new PDSignature();
+            Calendar cal = Calendar.getInstance();
+            if (signature.getSignTime() != null) {
+                cal.setTime(signature.getSignTime());
+            }
+            pdSignature.setSignDate(cal);
+            pdSignature.setFilter(PDSignature.FILTER_ADOBE_PPKLITE);
+            pdSignature.setSubFilter(PDSignature.SUBFILTER_ETSI_CADES_DETACHED);
+            pdSignature.setName("PQ-Signatures System");
+            pdSignature.setReason("Digital Signature");
+            pdSignature.setLocation("Greece");
+
+            PDAcroForm acroForm = doc.getDocumentCatalog().getAcroForm();
+            if (acroForm == null) {
+                acroForm = new PDAcroForm(doc);
+                doc.getDocumentCatalog().setAcroForm(acroForm);
+            }
+
+            PDPage firstPage = doc.getPage(0);
+            PDRectangle pageSize = firstPage.getMediaBox();
+            float sigWidth = pageSize.getWidth() - 40;
+            float sigHeight = 80;
+            float sigX = 20;
+            float sigY = pageSize.getHeight() - sigHeight - 20;
+
+            org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions signatureOptions =
+                    new org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions();
+            signatureOptions.setPreferredSignatureSize(30000);
+            signatureOptions.setPage(0);
+
+            doc.addSignature(pdSignature, (SignatureInterface) null, signatureOptions);
+            doc.save(pdfPath);
+        }
+    }
+
+    public static void embedSignature(String pdfPath, DocumentSignature signature) throws Exception {
+        System.out.println("DEBUG embedSignature: Starting - RSA: " +
+                (signature.getRsaSignature() != null ? signature.getRsaSignature().length + " bytes" : "null") +
+                ", PQC: " + (signature.getPqcSignature() != null ? signature.getPqcSignature().length + " bytes" : "null") +
+                ", Scheme: " + signature.getScheme());
+
+        // ΚΡΙΣΙΜΟ: Πρέπει να προσθέσουμε ΟΛΑ τα metadata ΠΡΙΝ την υπογραφή
+        // Αν προσθέσουμε metadata μετά την υπογραφή με doc.save(), θα ακυρώσουμε το ByteRange
+
+        // Πρώτα, προσθέτουμε custom metadata και annotations
+        // Αυτά θα συμπεριληφθούν στα signed bytes
+        try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
+            PDDocumentInformation info = doc.getDocumentInformation();
+
+            // Ενσωμάτωση σχήματος υπογραφής
+            if (signature.getScheme() != null) {
+                info.setCustomMetadataValue(METADATA_KEY_SCHEME, signature.getScheme());
+            }
+
+            // Ενσωμάτωση χρόνου υπογραφής
+            if (signature.getSignTime() != null) {
+                info.setCustomMetadataValue(METADATA_KEY_SIGN_TIME,
+                        String.valueOf(signature.getSignTime().getTime()));
+            }
+
+            // ΚΡΙΣΙΜΟ: Προσθήκη RSA/PQC signatures στο metadata ΠΡΙΝ την υπογραφή
+            // (θα γεμίσουν μετά την υπογραφή στο addPdfCryptographicSignature)
+            // Αλλά πρέπει να υπάρχουν placeholder values για να συμπεριληφθούν στα signed bytes
+            // Ή μπορούμε να τα προσθέσουμε μετά με incremental update
+
+            doc.setDocumentInformation(info);
+
+            // Προσθήκη οπτικού signature annotation
+            addVisibleSignatureAnnotation(doc, signature);
+
             doc.save(pdfPath);
         }
 
-        // Τώρα προσθέτουμε σωστή PDF cryptographic signature αν υπάρχει RSA υπογραφή
-        if (signature.getRsaSignature() != null && signature.getRsaSignature().length > 0) {
-            addPdfCryptographicSignature(pdfPath, signature);
+        // Τώρα προσθέτουμε σωστή PDF cryptographic signature
+        // Στο addPdfCryptographicSignature θα υπογράψουμε τα bytes που θα ορίσει το ByteRange
+        // και θα τα αποθηκεύσουμε στο signature object
+        System.out.println("DEBUG embedSignature: Calling addPdfCryptographicSignature...");
+        addPdfCryptographicSignature(pdfPath, signature);
+        System.out.println("DEBUG embedSignature: After addPdfCryptographicSignature - RSA: " +
+                (signature.getRsaSignature() != null ? signature.getRsaSignature().length + " bytes" : "null") +
+                ", PQC: " + (signature.getPqcSignature() != null ? signature.getPqcSignature().length + " bytes" : "null"));
+
+        // ΚΡΙΣΙΜΟ: Το saveIncremental ΔΕΝ αποθηκεύει custom metadata στο DocumentInformation
+        // Οι υπογραφές θα αποθηκευτούν στη βάση δεδομένων και θα διαβαστούν από εκεί κατά την επαλήθευση
+        // ΔΕΝ προσπαθούμε να τα αποθηκεύσουμε στο PDF metadata με incremental save
+        System.out.println("DEBUG embedSignature: Skipping metadata save (saveIncremental doesn't support custom metadata)");
+        System.out.println("DEBUG embedSignature: Signatures will be read from database during verification");
+
+        System.out.println("DEBUG embedSignature: Finished - RSA: " +
+                (signature.getRsaSignature() != null ? signature.getRsaSignature().length + " bytes" : "null") +
+                ", PQC: " + (signature.getPqcSignature() != null ? signature.getPqcSignature().length + " bytes" : "null"));
+    }
+
+    /**
+     * Παίρνει τα bytes που θα ορίσει το ByteRange για υπογραφή.
+     * Αυτή η μέθοδος υποθέτει ότι το PDF έχει ήδη προετοιμαστεί με prepareSignatureField.
+     *
+     * @param pdfPath Διαδρομή προς το αρχείο PDF (που έχει ήδη signature field)
+     * @param signature Οι πληροφορίες της υπογραφής (για debug)
+     * @return Τα bytes που θα ορίσει το ByteRange
+     * @throws Exception αν αποτύχει
+     */
+    public static byte[] getBytesToSignForByteRange(String pdfPath, DocumentSignature signature) throws Exception {
+        try {
+            // Φορτώνουμε το PDF που έχει ήδη προετοιμαστεί με signature field
+            try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
+                // Δημιουργία προσωρινού output stream για να πάρουμε τα bytes
+                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+
+                org.apache.pdfbox.pdmodel.interactive.digitalsignature.ExternalSigningSupport externalSigning =
+                        doc.saveIncrementalForExternalSigning(baos);
+
+                java.io.InputStream contentToSign = externalSigning.getContent();
+                byte[] bytesToSign = contentToSign.readAllBytes();
+
+                System.out.println("DEBUG getBytesToSignForByteRange: Bytes length: " + bytesToSign.length);
+
+                // Υπολογισμός hash για σύγκριση
+                java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+                byte[] bytesHash = md.digest(bytesToSign);
+                System.out.println("DEBUG getBytesToSignForByteRange: Bytes SHA-256 hash (first 16 bytes): " +
+                        java.util.HexFormat.of().formatHex(java.util.Arrays.copyOf(bytesHash, 16)));
+
+                return bytesToSign;
+            }
+        } catch (Exception e) {
+            throw new Exception("Αποτυχία λήψης bytes για ByteRange: " + e.getMessage(), e);
         }
     }
 
@@ -120,7 +234,8 @@ public class PdfSignatureEmbedder {
                     throw new Exception("Το PDF δεν έχει σελίδες");
                 }
 
-                // Δημιουργία signature dictionary - ΠΡΕΠΕΙ να δημιουργηθεί πριν την υπογραφή
+                // ΚΡΙΣΙΜΟ: Δημιουργία signature dictionary και signature field
+                // Αυτό πρέπει να γίνει πριν το external signing
                 PDSignature pdSignature = new PDSignature();
 
                 // Ορισμός ιδιοτήτων υπογραφής
@@ -218,12 +333,62 @@ public class PdfSignatureEmbedder {
                     org.apache.pdfbox.pdmodel.interactive.digitalsignature.ExternalSigningSupport externalSigning =
                             doc.saveIncrementalForExternalSigning(output);
 
-                    // Λήψη περιεχομένου προς υπογραφή
+                    // ΚΡΙΣΙΜΟ: Λήψη περιεχομένου προς υπογραφή (αυτά είναι τα bytes που ορίζονται από το ByteRange)
+                    // Αυτά είναι τα bytes που πρέπει να υπογράφουμε για RSA/PQC
                     java.io.InputStream contentToSign = externalSigning.getContent();
+                    byte[] bytesToSign = contentToSign.readAllBytes();
 
-                    // Υπογραφή περιεχομένου
+                    System.out.println("DEBUG addPdfCryptographicSignature: Bytes to sign length: " + bytesToSign.length);
+
+                    // ΚΡΙΣΙΜΟ: Υπολογισμός hash για σύγκριση με verify
+                    java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+                    byte[] bytesHash = md.digest(bytesToSign);
+                    System.out.println("DEBUG addPdfCryptographicSignature: Bytes SHA-256 hash (first 16 bytes): " +
+                            java.util.HexFormat.of().formatHex(java.util.Arrays.copyOf(bytesHash, 16)));
+
+                    // ΚΡΙΣΙΜΟ: Υπογραφή των bytes με RSA και PQC (raw signatures) ΠΡΙΝ το CMS blob
+                    // Αυτά είναι τα bytes που θα ορίσει το ByteRange στο τελικό PDF
+                    String scheme = signature.getScheme();
+                    // ΚΡΙΣΙΜΟ: Normalize το scheme για case-insensitive comparison
+                    scheme = scheme == null ? "" : scheme.trim().toUpperCase();
+                    System.out.println("DEBUG addPdfCryptographicSignature: Normalized scheme: '" + scheme + "'");
+
+                    if ("RSA".equals(scheme) || "HYBRID".equals(scheme)) {
+                        // ΚΡΙΣΙΜΟ: Πάντα υπογράφουμε (ακόμα κι αν υπάρχει ήδη)
+                        // γιατί μπορεί να έχουμε υπογράψει με διαφορετικά bytes
+                        java.security.PrivateKey rsaPriv = signatures.KeyLoader.loadPrivateKey("data/rsa-private.key", "RSA");
+                        java.security.Signature rsa = java.security.Signature.getInstance("SHA256withRSA");
+                        rsa.initSign(rsaPriv);
+                        rsa.update(bytesToSign);
+                        signature.setRsaSignature(rsa.sign());
+                        System.out.println("DEBUG addPdfCryptographicSignature: RSA signature created, length: " + signature.getRsaSignature().length);
+                    } else {
+                        System.out.println("DEBUG addPdfCryptographicSignature: Skipping RSA signature (scheme='" + scheme + "')");
+                    }
+
+                    if ("DILITHIUM".equals(scheme) || "HYBRID".equals(scheme)) {
+                        // ΚΡΙΣΙΜΟ: Πάντα υπογράφουμε (ακόμα κι αν υπάρχει ήδη)
+                        // γιατί μπορεί να έχουμε υπογράψει με διαφορετικά bytes
+                        java.security.PrivateKey pqPriv = signatures.KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
+                        java.security.Signature pq = java.security.Signature.getInstance("DILITHIUM3", "BC");
+                        pq.initSign(pqPriv);
+                        pq.update(bytesToSign);
+                        signature.setPqcSignature(pq.sign());
+                        System.out.println("DEBUG addPdfCryptographicSignature: PQC signature created, length: " + signature.getPqcSignature().length);
+                    } else {
+                        System.out.println("DEBUG addPdfCryptographicSignature: Skipping PQC signature (scheme='" + scheme + "')");
+                    }
+
+                    // ΚΡΙΣΙΜΟ: Ελέγχος ότι οι υπογραφές αποθηκεύτηκαν
+                    System.out.println("DEBUG addPdfCryptographicSignature: After signing - RSA: " +
+                            (signature.getRsaSignature() != null ? signature.getRsaSignature().length + " bytes" : "null") +
+                            ", PQC: " + (signature.getPqcSignature() != null ? signature.getPqcSignature().length + " bytes" : "null"));
+
+                    // Τώρα υπογράφουμε για PDF cryptographic signature (CMS/PKCS#7)
+                    // Χρησιμοποιούμε τα ίδια bytes
+                    java.io.ByteArrayInputStream contentToSignAgain = new java.io.ByteArrayInputStream(bytesToSign);
                     RsaSignatureInterface signatureInterface = new RsaSignatureInterface();
-                    byte[] signatureBytes = signatureInterface.sign(contentToSign);
+                    byte[] signatureBytes = signatureInterface.sign(contentToSignAgain);
 
                     // Ορισμός των signature bytes
                     externalSigning.setSignature(signatureBytes);
@@ -705,8 +870,13 @@ public class PdfSignatureEmbedder {
             String pqcBase64 = info.getCustomMetadataValue(METADATA_KEY_PQC_SIGNATURE);
             String signTimeStr = info.getCustomMetadataValue(METADATA_KEY_SIGN_TIME);
 
+            System.out.println("DEBUG readEmbeddedSignature: scheme=" + scheme +
+                    ", rsaBase64=" + (rsaBase64 != null ? rsaBase64.length() + " chars" : "null") +
+                    ", pqcBase64=" + (pqcBase64 != null ? pqcBase64.length() + " chars" : "null"));
+
             // Αν δεν βρεθούν υπογραφές, επιστροφή null
             if (scheme == null && rsaBase64 == null && pqcBase64 == null) {
+                System.out.println("DEBUG readEmbeddedSignature: No signatures found in PDF metadata");
                 return null;
             }
 
@@ -716,11 +886,13 @@ public class PdfSignatureEmbedder {
             if (rsaBase64 != null && !rsaBase64.isEmpty()) {
                 byte[] rsaBytes = Base64.getDecoder().decode(rsaBase64);
                 sig.setRsaSignature(rsaBytes);
+                System.out.println("DEBUG readEmbeddedSignature: RSA signature decoded, length: " + rsaBytes.length);
             }
 
             if (pqcBase64 != null && !pqcBase64.isEmpty()) {
                 byte[] pqcBytes = Base64.getDecoder().decode(pqcBase64);
                 sig.setPqcSignature(pqcBytes);
+                System.out.println("DEBUG readEmbeddedSignature: PQC signature decoded, length: " + pqcBytes.length);
             }
 
             if (signTimeStr != null && !signTimeStr.isEmpty()) {

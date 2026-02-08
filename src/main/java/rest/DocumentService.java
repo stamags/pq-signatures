@@ -7,9 +7,16 @@ import signatures.KeyLoader;
 import db.JPAUtil;
 import utils.FileStorageService;
 import utils.PdfSignatureEmbedder;
+import utils.PdfCanonicalUtil;
+import utils.PdfSignatureVerifier;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import java.nio.file.Path;
 import java.security.*;
 import java.util.List;
 
@@ -55,34 +62,21 @@ public class DocumentService {
     public static DocumentSignature signDocument(
             DocumentFile doc, String scheme) throws Exception {
 
-        // Ανάγνωση αρχείου από το filesystem
-        byte[] data = FileStorageService.readFile(doc.getDocumentId());
+        // ΚΡΙΣΙΜΟ: Πρέπει να υπογράφουμε τα bytes που θα ορίσει το ByteRange
+        // Αυτό σημαίνει ότι πρέπει να υπογράφουμε ΜΕΣΑ στο ίδιο external signing session
+        // που θα γράψει το ByteRange. Η embedSignature θα κάνει αυτό.
 
         DocumentSignature sig = new DocumentSignature();
         sig.setDocumentId(doc);
         sig.setScheme(scheme);
+        sig.setSignTime(new java.util.Date()); // Ορισμός χρόνου υπογραφής
 
-        if ("RSA".equals(scheme) || "HYBRID".equals(scheme)) {
-            PrivateKey rsaPriv =
-                    KeyLoader.loadPrivateKey("data/rsa-private.key", "RSA");
-
-            Signature rsa = Signature.getInstance("SHA256withRSA");
-            rsa.initSign(rsaPriv);
-            rsa.update(data);
-            sig.setRsaSignature(rsa.sign());
-        }
-
-        if ("DILITHIUM".equals(scheme) || "HYBRID".equals(scheme)) {
-            PrivateKey pqPriv =
-                    KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
-
-            Signature pq = Signature.getInstance("DILITHIUM3", "BC");
-            pq.initSign(pqPriv);
-            pq.update(data);
-            sig.setPqcSignature(pq.sign());
-        }
-
-        // Ενσωμάτωση υπογραφής στο αρχείο PDF
+        // Ενσωμάτωση υπογραφής στο PDF
+        // Η embedSignature θα:
+        // 1. Προσθέσει metadata/annotations και signature field
+        // 2. Στο addPdfCryptographicSignature, θα πάρει τα bytes από externalSigning.getContent()
+        // 3. Θα υπογράψει αυτά τα bytes με RSA/PQC (raw signatures) και θα τα αποθηκεύσει στο sig
+        // 4. Θα δημιουργήσει το CMS blob και θα το προσθέσει στο PDF
         try {
             PdfSignatureEmbedder.embedSignature(doc.getDocumentId(), sig);
         } catch (Exception e) {
@@ -90,6 +84,11 @@ public class DocumentService {
             System.err.println("Warning: Αποτυχία ενσωμάτωσης υπογραφής στο PDF: " + e.getMessage());
             e.printStackTrace();
         }
+
+        // ΚΡΙΣΙΜΟ: Ελέγχος αν οι υπογραφές αποθηκεύτηκαν σωστά
+        System.out.println("DEBUG signDocument: After embedSignature - RSA: " +
+                (sig.getRsaSignature() != null ? sig.getRsaSignature().length + " bytes" : "null") +
+                ", PQC: " + (sig.getPqcSignature() != null ? sig.getPqcSignature().length + " bytes" : "null"));
 
         return sig;
     }
@@ -104,55 +103,106 @@ public class DocumentService {
             throw new IllegalArgumentException("Document not found: " + docId);
         }
 
-        // Προσπάθεια ανάγνωσης υπογραφής από PDF πρώτα (ενσωματωμένη), αλλιώς από τη βάση δεδομένων
-        DocumentSignature sig = null;
-        try {
-            sig = PdfSignatureEmbedder.readEmbeddedSignature(docId);
-            if (sig != null) {
-                // Ορισμός αναφοράς εγγράφου για ενσωματωμένη υπογραφή
-                sig.setDocumentId(doc);
-            }
-        } catch (Exception e) {
-            // Αν η ανάγνωση από PDF αποτύχει, συνεχίζουμε με αναζήτηση στη βάση δεδομένων
-            System.err.println("Info: Δεν ήταν δυνατή η ανάγνωση ενσωματωμένης υπογραφής από PDF: " + e.getMessage());
+        // ΚΡΙΣΙΜΟ: Διαβάζουμε τις υπογραφές από τη βάση δεδομένων
+        // Το saveIncremental δεν αποθηκεύει custom metadata, οπότε δεν μπορούμε να βασιζόμαστε στο PDF metadata
+        DocumentSignature sig = findLatestSignatureForDoc(docId);
+        if (sig == null) {
+            throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο: " + docId);
         }
 
-        // Fallback στη βάση δεδομένων αν δεν βρεθεί ενσωματωμένη υπογραφή
-        if (sig == null) {
-            sig = findLatestSignatureForDoc(docId);
-            if (sig == null) {
-                throw new IllegalArgumentException("Δεν βρέθηκε υπογραφή για το έγγραφο: " + docId);
-            }
-        }
+        // Ορισμός αναφοράς εγγράφου
+        sig.setDocumentId(doc);
+
+        System.out.println("DEBUG Verify: Read signature from database - RSA: " +
+                (sig.getRsaSignature() != null ? sig.getRsaSignature().length + " bytes" : "null") +
+                ", PQC: " + (sig.getPqcSignature() != null ? sig.getPqcSignature().length + " bytes" : "null") +
+                ", Scheme: " + sig.getScheme());
 
         PublicKey rsaPublic = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
         PublicKey pqPublic  = KeyLoader.loadPublicKey("data/pqc-public.key", "DILITHIUM");
 
-        // Ανάγνωση αρχείου από το filesystem
-        byte[] data = FileStorageService.readFile(docId);
+        // ΚΡΙΣΙΜΟ: Επαλήθευση υπογραφής με βάση το ByteRange του PDF
+        // Αυτή είναι η σωστή προσέγγιση για PDF signature verification
+        // 1. Βρίσκουμε το ByteRange από το PDF signature field
+        // 2. Παίρνουμε τα bytes που ορίζει το ByteRange (αυτά που υπογράφηκαν)
+        // 3. Επαληθεύουμε τις υπογραφές (RSA/PQC) πάνω σε αυτά τα bytes
+        // 4. Ελέγχουμε αν υπάρχουν incremental updates μετά την υπογραφή
 
-        Boolean rsaOk = null;
-        Boolean pqcOk = null;
+        Path filePath = FileStorageService.getFilePath(docId);
+        String pdfPath = filePath.toString();
 
-        if (sig.getRsaSignature() != null) {
-            Signature rsa = Signature.getInstance("SHA256withRSA");
-            rsa.initVerify(rsaPublic);
-            rsa.update(data);
-            rsaOk = rsa.verify(sig.getRsaSignature());
+        try {
+            // Χρήση PdfSignatureVerifier για επαλήθευση με ByteRange
+            PdfSignatureVerifier.SignatureVerificationResult result =
+                    PdfSignatureVerifier.verifySignatures(pdfPath, sig, rsaPublic, pqPublic);
+
+            return new VerificationResult(
+                    result.rsaOk,
+                    result.pqcOk,
+                    result.overall,
+                    sig,
+                    doc,
+                    result.hasIncrementalUpdates,
+                    result.coversWholeFile
+            );
+        } catch (Exception e) {
+            System.err.println("Warning: ByteRange verification failed, falling back to hash-based: " + e.getMessage());
+            e.printStackTrace();
+
+            // Fallback: Αν δεν υπάρχει PDF cryptographic signature με ByteRange,
+            // χρησιμοποιούμε την παλιά λογική με hash
+
+            String originalHash = doc.getSha256();
+            if (originalHash == null || originalHash.isEmpty()) {
+                throw new IllegalArgumentException("Το έγγραφο δεν έχει SHA-256 hash. Δεν μπορεί να επαληθευτεί.");
+            }
+
+            byte[] hashBytes = hexStringToByteArray(originalHash);
+            byte[] dataToVerify = hashBytes;
+
+            Boolean rsaOk = null;
+            Boolean pqcOk = null;
+
+            if (sig.getRsaSignature() != null) {
+                try {
+                    Signature rsa = Signature.getInstance("SHA256withRSA");
+                    rsa.initVerify(rsaPublic);
+                    rsa.update(dataToVerify);
+                    rsaOk = rsa.verify(sig.getRsaSignature());
+                } catch (Exception ex) {
+                    System.err.println("Warning: RSA verification failed: " + ex.getMessage());
+                    rsaOk = false;
+                }
+            }
+
+            if (sig.getPqcSignature() != null) {
+                try {
+                    Signature pq = Signature.getInstance("DILITHIUM3", "BC");
+                    pq.initVerify(pqPublic);
+                    pq.update(dataToVerify);
+                    pqcOk = pq.verify(sig.getPqcSignature());
+                } catch (Exception ex) {
+                    System.err.println("Warning: PQC verification failed: " + ex.getMessage());
+                    pqcOk = false;
+                }
+            }
+
+            boolean overall = (rsaOk == null || rsaOk) && (pqcOk == null || pqcOk);
+            return new VerificationResult(rsaOk, pqcOk, overall, sig, doc);
         }
+    }
 
-        if (sig.getPqcSignature() != null) {
-            Signature pq = Signature.getInstance("DILITHIUM3", "BC");
-            pq.initVerify(pqPublic);
-            pq.update(data);
-            pqcOk = pq.verify(sig.getPqcSignature());
+    /**
+     * Μετατρέπει hex string σε byte array.
+     */
+    private static byte[] hexStringToByteArray(String hex) {
+        int len = hex.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                    + Character.digit(hex.charAt(i+1), 16));
         }
-
-        boolean overall =
-                (rsaOk == null || rsaOk) &&
-                        (pqcOk == null || pqcOk);
-
-        return new VerificationResult(rsaOk, pqcOk, overall, sig, doc);
+        return data;
     }
 
     @SuppressWarnings("unchecked")
@@ -166,7 +216,18 @@ public class DocumentService {
             query.setMaxResults(1);
             List<DocumentSignature> results = (List<DocumentSignature>) query.getResultList();
             entityManager.getTransaction().commit();
-            return results.isEmpty() ? null : results.get(0);
+            DocumentSignature sig = results.isEmpty() ? null : results.get(0);
+
+            if (sig != null) {
+                System.out.println("DEBUG findLatestSignatureForDoc: Found signature ID: " + sig.getSignatureId() +
+                        ", Scheme: " + sig.getScheme() +
+                        ", RSA: " + (sig.getRsaSignature() != null ? sig.getRsaSignature().length + " bytes" : "null") +
+                        ", PQC: " + (sig.getPqcSignature() != null ? sig.getPqcSignature().length + " bytes" : "null"));
+            } else {
+                System.out.println("DEBUG findLatestSignatureForDoc: No signature found in database for docId: " + docId);
+            }
+
+            return sig;
         } catch (Exception e) {
             if (entityManager != null && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
@@ -185,13 +246,22 @@ public class DocumentService {
         public final boolean overall;
         public final DocumentSignature signature;
         public final DocumentFile document;
+        public final Boolean hasIncrementalUpdates;
+        public final Boolean coversWholeFile;
 
         public VerificationResult(Boolean rsaOk, Boolean pqcOk, boolean overall, DocumentSignature signature, DocumentFile document) {
+            this(rsaOk, pqcOk, overall, signature, document, null, null);
+        }
+
+        public VerificationResult(Boolean rsaOk, Boolean pqcOk, boolean overall, DocumentSignature signature,
+                                  DocumentFile document, Boolean hasIncrementalUpdates, Boolean coversWholeFile) {
             this.rsaOk = rsaOk;
             this.pqcOk = pqcOk;
             this.overall = overall;
             this.signature = signature;
             this.document = document;
+            this.hasIncrementalUpdates = hasIncrementalUpdates;
+            this.coversWholeFile = coversWholeFile;
         }
     }
 }
