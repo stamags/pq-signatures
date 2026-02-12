@@ -5,9 +5,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import model.DocumentFile;
 import model.ParkingBooking;
+import utils.EmailService;
 import utils.FacesUtil;
 import rest.DocumentService;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,9 @@ public class VerifyBean implements Serializable {
     private String overall;
     private String hasIncrementalUpdates;
     private String coversWholeFile;
+    private String emailParalipti;
+    private String keimenoEmail;
+
     private DocumentService documentService;
 
     private DocumentSignature signature;
@@ -45,6 +50,9 @@ public class VerifyBean implements Serializable {
         this.signatureInfoList = new ArrayList<>(); // Αρχικοποίηση για να μην είναι null
 
     }
+
+    @Inject
+    private EmailService emailService;
 
     @PostConstruct
     public void init() throws IOException {
@@ -285,4 +293,29 @@ public class VerifyBean implements Serializable {
     public String getCoversWholeFile() {
         return coversWholeFile;
     }
+
+    public EmailService getEmailService() {
+        return emailService;
+    }
+
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    public String getEmailParalipti() {
+        return emailParalipti;
+    }
+
+    public void setEmailParalipti(String emailParalipti) {
+        this.emailParalipti = emailParalipti;
+    }
+
+    public String getKeimenoEmail() {
+        return keimenoEmail;
+    }
+
+    public void setKeimenoEmail(String keimenoEmail) {
+        this.keimenoEmail = keimenoEmail;
+    }
 }
+

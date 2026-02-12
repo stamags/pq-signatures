@@ -13,7 +13,8 @@
 
     <ui:define name="content">
         <h:form id="form">
-            <p:panel header="Ολα τα Αρχεία">
+
+            <p:panel header="Όλα τα Αρχεία">
 
                 <style type="text/css">
                     .false {
@@ -35,7 +36,7 @@
                                  rowIndexVar="it"
                                  filterEvent="enter"
                                  paginator="true"
-                                 rows="10"
+                                 rows="8"
                                  styleClass="aligncenter"
                                  editable="false"
                                  widgetVar="taArxeiamouTable"
@@ -80,7 +81,6 @@
                                     value="#{record.filename}">
                             </h:outputText>
                         </p:column>
-
 
 
                         <p:column headerText="Ημερομηνία Αποθήκευσης:" sortBy="#{record.uploadTime}"
@@ -140,7 +140,7 @@
 
                         <p:column headerText="Επιλογή Αρχείου" style="width: 100px;height: auto">
                             <p:commandLink action="#{verifyUiBean.epilogiArxeiou(record)}"
-                                           update=":form:taArxeiamouTable :form:docId :form:msgs1">
+                                           update=":form:taArxeiamouTable :form:docId :form:msgs1 :form:docID1" >
 
                                 <h:graphicImage name="/icons/pencil.png"
                                                 title="Ακύρωση"/>
@@ -154,10 +154,7 @@
             </p:panel>
 
 
-
-
-
-            <p:panel header="Verify Document Signatures" style="margin:20px">
+            <p:panel header="Επαλήθευση Υπογραφών Εγγράφου" style="margin:20px">
 
                 <h:panelGrid columns="2" cellpadding="6">
                     <h:outputText value="Document ID:"/>
@@ -167,7 +164,7 @@
                     <p:commandButton value="Verify"
                                      action="#{verifyUiBean.verify}"
                                      process="@form"
-                                     update=":form:msgs :form:resWrapper" />
+                                     update=":form:msgs :form:resWrapper"/>
                 </h:panelGrid>
 
                 <p:spacer height="10"/>
@@ -181,10 +178,10 @@
                                      var="info"
                                      emptyMessage="Δεν βρέθηκαν στοιχεία υπογραφής">
                             <p:column headerText="Ιδιότητα" style="width:40%;font-weight:bold">
-                                <h:outputText value="#{info.property}" />
+                                <h:outputText value="#{info.property}"/>
                             </p:column>
                             <p:column headerText="Τιμή" style="width:60%">
-                                <h:outputText value="#{info.value}" style="#{info.valueStyle}" />
+                                <h:outputText value="#{info.value}" style="#{info.valueStyle}"/>
                             </p:column>
                         </p:dataTable>
                     </p:panel>
@@ -195,6 +192,39 @@
                 <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
             </f:metadata>
 
+
+            <p:panel header="Αποστολή  Εγγράφων" style="margin:20px">
+
+                <h:panelGrid columns="2" cellpadding="6">
+                    <h:outputText value="Επιλεγμένο Έγγραφο:"/>
+                    <p:inputText id="docID1" value="#{verifyUiBean.docId}"/>
+
+                    <h:outputText value="Email Παραλήπτη:"/>
+                    <p:inputText id="email" value="#{verifyUiBean.emailParalipti}"/>
+
+                    <h:outputText value="Kείμενο Email:"/>
+                    <p:inputTextarea value="#{verifyUiBean.keimenoEmail}"
+                                     rows="8"
+                                     autoResize="true"
+                                     style="width:100%"/>
+
+
+                    <h:outputText value=""/>
+                    <p:commandButton value="Αποστολή"
+                                     action="#{verifyUiBean.emailService.sendSignedPdf(verifyUiBean.emailParalipti, verifyUiBean.docId, verifyUiBean.keimenoEmail)}"
+                                     process="@form"
+                                     update=":form:msgs :form:resWrapper"/>
+                </h:panelGrid>
+
+                <p:spacer height="10"/>
+
+
+            </p:panel>
+
+
+            <f:metadata>
+                <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
+            </f:metadata>
 
         </h:form>
 

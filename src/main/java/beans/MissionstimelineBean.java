@@ -31,6 +31,8 @@ public class MissionstimelineBean implements Serializable {
     private BigInteger eleytheresTheseisParking2ouOrofou;
     private BigInteger eleytheresTheseisParking3ouOrofou;
     private Long sinoloAnevasmenwnEggrafwn;
+    private Long sinoloIpogegrammenwnEggrafwn;
+    private Long sinoloAnipografwnEggrafwn;
     private BigInteger sinoloYpogegrammenwnEggrafwnMeRSA;
     private BigInteger sinoloYpogegrammenwnEggrafwnMePQC;
     private BigInteger sinoloYpogegrammenwnEggrafwnHybridika;
@@ -140,10 +142,17 @@ public class MissionstimelineBean implements Serializable {
 
 
 
-        //Βρίσκουμε πόσες θέσεις είναι ελεύθερες. Όσα User_id δεν είναι μέσα στο πίνακα booking για την συγκεκριμένη ημερομηνία
+        //Βρίσκουμε το σύνολο των εγγράφων που υπάρχουν στο σύστημα
         String sinoloAnevasmenwnEggrafwnQuery = "select (e.p)  from (select count(p.DOCUMENT_ID) AS P \n" +
                 "from  pqsignatures.document_file p ) e" ;
         sinoloAnevasmenwnEggrafwn = (Long) dbTransactions.getObjectsBySqlQry1(sinoloAnevasmenwnEggrafwnQuery);
+
+        //Βρίσκουμε το σύνολο των εγγράφων που υπάρχουν στο σύστημα
+        String sinoloIpogegrammenwnEggrafwnQuery = "select (e.p)  from (select count(p.SIGNATURE_ID) AS P \n" +
+                "from  pqsignatures.document_signature p ) e" ;
+        sinoloIpogegrammenwnEggrafwn = (Long) dbTransactions.getObjectsBySqlQry1(sinoloIpogegrammenwnEggrafwnQuery);
+
+        sinoloAnipografwnEggrafwn  = sinoloAnevasmenwnEggrafwn - sinoloIpogegrammenwnEggrafwn;
 
 //        String eleytheresTheseisParking1ouOrofouQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
 //                "from parking_slots p\n" +
@@ -381,5 +390,21 @@ public class MissionstimelineBean implements Serializable {
 
     public void setSinoloYpogegrammenwnEggrafwnHybridika(BigInteger sinoloYpogegrammenwnEggrafwnHybridika) {
         this.sinoloYpogegrammenwnEggrafwnHybridika = sinoloYpogegrammenwnEggrafwnHybridika;
+    }
+
+    public Long getSinoloIpogegrammenwnEggrafwn() {
+        return sinoloIpogegrammenwnEggrafwn;
+    }
+
+    public void setSinoloIpogegrammenwnEggrafwn(Long sinoloIpogegrammenwnEggrafwn) {
+        this.sinoloIpogegrammenwnEggrafwn = sinoloIpogegrammenwnEggrafwn;
+    }
+
+    public Long getSinoloAnipografwnEggrafwn() {
+        return sinoloAnipografwnEggrafwn;
+    }
+
+    public void setSinoloAnipografwnEggrafwn(Long sinoloAnipografwnEggrafwn) {
+        this.sinoloAnipografwnEggrafwn = sinoloAnipografwnEggrafwn;
     }
 }
