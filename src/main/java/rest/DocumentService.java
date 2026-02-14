@@ -78,7 +78,7 @@ public class DocumentService {
         // 3. Θα υπογράψει αυτά τα bytes με RSA/PQC (raw signatures) και θα τα αποθηκεύσει στο sig
         // 4. Θα δημιουργήσει το CMS blob και θα το προσθέσει στο PDF
         try {
-            PdfSignatureEmbedder.embedSignature(doc.getDocumentId(), sig);
+            PdfSignatureEmbedder.embedSignature(doc.getStoragePath(), sig);
         } catch (Exception e) {
             // Καταγραφή warning αλλά μην αποτύχει - η υπογραφή είναι ακόμα στη βάση δεδομένων
             System.err.println("Warning: Αποτυχία ενσωμάτωσης υπογραφής στο PDF: " + e.getMessage());

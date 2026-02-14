@@ -11,6 +11,7 @@ import org.simplejavamail.mailer.MailerBuilder;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -21,8 +22,9 @@ import java.util.List;
  * Utility class για αποστολή emails με υπογεγραμμένα PDFs.
  * Χρησιμοποιεί την ίδια SMTP configuration όπως το kratisiThesisBean.
  */
-public class EmailService {
+public class EmailService implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final Logger log = Logger.getLogger(EmailService.class);
 
     // SMTP Configuration - ίδια με το kratisiThesisBean
