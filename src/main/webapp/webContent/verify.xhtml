@@ -140,11 +140,22 @@
 
                         <p:column headerText="Επιλογή Αρχείου" style="width: 100px;height: auto">
                             <p:commandLink action="#{verifyUiBean.epilogiArxeiou(record)}"
-                                           update=":form:taArxeiamouTable :form:docId :form:msgs1 :form:docID1" >
-
-                                <h:graphicImage name="/icons/pencil.png"
-                                                title="Ακύρωση"/>
+                                           update=":form:taArxeiamouTable :form:docId :form:msgs1 :form:docID1"
+                                           title="Επαλήθευση Υπογραφής">
+<!--                                <h:graphicImage name="/icons/pencil.png"-->
+<!--                                                title="Ακύρωση"/>-->
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
                             </p:commandLink>
+
+
+                                <p:commandLink action="#{verifyUiBean.downloadDocument}"
+                                               ajax="false"
+                                               title="Λήψη PDF" style="margin-left: 20px">
+                                    <f:setPropertyActionListener target="#{verifyUiBean.documentIdToDownload}" value="#{record.documentId}"/>
+                                    <i class="fa fa-download" style="margin-right: 4px;"></i>
+                                    <h:outputText value="PDF"/>
+                                </p:commandLink>
+
                         </p:column>
 
 

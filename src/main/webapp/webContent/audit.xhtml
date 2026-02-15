@@ -27,7 +27,7 @@
 
                 <br/>
 
-                <p:messages id="msgs" showDetail="true" showSummary="false" closable="true"/>
+<!--                <p:messages id="msgs" showDetail="true" showSummary="false" closable="true"/>-->
                 <p:growl id="msgs1" showDetail="true" life="3000"/>
                 <p:outputPanel id="stoixeia" style="width: 100%">
                     <p:dataTable id="taArxeiamouTable"
@@ -140,12 +140,23 @@
 
                         <p:column headerText="Επιλογή Αρχείου" style="width: 100px;height: auto">
                             <p:commandLink action="#{auditBean.epilogiArxeiou(record)}"
+                                           title="Έλεγχος Ιστορικού PDF"
                                            update=":form:taArxeiamouTable :form:docId :form:msgs1">
 
-                                <h:graphicImage name="/icons/pencil.png"
-                                                title="Ακύρωση"/>
+                                <i class="fa fa-search"  aria-hidden="true" style="margin-right: 4px;"></i>
                             </p:commandLink>
+
+                            <p:commandLink action="#{verifyUiBean.downloadDocument}"
+                                           ajax="false"
+                                           title="Λήψη PDF" style="margin-left: 20px">
+                                <f:setPropertyActionListener target="#{verifyUiBean.documentIdToDownload}" value="#{record.documentId}"/>
+                                <i class="fa fa-download" style="margin-right: 4px;"></i>
+                                <h:outputText value="PDF"/>
+                            </p:commandLink>
+
                         </p:column>
+
+
 
 
                     </p:dataTable>
@@ -154,7 +165,7 @@
             </p:panel>
 
 
-            <p:panel header="Auditing Εγγράφου" style="margin:20px">
+            <p:panel header="Ελέγχου Ιστορικού" style="margin:20px">
 
                 <h:panelGrid columns="2" cellpadding="6">
                     <h:outputText value="Document ID:"/>
@@ -164,13 +175,13 @@
                     <p:commandButton value="Έλεγχος"
                                      action="#{auditBean.audit}"
                                      process="@form"
-                                     update=":form:msgs :form:resWrapper"/>
+                                     update=":form:resWrapper :form:msgs1"/>
                 </h:panelGrid>
 
                 <p:spacer height="10"/>
 
                 <p:outputPanel id="resWrapper" layout="block">
-                    <p:panel id="res" header="Αποτέλεσμα Επαλήθευσης"
+                    <p:panel id="res" header="Αποτέλεσμα Ελέγχου"
                              rendered="#{auditBean.hasResult}"
                              style="margin-top: 1rem;">
                         <p:dataTable id="auditInfoTable"

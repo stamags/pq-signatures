@@ -3,6 +3,7 @@ package beans;
 import db.dbTransactions;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -13,6 +14,10 @@ import utils.DocumentAuditService;
 import utils.EmailService;
 import utils.FacesUtil;
 import rest.DocumentService;
+
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.DocumentSignature;
 import model.DocumentFile;
+import utils.FileStorageService;
 
 @Named("verifyUiBean")
 @ViewScoped
@@ -39,7 +45,7 @@ public class VerifyBean implements Serializable {
     private String keimenoEmail;
 
     private DocumentService documentService;
-
+    private Long documentIdToDownload;
     private DocumentSignature signature;
     private DocumentFile document;
     private List<SignatureInfoRow> signatureInfoList;
@@ -146,6 +152,49 @@ public class VerifyBean implements Serializable {
             }
             FacesUtil.error("Σφάλμα επαλήθευσης: " + e.getMessage());
             e.printStackTrace(); // για debugging
+        }
+    }
+
+    /**
+     * Λήψη (download) του υπογεγραμμένου PDF. Καταγράφεται στο audit ως ACTION_DOWNLOAD.
+     * Το documentId ορίζεται μέσω setPropertyActionListener πριν την κλήση.
+     */
+    public void downloadDocument() {
+        Long docId = documentIdToDownload;
+        documentIdToDownload = null;
+        if (docId == null) {
+            FacesUtil.error("Δεν επιλέχθηκε έγγραφο.");
+            return;
+        }
+        try {
+            DocumentFile doc = db.dbTransactions.getObjectById(DocumentFile.class, docId);
+            if (doc == null) {
+                DocumentAuditService.recordEvent(docId, DocumentAuditService.ACTION_DOWNLOAD, DocumentAuditService.STATUS_FAILURE);
+                FacesUtil.error("Το έγγραφο δεν βρέθηκε.");
+                return;
+            }
+            byte[] bytes = FileStorageService.readFile(docId);
+            String filename = doc.getFilename() != null && !doc.getFilename().isBlank()
+                    ? doc.getFilename()
+                    : "document-" + docId + ".pdf";
+            // Ασφαλές όνομα για Content-Disposition (αποφυγή χαρακτήρων που σπάνε το header)
+            String safeName = URLEncoder.encode(filename, StandardCharsets.UTF_8).replace("+", " ");
+
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            ec.responseReset();
+            ec.setResponseContentType("application/pdf");
+            ec.setResponseContentLength(bytes.length);
+            ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + safeName + "\"; filename*=UTF-8''" + safeName);
+            try (OutputStream out = ec.getResponseOutputStream()) {
+                out.write(bytes);
+                out.flush();
+            }
+            fc.responseComplete();
+            DocumentAuditService.recordEvent(docId, DocumentAuditService.ACTION_DOWNLOAD, DocumentAuditService.STATUS_SUCCESS);
+        } catch (Exception e) {
+            DocumentAuditService.recordEvent(docId, DocumentAuditService.ACTION_DOWNLOAD, DocumentAuditService.STATUS_FAILURE);
+            FacesUtil.error("Σφάλμα λήψης: " + e.getMessage());
         }
     }
 
@@ -324,6 +373,70 @@ public class VerifyBean implements Serializable {
 
     public void setKeimenoEmail(String keimenoEmail) {
         this.keimenoEmail = keimenoEmail;
+    }
+
+    public Boolean getHasResult() {
+        return hasResult;
+    }
+
+    public void setHasResult(Boolean hasResult) {
+        this.hasResult = hasResult;
+    }
+
+    public void setRsaOk(String rsaOk) {
+        this.rsaOk = rsaOk;
+    }
+
+    public void setPqcOk(String pqcOk) {
+        this.pqcOk = pqcOk;
+    }
+
+    public void setOverall(String overall) {
+        this.overall = overall;
+    }
+
+    public void setHasIncrementalUpdates(String hasIncrementalUpdates) {
+        this.hasIncrementalUpdates = hasIncrementalUpdates;
+    }
+
+    public void setCoversWholeFile(String coversWholeFile) {
+        this.coversWholeFile = coversWholeFile;
+    }
+
+    public DocumentService getDocumentService() {
+        return documentService;
+    }
+
+    public void setDocumentService(DocumentService documentService) {
+        this.documentService = documentService;
+    }
+
+    public Long getDocumentIdToDownload() {
+        return documentIdToDownload;
+    }
+
+    public void setDocumentIdToDownload(Long documentIdToDownload) {
+        this.documentIdToDownload = documentIdToDownload;
+    }
+
+    public DocumentSignature getSignature() {
+        return signature;
+    }
+
+    public void setSignature(DocumentSignature signature) {
+        this.signature = signature;
+    }
+
+    public DocumentFile getDocument() {
+        return document;
+    }
+
+    public void setDocument(DocumentFile document) {
+        this.document = document;
+    }
+
+    public void setSignatureInfoList(List<SignatureInfoRow> signatureInfoList) {
+        this.signatureInfoList = signatureInfoList;
     }
 }
 
