@@ -1,0 +1,35 @@
+/* Κάνουμε wrap το text στα menu του sidebar και βάζουμε όλα τα Icons τέρμα δεξιά */
+
+/* Manhattan sidebar: text left, arrow then icon on the right (aligned) */
+.layout-sidebar .layout-menu li > a{
+    display:flex !important;
+    align-items:center !important;
+    height:auto !important;
+    white-space:normal !important;
+}
+
+/* text */
+.layout-sidebar .layout-menu li > a span{
+    order:1;
+    flex:1 1 auto;
+    min-width:0;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+}
+
+/* arrow (submenu toggler) just before icon */
+.layout-sidebar .layout-menu li > a .layout-submenu-toggler{
+    order:2;
+    margin-left:8px;
+    flex:0 0 auto;
+}
+
+/* menu icon at far right */
+.layout-sidebar .layout-menu li > a > i:not(.layout-submenu-toggler){
+    order:3;
+    margin-left:8px;
+    width:20px;          /* keeps all icons aligned */
+    text-align:center;
+    flex:0 0 auto;
+}

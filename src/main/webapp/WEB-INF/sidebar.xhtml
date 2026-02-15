@@ -13,7 +13,6 @@
 
 
     <div class="layout-sidebar">
-        <!--        <img src="#{request.contextPath}/resources/assets_aerial/css/images/depli1.gif" style="text-align: center"/>-->
         <div class="layout-sidebar-logo">
 
             <a href="missionstimeline.xhtml">
@@ -37,9 +36,9 @@
                         <pm:menu>
 
                             <p:submenu id="diaxeirisiIpografwn" label="Διαχείριση Υπογραφών" expanded="true"
-                                       icon="fa fa-pencil">
+                                       icon="fa fa-pencil-square-o">
 
-                                <!--<p:column>-->
+
 
                                 <p:menuitem id="uploadArxeiou"
                                              value="Μεταφόρτωση και Υπογραφή"
@@ -48,31 +47,20 @@
                                              outcome="/webContent/uploadsign"
                                              rendered="#{LoginBean.security.foundPageAccess('uploadsign')}" />
 
-                                <p:menuitem id="verifyArxeiou" value="Επαλήθευση/Αποστολή Email" icon="fa fa-check"
+                                <p:menuitem id="verifyArxeiou"
+                                            value="Επαλήθευση/Αποστολή Email"
+                                            icon="fa fa-envelope"
+                                            style="text-overflow: revert"
+                                            styleClass="wrapItem"
                                             outcome="/webContent/verify"
                                             rendered="#{LoginBean.security.foundPageAccess('verify')}"/>
 
-                                <p:menuitem id="auditArxeiou" value="Ιστορικό Ενεργειών" icon="fa fa-check"
+                                <p:menuitem id="auditArxeiou" value="Ιστορικό Ενεργειών" icon="fa fa-history"
                                             outcome="/webContent/audit"
                                             rendered="#{LoginBean.security.foundPageAccess('verify')}"/>
-<!--                                <p:menuitem id="oiKratiseisMou" value="Οι κρατήσεις μου" icon="fa fa-eye"-->
-<!--                                            outcome="/webContent/oiKratiseisMou?faces-redirect=true"-->
-<!--                                            rendered="#{LoginBean.security.foundPageAccess('oiKratiseisMou')}"/>-->
+
                             </p:submenu>
 
-
-<!--                            <p:submenu id="efedrosData" label="Μενού Κρατήσεων" expanded="true"-->
-<!--                                       icon="fa fa-fw fa-arrow-circle-down">-->
-<!--                                &lt;!&ndash;<p:column>&ndash;&gt;-->
-
-<!--                                <p:menuitem id="kratisiThesis" value="Κράτηση Θέσης Parking" icon="ui-icon-calendar"-->
-<!--                                            outcome="/webContent/kratisiThesis"-->
-<!--                                            rendered="#{LoginBean.security.foundPageAccess('kratisiThesis')}"/>-->
-
-<!--                                <p:menuitem id="oiKratiseisMou" value="Οι κρατήσεις μου" icon="fa fa-eye"-->
-<!--                                            outcome="/webContent/oiKratiseisMou?faces-redirect=true"-->
-<!--                                            rendered="#{LoginBean.security.foundPageAccess('oiKratiseisMou')}"/>-->
-<!--                            </p:submenu>-->
 
 
 

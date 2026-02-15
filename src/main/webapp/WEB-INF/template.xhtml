@@ -206,6 +206,15 @@
         width: 0px;
     }
 
+    .layout-sidebar .layout-menu-container .mySidebarMenu * {
+        text-overflow: unset !important;
+    }
+
+    .layout-sidebar .layout-menu-container .mySidebarMenu a {
+        height: auto !important;
+        white-space: normal !important;
+        line-height: 1.25 !important;
+    }
 
     </style>
 
@@ -264,6 +273,9 @@
 
     <h:outputStylesheet name="css/nanoscroller.css" library="manhattan-layout"/>
     <h:outputStylesheet name="css/layout-blue-grey.css" library="manhattan-layout"/>
+    <!-- ΒΑΛΕ ΤΟ CUSTOM ΤΕΛΕΥΤΑΙΟ -->
+    <h:outputStylesheet library="css" name="sidebartextwrap.css" />
+
 </h:body>
 
 </html>
