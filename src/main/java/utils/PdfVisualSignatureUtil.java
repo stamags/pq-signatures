@@ -1,5 +1,7 @@
 package utils;
 
+import beans.LoginBean;
+import jakarta.inject.Inject;
 import model.DocumentSignature;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.*;
@@ -10,11 +12,20 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceEntry;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
 import org.apache.pdfbox.pdmodel.interactive.form.*;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.glassfish.jaxb.core.v2.TODO;
+
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 
+
+
+
 public class PdfVisualSignatureUtil {
+
+    @Inject
+    private LoginBean loginBean;
 
     private PdfVisualSignatureUtil() {}
 
@@ -74,48 +85,77 @@ public class PdfVisualSignatureUtil {
                 float w = rect.getWidth();
                 float h = rect.getHeight();
 
-                // background
-                cs.setNonStrokingColor(242, 242, 242);
+                // --- SOFT GREY BACKGROUND ---
+                cs.setNonStrokingColor(235, 235, 235);
                 cs.addRect(0, 0, w, h);
                 cs.fill();
 
-                // border
-                cs.setStrokingColor(77, 77, 77);
+// --- BORDER ---
+                cs.setStrokingColor(180, 180, 180);
                 cs.setLineWidth(1f);
                 cs.addRect(0, 0, w, h);
                 cs.stroke();
 
-                float tx = 10;
+                // --- LOGO (από resources) ---
+                byte[] logoBytes;
+                try (InputStream is = PdfVisualSignatureUtil.class.getResourceAsStream("/images/pqc.png")) {
+                    if (is == null) throw new IOException("Logo not found in resources: /images/pqc.png");
+                    logoBytes = is.readAllBytes();
+                }
+
+                PDImageXObject logo = PDImageXObject.createFromByteArray(tmpl, logoBytes, "pqc-logo");
+// θέση/μέγεθος μέσα στο box (αριστερά)
+                float logoW = 48;
+                float logoH = 48;
+                float logoX = 10;
+                float logoY = h - logoH - 10;
+
+                cs.drawImage(logo, logoX, logoY, logoW, logoH);
+
+                float textX = 10 + logoW + 10;
                 float ty = h - 18;
 
-                // title
+
+                // Title
                 cs.beginText();
                 cs.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 cs.setNonStrokingColor(0, 102, 0);
-                cs.newLineAtOffset(tx, ty);
+                cs.newLineAtOffset(textX, ty);
                 cs.showText("DIGITAL SIGNATURE");
                 cs.endText();
 
                 ty -= 16;
 
-                // scheme
+                //TODO to username από loginbean
+               String username = "George Stamatis";
+// Username (από login)
+                cs.beginText();
+                cs.setFont(PDType1Font.HELVETICA, 10);
+                cs.setNonStrokingColor(0, 0, 0);
+                cs.newLineAtOffset(textX, ty);
+                cs.showText("User: " + (username == null ? "" : username));
+                cs.endText();
+
+                ty -= 14;
+
+// Scheme
                 String scheme = sig.getScheme() == null ? "" : sig.getScheme();
                 cs.beginText();
                 cs.setFont(PDType1Font.HELVETICA, 10);
                 cs.setNonStrokingColor(0, 0, 0);
-                cs.newLineAtOffset(tx, ty);
+                cs.newLineAtOffset(textX, ty);
                 cs.showText("Scheme: " + scheme);
                 cs.endText();
 
                 ty -= 14;
 
-                // date
+// Date
                 if (sig.getSignTime() != null) {
                     String dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(sig.getSignTime());
                     cs.beginText();
                     cs.setFont(PDType1Font.HELVETICA, 9);
                     cs.setNonStrokingColor(77, 77, 77);
-                    cs.newLineAtOffset(tx, ty);
+                    cs.newLineAtOffset(textX, ty);
                     cs.showText("Date: " + dt);
                     cs.endText();
                 }
