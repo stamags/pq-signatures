@@ -41,14 +41,20 @@
 
                                 <!--<p:column>-->
 
-                                <p:menuitem id="uploadArxeiou" value="Upload Αρχείου" icon="fa fa-upload"
-                                            outcome="/webContent/uploadsign"
-                                            rendered="#{LoginBean.security.foundPageAccess('uploadsign')}"/>
+                                <p:menuitem id="uploadArxeiou"
+                                             value="Μεταφόρτωση και Υπογραφή"
+                                             escape="false"
+                                             icon="fa fa-upload"
+                                             outcome="/webContent/uploadsign"
+                                             rendered="#{LoginBean.security.foundPageAccess('uploadsign')}" />
 
-                                <p:menuitem id="verifyArxeiou" value="Verify Αρχείου" icon="fa fa-check"
+                                <p:menuitem id="verifyArxeiou" value="Επαλήθευση/Αποστολή Email" icon="fa fa-check"
                                             outcome="/webContent/verify"
                                             rendered="#{LoginBean.security.foundPageAccess('verify')}"/>
 
+                                <p:menuitem id="auditArxeiou" value="Ιστορικό Ενεργειών" icon="fa fa-check"
+                                            outcome="/webContent/audit"
+                                            rendered="#{LoginBean.security.foundPageAccess('verify')}"/>
 <!--                                <p:menuitem id="oiKratiseisMou" value="Οι κρατήσεις μου" icon="fa fa-eye"-->
 <!--                                            outcome="/webContent/oiKratiseisMou?faces-redirect=true"-->
 <!--                                            rendered="#{LoginBean.security.foundPageAccess('oiKratiseisMou')}"/>-->

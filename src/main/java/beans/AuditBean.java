@@ -8,24 +8,24 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import model.DocumentFile;
-import model.ParkingBooking;
+import model.DocumentSignature;
+import model.ParkingUsersCar;
+import model.TbAuditEvent;
+import rest.DocumentService;
 import utils.DocumentAuditService;
 import utils.EmailService;
 import utils.FacesUtil;
-import rest.DocumentService;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import model.DocumentSignature;
-import model.DocumentFile;
+import java.util.Objects;
 
-@Named("verifyUiBean")
+@Named("auditBean")
 @ViewScoped
-public class VerifyBean implements Serializable {
+public class AuditBean implements Serializable {
 
     private Long docId;
 
@@ -42,11 +42,14 @@ public class VerifyBean implements Serializable {
 
     private DocumentSignature signature;
     private DocumentFile document;
+    private TbAuditEvent tbAuditEvent;
     private List<SignatureInfoRow> signatureInfoList;
 
     private List<DocumentFile> documentFileList = new ArrayList<>();
+    private List<TbAuditEvent> tbAuditEventList = new ArrayList<>();
 
-    public VerifyBean() {
+
+    public AuditBean() {
         this.documentService = new DocumentService();
         this.signatureInfoList = new ArrayList<>(); // Αρχικοποίηση για να μην είναι null
 
@@ -66,7 +69,7 @@ public class VerifyBean implements Serializable {
 
     public void epilogiArxeiou(DocumentFile documentFile) {
 
-        docId= documentFile.getDocumentId();
+        docId = documentFile.getDocumentId();
 
 
         if (FacesContext.getCurrentInstance().getMaximumSeverity() == null) {
@@ -76,7 +79,7 @@ public class VerifyBean implements Serializable {
 
     }
 
-    public void verify() {
+    public void audit() {
         try {
             if (docId == null) {
                 FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Παρακαλώ προσθέστε τον αριθμό id του εγγράφου", "");
@@ -84,68 +87,21 @@ public class VerifyBean implements Serializable {
                 return;
             }
 
-            // Καλούμε το DocumentService για επαλήθευση
-            DocumentService.VerificationResult result = documentService.verify(docId);
+            String tbAuditEventQuery = "from tb_audit_event e where e.document_Id=" + docId + ";";
+            tbAuditEventList = (List<TbAuditEvent>) (List<?>) dbTransactions.getObjectsBySqlQuery(TbAuditEvent.class, tbAuditEventQuery, null, null, null);
 
-            // Αποθήκευση πληροφοριών υπογραφής και εγγράφου
-            this.signature = result.signature;
-            this.document = result.document;
-
-            // Μετατρέπουμε Boolean (που μπορεί να είναι null) σε String
-            if (result.rsaOk == null) {
-                rsaOk = "N/A (χωρίς RSA υπογραφή)";
-            } else {
-                rsaOk = result.rsaOk ? "OK ✅" : "FAIL ❌";
+            if (!Objects.isNull(tbAuditEventList) && tbAuditEventList.size() > 0) {
+                hasResult = true;
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Επιτυχής φόρτωση ιστορικού", "");
+                FacesContext.getCurrentInstance().addMessage("success", facesMessage);
+            }else {
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, "Δεν βρέθηκε ιστορικό ενεργειών για το επιλεγμένο έγγραφο", "");
+                FacesContext.getCurrentInstance().addMessage("success", facesMessage);
             }
 
-            if (result.pqcOk == null) {
-                pqcOk = "N/A (χωρίς PQC υπογραφή)";
-            } else {
-                pqcOk = result.pqcOk ? "OK ✅" : "FAIL ❌";
-            }
-
-            overall = result.overall ? "OK ✅" : "FAIL ❌";
-
-            // Πληροφορίες για incremental updates και coverage
-            if (result.hasIncrementalUpdates != null) {
-                hasIncrementalUpdates = result.hasIncrementalUpdates ? "Ναι ⚠️" : "Όχι ✅";
-            } else {
-                hasIncrementalUpdates = "N/A";
-            }
-
-            if (result.coversWholeFile != null) {
-                coversWholeFile = result.coversWholeFile ? "Ναι ✅" : "Όχι ⚠️";
-            } else {
-                coversWholeFile = "N/A";
-            }
-
-            // Δημιουργία λίστας με πληροφορίες για τον πίνακα
-            buildSignatureInfoList();
-
-
-            hasResult = true;
-            DocumentAuditService.recordEvent(docId, DocumentAuditService.ACTION_VERIFY, DocumentAuditService.STATUS_SUCCESS);
-//            FacesUtil.info("Verification done for docId=" + docId);
-            if (FacesContext.getCurrentInstance().getMaximumSeverity() == null) {
-                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "", "To επιλεγμένο αρχείο είναι υπογεγραμμένο");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-            }
-
-        } catch (IllegalArgumentException e) {
+        } catch (
+                IllegalArgumentException e) {
             hasResult = false;
-            signatureInfoList = new ArrayList<>(); // Καθαρισμός λίστας σε περίπτωση σφάλματος
-            if (docId != null) {
-                DocumentAuditService.recordEvent(docId, DocumentAuditService.ACTION_VERIFY, DocumentAuditService.STATUS_FAILURE);
-            }
-            FacesUtil.error(e.getMessage());
-        } catch (Exception e) {
-            hasResult = false;
-            signatureInfoList = new ArrayList<>(); // Καθαρισμός λίστας σε περίπτωση σφάλματος
-            if (docId != null) {
-                DocumentAuditService.recordEvent(docId, DocumentAuditService.ACTION_VERIFY, DocumentAuditService.STATUS_FAILURE);
-            }
-            FacesUtil.error("Σφάλμα επαλήθευσης: " + e.getMessage());
-            e.printStackTrace(); // για debugging
         }
     }
 
@@ -263,9 +219,14 @@ public class VerifyBean implements Serializable {
             return "";
         }
     }
-    public boolean isHasResult() {return hasResult;}
 
-    public Long getDocId() {return docId;}
+    public boolean isHasResult() {
+        return hasResult;
+    }
+
+    public Long getDocId() {
+        return docId;
+    }
 
     public void setDocId(Long docId) {
         this.docId = docId;
@@ -283,9 +244,13 @@ public class VerifyBean implements Serializable {
         return overall;
     }
 
-    public List<DocumentFile> getDocumentFileList() {return documentFileList;}
+    public List<DocumentFile> getDocumentFileList() {
+        return documentFileList;
+    }
 
-    public void setDocumentFileList(List<DocumentFile> documentFileList) {this.documentFileList = documentFileList;}
+    public void setDocumentFileList(List<DocumentFile> documentFileList) {
+        this.documentFileList = documentFileList;
+    }
 
     public List<SignatureInfoRow> getSignatureInfoList() {
         if (signatureInfoList == null) {
@@ -324,6 +289,18 @@ public class VerifyBean implements Serializable {
 
     public void setKeimenoEmail(String keimenoEmail) {
         this.keimenoEmail = keimenoEmail;
+    }
+
+    public List<TbAuditEvent> getTbAuditEventList() {
+        return tbAuditEventList;
+    }
+
+    public void setTbAuditEventList(List<TbAuditEvent> tbAuditEventList) {
+        this.tbAuditEventList = tbAuditEventList;
+    }
+
+    public void setTbAuditEvent(TbAuditEvent tbAuditEvent) {
+        this.tbAuditEvent = tbAuditEvent;
     }
 }
 

@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
-  <persistence-unit name="ctodb" transaction-type="JTA">
-    <!--  -->
-    <jta-data-source>java:jboss/datasources/pqsignatures</jta-data-source>
-    <class>model.Tbluser</class>
-    <class>model.Tblroles</class>
-    <class>model.Tblrolerights</class>
-    <class>model.Tblpages</class>
-    <class>model.Tblelements</class>
-    <!--  ******************************************************************-->
-    <class>model.ParkingSlots</class>
-    <class>model.ParkingFloor</class>
-    <class>model.ParkingUser</class>
-    <class>model.ParkingBooking</class>
-    <class>model.ParkingUsersCar</class>
-      <class>model.DocumentFile</class>
-      <class>model.DocumentSignature</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
-    <properties>
-      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
-      <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
-      <property name="hibernate.transaction.flush_before_completion" value="true"/>
-      <property name="org.hibernate.flushMode" value="AUTO"/>
-      <!-- Hibernate properties -->
-      <property name="hibernate.show_sql" value="false"/>
-      <property name="hibernate.format_sql" value="false"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-      <property name="hibernate.integration.envers.enabled" value="false"/>
-<!--      <property name="hibernate.ejb.cfgfile" value="true"/>-->
-      <!--Αυτό ειναι για να κάνει caching σε επίπεδο query-->
-<!--      <property name="hibernate.cache.use_query_cache" value="true"/>-->
-      <property name="hibernate.cache.use_query_cache" value="false"/>
-      <!--Hibernate generate statistics-->
-      <property name="hibernate.generate_statistics" value="false"/>
-      <property name="connection.useUnicode" value="true"/>
-      <property name="connection.characterEncoding" value="UTF-8"/>
-      <property name="connection.charSet" value="UTF-8"/>
-      <property name="connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
-      <!--Second level cache-->
-      <property name="hibernate.cache.use_second_level_cache" value="false"/>
-      <!--      <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.jcache.JCacheRegionFactory"/>-->
-      <!--      <property name="hibernate.cache.region.factory_class" valbasikaEfedrose="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>-->
-      <!--            <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.2"/>-->
-      <property name="jboss.as.jpa.providerModule" value="application"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="ctodb" transaction-type="JTA">
+        <!--  -->
+        <jta-data-source>java:jboss/datasources/pqsignatures</jta-data-source>
+        <class>model.Tbluser</class>
+        <class>model.Tblroles</class>
+        <class>model.Tblrolerights</class>
+        <class>model.Tblpages</class>
+        <class>model.Tblelements</class>
+        <!--  ******************************************************************-->
+        <class>model.ParkingSlots</class>
+        <class>model.ParkingFloor</class>
+        <class>model.ParkingUser</class>
+        <class>model.ParkingBooking</class>
+        <class>model.ParkingUsersCar</class>
+        <class>model.DocumentFile</class>
+        <class>model.DocumentSignature</class>
+        <class>model.TbAuditEvent</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <properties>
+            <property name="hibernate.transaction.jta.platform"
+                      value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+            <property name="hibernate.transaction.flush_before_completion" value="true"/>
+            <property name="org.hibernate.flushMode" value="AUTO"/>
+            <!-- Hibernate properties -->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.integration.envers.enabled" value="false"/>
+            <!--      <property name="hibernate.ejb.cfgfile" value="true"/>-->
+            <!--Αυτό ειναι για να κάνει caching σε επίπεδο query-->
+            <!--      <property name="hibernate.cache.use_query_cache" value="true"/>-->
+            <property name="hibernate.cache.use_query_cache" value="false"/>
+            <!--Hibernate generate statistics-->
+            <property name="hibernate.generate_statistics" value="false"/>
+            <property name="connection.useUnicode" value="true"/>
+            <property name="connection.characterEncoding" value="UTF-8"/>
+            <property name="connection.charSet" value="UTF-8"/>
+            <property name="connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <!--Second level cache-->
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+            <!--      <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.jcache.JCacheRegionFactory"/>-->
+            <!--      <property name="hibernate.cache.region.factory_class" valbasikaEfedrose="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>-->
+            <!--            <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.2"/>-->
+            <property name="jboss.as.jpa.providerModule" value="application"/>
+        </properties>
+    </persistence-unit>
 </persistence>

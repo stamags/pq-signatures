@@ -10,8 +10,8 @@ import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -21,10 +21,12 @@ import java.util.List;
 /**
  * Utility class για αποστολή emails με υπογεγραμμένα PDFs.
  * Χρησιμοποιεί την ίδια SMTP configuration όπως το kratisiThesisBean.
+ * Implements Serializable so it can be injected into passivating scoped beans (e.g. @ViewScoped).
  */
 public class EmailService implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     private static final Logger log = Logger.getLogger(EmailService.class);
 
     // SMTP Configuration - ίδια με το kratisiThesisBean
@@ -91,10 +93,12 @@ public class EmailService implements Serializable {
                     .buildMailer();
 
             mailer.sendMail(email);
+            DocumentAuditService.recordEvent(docID, DocumentAuditService.ACTION_EMAIL_SENT, DocumentAuditService.STATUS_SUCCESS);
             log.info("Email sent successfully to: " + recipientEmail + " for document: " + documentFile.getDocumentId());
             return true;
 
         } catch (Exception e) {
+            DocumentAuditService.recordEvent(docID, DocumentAuditService.ACTION_EMAIL_SENT, DocumentAuditService.STATUS_FAILURE);
             log.error("Failed to send email to: " + recipientEmail, e);
             return false;
         }

@@ -1,0 +1,259 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+
+    <ui:define name="title">Auditing Αρχείων</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:panel header="Όλα τα Αρχεία">
+
+                <style type="text/css">
+                    .false {
+                        background-color: #f9bbbc !important;
+                        background-image: none !important;
+                        color: #000000 !important;
+                    }
+                </style>
+
+
+                <br/>
+
+                <p:messages id="msgs" showDetail="true" showSummary="false" closable="true"/>
+                <p:growl id="msgs1" showDetail="true" life="3000"/>
+                <p:outputPanel id="stoixeia" style="width: 100%">
+                    <p:dataTable id="taArxeiamouTable"
+                                 value="#{auditBean.documentFileList}"
+                                 var="record"
+                                 rowIndexVar="it"
+                                 filterEvent="enter"
+                                 paginator="true"
+                                 rows="8"
+                                 styleClass="aligncenter"
+                                 editable="false"
+                                 widgetVar="taArxeiamouTable"
+                                 rowKey="#{record}"
+                                 scrollable="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 currentPageReportTemplate="Βρέθηκαν {totalRecords} αποθηκευμένα αρχεία!"
+                    >
+                        <!--                        rowStyleClass="#{OiKratiseisMouBean.parkingBookingList.get(it).hasArrived ne true ? null: 'false'}"-->
+
+                        <f:facet name="{Exporters}">
+                            <p:commandButton value="Εξαγωγή Αποτελεσμάτων" icon="ui-icon-document" ajax="false"
+                                             style="margin-left: 30px">
+                                <p:dataExporter type="xls" target="taArxeiamouTable" fileName="taArxeiaMou"/>
+                            </p:commandButton>
+                        </f:facet>
+
+
+                        <p:column headerText="Α/Α" style="width: 60px!important;">
+                            <h:outputText value="#{it+1}"/>
+                        </p:column>
+
+                        <!--<p:aj   ax event="rowEdit" listener="#{EmployeesBean.onRowEdit}" update=":form:msgs1"/>-->
+                        <!--<p:ajax event="rowEditCancel" listener="#{EmployeesBean.onRowCancel}" update=":form:msgs1"/>-->
+
+                        <p:column headerText="ID" sortBy="#{record.documentId }"
+                                  filterBy="#{record.documentId}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px"
+                                  exportable="true">
+                            <h:outputText
+                                    value="#{record.documentId}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Όνομα Αρχείου:" sortBy="#{record.filename }"
+                                  filterBy="#{record.filename}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px"
+                                  exportable="true">
+                            <h:outputText
+                                    value="#{record.filename}">
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Ημερομηνία Αποθήκευσης:" sortBy="#{record.uploadTime}"
+                                  filterBy="#{record.uploadTime}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.uploadTime}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column headerText="Τύπος Αρχείου" sortBy="#{record.contentType}"
+                                  filterBy="#{record.contentType}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px;height: auto">
+                            <h:outputText
+                                    value="#{record.contentType}"/>
+                        </p:column>
+
+                        <p:column headerText="Μέγεθος Αρχείου" sortBy="#{record.fileSize}"
+                                  filterBy="#{record.fileSize}"
+                                  filterMatchMode="contains"
+                                  style="width: 100px">
+                            <h:outputText
+                                    value="#{record.fileSize}"/>
+                        </p:column>
+
+
+                        <!--                        <p:column headerText="Τοποθεσία Αποθήκευσης"-->
+                        <!--                                  filterBy="#{record.hasArrived}"-->
+                        <!--                                  filterMatchMode="equals"-->
+                        <!--                                  style="width: 100px;height: auto">-->
+                        <!--                            <f:facet name="filter">-->
+                        <!--                                <p:selectOneMenu onchange="PF('taArxeiamouTable').filter()"-->
+                        <!--                                                 styleClass="ui-selectcheckboxmenu-items">-->
+                        <!--                                    <f:converter converterId="jakarta.faces.Boolean"/>-->
+                        <!--                                    <f:selectItem itemLabel="ΌΛΕΣ" itemValue=""/>-->
+                        <!--                                    <f:selectItem itemLabel="ΝΑΙ" itemValue="true"/>-->
+                        <!--                                    <f:selectItem itemLabel="ΟΧΙ" itemValue="false"/>-->
+                        <!--                                </p:selectOneMenu>-->
+                        <!--                            </f:facet>-->
+                        <!--                            <h:outputText-->
+                        <!--                                    value="#{record.hasArrived? 'ΝΑΙ' : 'ΟΧΙ' }"/>-->
+                        <!--                        </p:column>-->
+
+
+                        <p:column headerText="Τοποθεσία Αποθήκευσης" sortBy="#{record.storagePath}"
+                                  filterBy="#{record.storagePath}"
+                                  filterMatchMode="contains"
+                                  style="width: 150px;height: auto">
+                            <h:outputText
+                                    value="#{record.storagePath}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Επιλογή Αρχείου" style="width: 100px;height: auto">
+                            <p:commandLink action="#{auditBean.epilogiArxeiou(record)}"
+                                           update=":form:taArxeiamouTable :form:docId :form:msgs1">
+
+                                <h:graphicImage name="/icons/pencil.png"
+                                                title="Ακύρωση"/>
+                            </p:commandLink>
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:outputPanel>
+
+            </p:panel>
+
+
+            <p:panel header="Auditing Εγγράφου" style="margin:20px">
+
+                <h:panelGrid columns="2" cellpadding="6">
+                    <h:outputText value="Document ID:"/>
+                    <p:inputText id="docId" value="#{auditBean.docId}"/>
+
+                    <h:outputText value=""/>
+                    <p:commandButton value="Έλεγχος"
+                                     action="#{auditBean.audit}"
+                                     process="@form"
+                                     update=":form:msgs :form:resWrapper"/>
+                </h:panelGrid>
+
+                <p:spacer height="10"/>
+
+                <p:outputPanel id="resWrapper" layout="block">
+                    <p:panel id="res" header="Αποτέλεσμα Επαλήθευσης"
+                             rendered="#{auditBean.hasResult}"
+                             style="margin-top: 1rem;">
+                        <p:dataTable id="auditInfoTable"
+                                     value="#{auditBean.tbAuditEventList}"
+                                     var="info"
+                                     emptyMessage="Δεν βρέθηκαν στοιχεία υπογραφής">
+
+                            <p:column headerText="Id Εγγράφου" style="width:40%;font-weight:bold">
+                                <h:outputText value="#{info.documentId}"/>
+                            </p:column>
+
+                            <p:column headerText="Χρήστης" style="width:60%">
+                                <h:outputText value="#{info.username}"/>
+                            </p:column>
+
+                            <p:column headerText="Ενέργεια" style="width:40%;font-weight:bold">
+                                <h:outputText value="#{info.actionType}"/>
+                            </p:column>
+                            <p:column headerText="Αποτέλεσμα" style="width:60%">
+
+                                <h:outputText value="#{info.resultStatus}"
+                                              style="#{info.resultStatus eq 'SUCCESS' ? 'color: green; font-weight: bold;' : 'color: red; font-weight: bold;'}"/>
+                            </p:column>
+
+
+                            <p:column headerText="Ημερομηνία" style="width:40%;font-weight:bold">
+                                <h:outputText value="#{info.createdAt}">
+                                    <f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Διεύθυνση IP" style="width:60%">
+                                <h:outputText value="#{info.ipAddress}"/>
+                            </p:column>
+
+                            <p:column headerText="Περιβάλλον Πρόσβασης" style="width:60%">
+                                <h:outputText value="#{info.userAgent}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panel>
+                </p:outputPanel>
+            </p:panel>
+
+            <f:metadata>
+                <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
+            </f:metadata>
+
+
+            <!--            <p:panel header="Αποστολή  Εγγράφων" style="margin:20px">-->
+
+            <!--                <h:panelGrid columns="2" cellpadding="6">-->
+            <!--                    <h:outputText value="Επιλεγμένο Έγγραφο:"/>-->
+            <!--                    <p:inputText id="docID1" value="#{verifyUiBean.docId}"/>-->
+
+            <!--                    <h:outputText value="Email Παραλήπτη:"/>-->
+            <!--                    <p:inputText id="email" value="#{verifyUiBean.emailParalipti}"/>-->
+
+            <!--                    <h:outputText value="Kείμενο Email:"/>-->
+            <!--                    <p:inputTextarea value="#{verifyUiBean.keimenoEmail}"-->
+            <!--                                     rows="8"-->
+            <!--                                     autoResize="true"-->
+            <!--                                     style="width:100%"/>-->
+
+
+            <!--                    <h:outputText value=""/>-->
+            <!--                    <p:commandButton value="Αποστολή"-->
+            <!--                                     action="#{verifyUiBean.emailService.sendSignedPdf(verifyUiBean.emailParalipti, verifyUiBean.docId, verifyUiBean.keimenoEmail)}"-->
+            <!--                                     process="@form"-->
+            <!--                                     update=":form:msgs :form:resWrapper"/>-->
+            <!--                </h:panelGrid>-->
+
+            <!--                <p:spacer height="10"/>-->
+
+
+            <!--            </p:panel>-->
+
+
+            <f:metadata>
+                <f:viewParam name="docId" value="#{verifyUiBean.docId}"/>
+            </f:metadata>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

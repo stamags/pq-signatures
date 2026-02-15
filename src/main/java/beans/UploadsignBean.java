@@ -6,6 +6,7 @@ import model.DocumentFile;
 import model.DocumentSignature;
 import org.primefaces.model.file.UploadedFile;
 import rest.DocumentService;
+import utils.DocumentAuditService;
 import utils.FacesUtil;
 import utils.FileStorageService;
 import db.dbTransactions;
@@ -63,9 +64,14 @@ public class UploadsignBean implements Serializable {
             lastSignatureId = sig.getSignatureId();
 
 
+            DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_UPLOAD, DocumentAuditService.STATUS_SUCCESS);
+            DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_SIGN, DocumentAuditService.STATUS_SUCCESS);
             FacesUtil.info("Upload & Sign ολοκληρώθηκε. docId=" + lastDocumentId + ", sigId=" + lastSignatureId);
 
         } catch (Exception e) {
+            if (lastDocumentId != null) {
+                DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_SIGN, DocumentAuditService.STATUS_FAILURE);
+            }
             FacesUtil.error("Σφάλμα: " + e.getMessage());
         }
     }
