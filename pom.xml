@@ -49,10 +49,10 @@
             <layout>default</layout>
             <name>Repository for library PrimeFaces-maven-lib</name>
         </repository>
-        <repository>
-            <id>jaspersoft-third-party</id>
-            <url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>jaspersoft-third-party</id>-->
+<!--            <url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>-->
+<!--        </repository>-->
         <!--        <repository>-->
         <!--            <id>google-maven-central</id>-->
         <!--            <url>https://mvnrepository.com/artifact/com.google.apis/google-api-services-drive</url>-->
@@ -75,7 +75,6 @@
         </dependency>
 
 
-
         <!--        bouncycastle   -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
@@ -89,9 +88,6 @@
         </dependency>
 
         <!--           mvn -U clean package-->
-
-
-
 
 
         <!--        <dependency>-->
@@ -217,7 +213,9 @@
             <artifactId>manhattan-theme</artifactId>
             <version>7.0.0</version>
             <scope>system</scope>
-            <systemPath>/home/stam/IdeaProjects/pq-signatures/src/main/webapp/WEB-INF/lib/manhattan-theme-7.0.0-jakarta.jar</systemPath>
+            <systemPath>
+                /home/stam/IdeaProjects/pq-signatures/src/main/webapp/WEB-INF/lib/manhattan-theme-7.0.0-jakarta.jar
+            </systemPath>
         </dependency>
 
         <dependency>
@@ -390,17 +388,34 @@
             <version>3.0</version>
         </dependency>
 
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.poi</groupId>-->
+        <!--            <artifactId>poi</artifactId>-->
+        <!--            <version>3.16</version>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.poi</groupId>-->
+        <!--            <artifactId>poi-ooxml</artifactId>-->
+        <!--            <version>3.16</version>-->
+        <!--        </dependency>-->
+
+
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.16</version>
+            <version>5.2.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.16</version>
+            <version>5.2.3</version>
         </dependency>
+
+
+
+
 
         <!--        <dependency>-->
         <!--            <groupId>javax.servlet</groupId>-->
@@ -448,7 +463,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>2.15.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

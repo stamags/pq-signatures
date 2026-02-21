@@ -37,6 +37,9 @@ public class EmailService implements Serializable {
     private static final String FROM_NAME = "PQ Signatures System";
     private static final String FROM_EMAIL = "stamags1988@gmail.com";
 
+
+
+
     /**
      * Στέλνει ένα υπογεγραμμένο PDF μέσω email.
      *
@@ -95,6 +98,13 @@ public class EmailService implements Serializable {
             mailer.sendMail(email);
             DocumentAuditService.recordEvent(docID, DocumentAuditService.ACTION_EMAIL_SENT, DocumentAuditService.STATUS_SUCCESS);
             log.info("Email sent successfully to: " + recipientEmail + " for document: " + documentFile.getDocumentId());
+            try {
+                documentFile.setEmailSent(true);
+                dbTransactions.updateObject(documentFile);
+            }catch (Exception e) {
+
+            }
+
             return true;
 
         } catch (Exception e) {

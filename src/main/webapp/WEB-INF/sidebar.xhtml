@@ -39,7 +39,6 @@
                                        icon="fa fa-pencil-square-o">
 
 
-
                                 <p:menuitem id="uploadArxeiou"
                                              value="Μεταφόρτωση και Υπογραφή"
                                              escape="false"
@@ -58,6 +57,10 @@
                                 <p:menuitem id="auditArxeiou" value="Ιστορικό Ενεργειών" icon="fa fa-history"
                                             outcome="/webContent/audit"
                                             rendered="#{LoginBean.security.foundPageAccess('verify')}"/>
+
+                                <p:menuitem id="dashboard" value="Dashboard / Στατιστικά" icon="fa fa-bar-chart"
+                                            outcome="/webContent/dashboard"
+                                            rendered="#{LoginBean.security.foundPageAccess('dashboard') or LoginBean.isAdmin()}"/>
 
                             </p:submenu>
 

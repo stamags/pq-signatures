@@ -48,6 +48,10 @@ public class DocumentFile implements Serializable {
     @Column(name = "UPLOAD_TIME", nullable = false)
     private Date uploadTime;
 
+
+    @Column(name = "EMAIL_SENT", nullable = false)
+    private Boolean emailSent;
+
     public DocumentFile() {
     }
 
@@ -75,6 +79,9 @@ public class DocumentFile implements Serializable {
 
     public String getStoragePath() { return storagePath; }
     public void setStoragePath(String storagePath) { this.storagePath = storagePath; }
+
+    public Boolean getEmailSent() {return emailSent;}
+    public void setEmailSent(Boolean emailSent) {this.emailSent = emailSent;}
 
     /**
      * Helper method to read file bytes from filesystem.

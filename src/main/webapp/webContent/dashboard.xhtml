@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">Dashboard / Στατιστικά</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:panel header="Στατιστικά Υπογραφών">
+                <p:commandButton value="Ανανέωση" icon="pi pi-refresh" action="#{dashboardBean.refresh}"
+                                 process="@this" update="@form" style="margin-bottom: 1rem;"
+                                 oncomplete="if (window.renderDashboardCharts) window.renderDashboardCharts();"/>
+
+                <div class="ui-g" style="margin-bottom: 1.5rem;">
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:panel styleClass="dashboard-card">
+                            <f:facet name="header">
+                                <i class="fa fa-file-pdf-o" style="margin-right: 8px;"></i>
+                                Σύνολο εγγράφων
+                            </f:facet>
+                            <h2 style="margin: 0; font-size: 2rem;">#{dashboardBean.totalDocuments}</h2>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:panel styleClass="dashboard-card" style="border-left: 4px solid #22b165;">
+                            <f:facet name="header">
+                                <i class="fa fa-check-circle" style="margin-right: 8px; color: #22b165;"></i>
+                                Επαληθεύσεις OK
+                            </f:facet>
+                            <h2 style="margin: 0; font-size: 2rem; color: #22b165;">#{dashboardBean.verifySuccessCount}</h2>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:panel styleClass="dashboard-card" style="border-left: 4px solid #cb2426;">
+                            <f:facet name="header">
+                                <i class="fa fa-times-circle" style="margin-right: 8px; color: #cb2426;"></i>
+                                Επαληθεύσεις FAIL
+                            </f:facet>
+                            <h2 style="margin: 0; font-size: 2rem; color: #cb2426;">#{dashboardBean.verifyFailureCount}</h2>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:panel styleClass="dashboard-card" style="border-left: 4px solid #3d72b4;">
+                            <f:facet name="header">
+                                <i class="fa fa-list-alt" style="margin-right: 8px; color: #3d72b4;"></i>
+                                Σύνολο audit events
+                            </f:facet>
+                            <h2 style="margin: 0; font-size: 2rem; color: #3d72b4;">#{dashboardBean.totalAuditEvents}</h2>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:panel styleClass="dashboard-card" style="border-left: 4px solid #607d8b;">
+                            <f:facet name="header">
+                                <i class="fa fa-download" style="margin-right: 8px; color: #607d8b;"></i>
+                                Λήψεις (Downloads)
+                            </f:facet>
+                            <h2 style="margin: 0; font-size: 2rem; color: #607d8b;">#{dashboardBean.totalDownloads}</h2>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <p:panel styleClass="dashboard-card" style="border-left: 4px solid #22b165;">
+                            <f:facet name="header">
+                                <i class="fa fa-percent" style="margin-right: 8px; color: #22b165;"></i>
+                                Επιτυχία επαληθεύσεων
+                            </f:facet>
+                            <h2 style="margin: 0; font-size: 2rem; color: #22b165;">#{dashboardBean.verifySuccessRateDisplay}</h2>
+                        </p:panel>
+                    </div>
+                </div>
+            </p:panel>
+
+            <div class="ui-g" style="margin-top: 1.5rem;">
+                <div class="ui-g-12 ui-md-6">
+                    <p:panel header="Έγγραφα σταλμένα με email">
+                        <div id="chartEmailSent" style="min-width: 260px; height: 320px; margin: 0 auto;"></div>
+                        <script type="application/json" id="chartEmailSentData"><h:outputText value="#{dashboardBean.emailSentPieChartJson}" escape="false"/></script>
+                    </p:panel>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <p:panel header="Έγγραφα ανά τύπο υπογραφής">
+                        <div id="chartSignature" style="min-width: 260px; height: 320px; margin: 0 auto;"></div>
+                        <script type="application/json" id="chartSignatureData"><h:outputText value="#{dashboardBean.signaturePieChartJson}" escape="false"/></script>
+                    </p:panel>
+                </div>
+            </div>
+
+            <p:panel header="Events ανά τύπο ενέργειας" style="margin-top: 1.5rem;">
+                <div id="chartActionType" style="min-width: 300px; height: 320px; margin: 0 auto;"></div>
+                <script type="application/json" id="chartActionTypeData"><h:outputText value="#{dashboardBean.actionTypePieChartJson}" escape="false"/></script>
+            </p:panel>
+
+            <p:panel header="Events ανά ημέρα (τελευταίες 30 ημέρες)" style="margin-top: 1.5rem;">
+                <div id="chartEventsPerDay" style="min-width: 300px; height: 350px; margin: 0 auto;"></div>
+                <script type="application/json" id="chartDayData"><h:outputText value="#{dashboardBean.eventsPerDayChartJson}" escape="false"/></script>
+            </p:panel>
+
+            <p:panel header="Events ανά χρήστη (top 20)" style="margin-top: 1.5rem;">
+                <div id="chartEventsPerUser" style="min-width: 300px; height: 350px; margin: 0 auto;"></div>
+                <script type="application/json" id="chartUserData"><h:outputText value="#{dashboardBean.eventsPerUserChartJson}" escape="false"/></script>
+            </p:panel>
+
+            <h:outputScript target="body">
+                (function() {
+                function parseChartData(id) {
+                var el = document.getElementById(id);
+                if (!el || !el.textContent || !el.textContent.trim()) return null;
+                try { return JSON.parse(el.textContent.trim()); } catch (e) { return null; }
+                }
+                function renderCharts() {
+                var dayData = parseChartData('chartDayData');
+                var dayEl = document.getElementById('chartEventsPerDay');
+                if (dayEl) {
+                if (dayEl.highchartsChart) try { dayEl.highchartsChart.destroy(); } catch (e) {}
+                if (dayData &amp;&amp; dayData.categories &amp;&amp; dayData.data) {
+                Highcharts.chart('chartEventsPerDay', {
+                chart: { type: 'column' },
+                title: { text: null },
+                xAxis: { categories: dayData.categories, title: { text: 'Ημερομηνία' }, crosshair: true },
+                yAxis: { min: 0, title: { text: 'Πλήθος events' } },
+                tooltip: { shared: true },
+                plotOptions: { column: { dataLabels: { enabled: true } } },
+                series: [{ name: 'Events', data: dayData.data, color: '#3d72b4' }],
+                credits: { enabled: false }
+                });
+                }
+                }
+                var userData = parseChartData('chartUserData');
+                var userEl = document.getElementById('chartEventsPerUser');
+                if (userEl) {
+                if (userEl.highchartsChart) try { userEl.highchartsChart.destroy(); } catch (e) {}
+                if (userData &amp;&amp; userData.categories &amp;&amp; userData.data) {
+                Highcharts.chart('chartEventsPerUser', {
+                chart: { type: 'bar' },
+                title: { text: null },
+                xAxis: { categories: userData.categories, title: { text: 'Χρήστης' } },
+                yAxis: { min: 0, title: { text: 'Πλήθος events' } },
+                tooltip: { shared: true },
+                plotOptions: { bar: { dataLabels: { enabled: true } } },
+                series: [{ name: 'Events', data: userData.data, color: '#22b165' }],
+                legend: { enabled: false },
+                credits: { enabled: false }
+                });
+                }
+                }
+                var emailSentData = parseChartData('chartEmailSentData');
+                var emailSentEl = document.getElementById('chartEmailSent');
+                if (emailSentEl) {
+                if (emailSentEl.highchartsChart) try { emailSentEl.highchartsChart.destroy(); } catch (e) {}
+                if (emailSentData &amp;&amp; emailSentData.data) {
+                Highcharts.chart('chartEmailSent', {
+                chart: { type: 'pie' },
+                title: { text: null },
+                tooltip: { pointFormat: '{point.name}: {point.y} ({point.percentage:.1f}%)' },
+                plotOptions: {
+                pie: {
+                innerSize: '55%',
+                dataLabels: { enabled: true, format: '{point.name}: {point.y}' }
+                }
+                },
+                series: [{ name: 'Έγγραφα', data: emailSentData.data }],
+                credits: { enabled: false }
+                });
+                }
+                }
+                var signatureData = parseChartData('chartSignatureData');
+                var signatureEl = document.getElementById('chartSignature');
+                if (signatureEl) {
+                if (signatureEl.highchartsChart) try { signatureEl.highchartsChart.destroy(); } catch (e) {}
+                if (signatureData &amp;&amp; signatureData.data) {
+                Highcharts.chart('chartSignature', {
+                chart: { type: 'pie' },
+                title: { text: null },
+                tooltip: { pointFormat: '{point.name}: {point.y} ({point.percentage:.1f}%)' },
+                plotOptions: {
+                pie: {
+                innerSize: '55%',
+                dataLabels: { enabled: true, format: '{point.name}: {point.y}' }
+                }
+                },
+                series: [{ name: 'Έγγραφα', data: signatureData.data }],
+                credits: { enabled: false }
+                });
+                }
+                }
+                var actionTypeData = parseChartData('chartActionTypeData');
+                var actionTypeEl = document.getElementById('chartActionType');
+                if (actionTypeEl) {
+                if (actionTypeEl.highchartsChart) try { actionTypeEl.highchartsChart.destroy(); } catch (e) {}
+                if (actionTypeData &amp;&amp; actionTypeData.data) {
+                Highcharts.chart('chartActionType', {
+                chart: { type: 'pie' },
+                title: { text: null },
+                tooltip: { pointFormat: '{point.name}: {point.y} ({point.percentage:.1f}%)' },
+                plotOptions: {
+                pie: {
+                innerSize: '55%',
+                dataLabels: { enabled: true, format: '{point.name}: {point.y}' }
+                }
+                },
+                series: [{ name: 'Events', data: actionTypeData.data }],
+                credits: { enabled: false }
+                });
+                }
+                }
+                }
+                if (window.Highcharts) { renderCharts(); } else { window.addEventListener('load', renderCharts); }
+                window.renderDashboardCharts = renderCharts;
+                })();
+            </h:outputScript>
+        </h:form>
+    </ui:define>
+</ui:composition>
