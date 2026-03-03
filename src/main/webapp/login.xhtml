@@ -34,7 +34,7 @@
             <script src="https://accounts.google.com/gsi/client" async="async" defer="defer"></script>
 
 <!--            <h1 style=" color: #ffffff;font-weight: 700;letter-spacing: 0.8px;text-shadow:0 0 6px rgba(0, 140, 255, 0.45),0 2px 10px rgba(0, 0, 0, 0.7);">Πληροφοριακό Σύστημα Διαχείρισης Υπογραφών</h1>-->
-            <h1 class="login-title">Πληροφοριακό Σύστημα Διαχείρισης Υπογραφών</h1>
+            <h1 class="login-title">Σύστημα έξυπνης διαμοίρασης αρχείων με PQC ψηφιακές υπογραφές</h1>
             <!--            <p:growl id="growl1" showDetail="false"/>-->
             <!--            <p:growl id="growl" showDetail="true" for="password username"/>-->
             <!-- Hidden input field to hold the token -->
@@ -57,7 +57,7 @@
                      data-callback="handleCredentialResponse"
                      data-context="signin"
                      data-ux_mode="popup"
-                     data-login_uri="http://localhost:8080/ken/login.jsf"
+                     data-login_uri="http://localhost:8080/pq-signatures/login.jsf"
                      data-nonce=""
                      data-itp_support="true">
                 </div>
@@ -109,7 +109,7 @@
                     function sendTokenToServer(idToken) {
                         $.ajax({
                             type: 'POST',
-                            url: '/ken/login.jsf', // Adjust to your actual endpoint path
+                            url: '/pq-signatures/login.jsf', // Adjust to your actual endpoint path
                             data: {idtoken: idToken},
                             success: function (response) {
                                 console.log('Successfully processed token on the server');
@@ -173,12 +173,12 @@
 
 
 
-                <p:commandButton action="#{LoginBean.loginAsGuest}"
-                                 class="mr-4"
-                                 style="color: white"
-                                 update="msg"
-                                 ajax="false"
-                                 value="Εισόδος ως επισκέπτης"/>
+<!--                <p:commandButton action="#{LoginBean.loginAsGuest}"-->
+<!--                                 class="mr-4"-->
+<!--                                 style="color: white"-->
+<!--                                 update="msg"-->
+<!--                                 ajax="false"-->
+<!--                                 value="Εισόδος ως επισκέπτης"/>-->
                 <p/>
                 <!--                action="#{buttonView.buttonAction}"-->
 

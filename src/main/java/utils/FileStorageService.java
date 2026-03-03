@@ -67,30 +67,9 @@ public class FileStorageService {
         return Files.readAllBytes(filePath);
     }
 
-    /**
-     * Διαγραφή αρχείου από το filesystem.
-     */
-    public static boolean deleteFile(Long documentId) {
-        try {
-            Path filePath = getFilePath(documentId);
-            return Files.deleteIfExists(filePath);
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Έλεγχος αν το αρχείο υπάρχει.
-     */
-    public static boolean fileExists(Long documentId) {
-        Path filePath = getFilePath(documentId);
-        return Files.exists(filePath);
-    }
 
     /**
      * Υπολογισμός SHA-256 hash των δεδομένων αρχείου.
-     */
-    /**
      * Calculates the SHA-256 hash of the given data and returns it
      * και επειδή χρησημοποιούμε java21 χρησιμοποιούμε την μέθοδο HexFormat.of()
      */

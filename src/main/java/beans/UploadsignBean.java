@@ -23,8 +23,7 @@ public class UploadsignBean implements Serializable {
     private Long lastDocumentId;
     private Long lastSignatureId;
 
-    // TODO: inject your dbtransactions/service here
-    // @Inject private DocumentService documentService;
+
 
     public void uploadAndSign() {
         try {

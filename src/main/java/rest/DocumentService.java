@@ -7,16 +7,12 @@ import signatures.KeyLoader;
 import db.JPAUtil;
 import utils.FileStorageService;
 import utils.PdfSignatureEmbedder;
-import utils.PdfCanonicalUtil;
 import utils.PdfSignatureVerifier;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import java.nio.file.Path;
 import java.security.*;
 import java.util.List;
 
@@ -30,34 +26,34 @@ public class DocumentService {
         // Προεπιλεγμένος constructor - χρησιμοποιεί static dbTransactions methods
     }
 
-    public Long saveDocument(String filename, String contentType, byte[] pdfBytes) throws Exception {
-        if (filename == null || filename.trim().isEmpty()) {
-            throw new IllegalArgumentException("Filename cannot be null or empty");
-        }
-        if (pdfBytes == null || pdfBytes.length == 0) {
-            throw new IllegalArgumentException("PDF bytes cannot be null or empty");
-        }
-
-        // Υπολογισμός SHA-256
-        String sha256 = FileStorageService.calculateSha256(pdfBytes);
-
-        // Αποθήκευση metadata στη βάση δεδομένων
-        DocumentFile doc = new DocumentFile();
-        doc.setFilename(filename);
-        doc.setContentType(contentType);
-        doc.setFileSize((long) pdfBytes.length);
-        doc.setSha256(sha256);
-
-        db.dbTransactions.storeObject(doc);
-        Long docId = doc.getDocumentId();
-
-        // Αποθήκευση αρχείου στο filesystem
-        String storagePath = FileStorageService.saveFile(docId, pdfBytes);
-        doc.setStoragePath(storagePath);
-        db.dbTransactions.storeWithMergeObject(doc); // Ενημέρωση με διαδρομή αποθήκευσης
-
-        return docId;
-    }
+//    public Long saveDocument(String filename, String contentType, byte[] pdfBytes) throws Exception {
+//        if (filename == null || filename.trim().isEmpty()) {
+//            throw new IllegalArgumentException("Filename cannot be null or empty");
+//        }
+//        if (pdfBytes == null || pdfBytes.length == 0) {
+//            throw new IllegalArgumentException("PDF bytes cannot be null or empty");
+//        }
+//
+//        // Υπολογισμός SHA-256
+//        String sha256 = FileStorageService.calculateSha256(pdfBytes);
+//
+//        // Αποθήκευση metadata στη βάση δεδομένων
+//        DocumentFile doc = new DocumentFile();
+//        doc.setFilename(filename);
+//        doc.setContentType(contentType);
+//        doc.setFileSize((long) pdfBytes.length);
+//        doc.setSha256(sha256);
+//
+//        db.dbTransactions.storeObject(doc);
+//        Long docId = doc.getDocumentId();
+//
+//        // Αποθήκευση αρχείου στο filesystem
+//        String storagePath = FileStorageService.saveFile(docId, pdfBytes);
+//        doc.setStoragePath(storagePath);
+//        db.dbTransactions.storeWithMergeObject(doc); // Ενημέρωση με διαδρομή αποθήκευσης
+//
+//        return docId;
+//    }
 
     public static DocumentSignature signDocument(
             DocumentFile doc, String scheme) throws Exception {
