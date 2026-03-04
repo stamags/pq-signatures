@@ -53,6 +53,8 @@ public class LoginBean implements Serializable {
     private List<Tbluser> usersList;
     //Oblects
     private Tbluser user;
+    /** Κωδικός keystore του χρήστη (session). Ορίζεται μετά τη δημιουργία κλειδιών ή όταν «ξεκλειδώνει» για την τρέχουσα συνεδρία. */
+    private char[] keystorePassword;
     //Είναι μεταβλητές για να πάρουμε απο το property αρχείο τα δεδομένα.
     public static String currentEsso = "";
     private String googleClientId = "1041078813908-78r2hcsv75bitv7t0o5anbci4lkfthqk.apps.googleusercontent.com";
@@ -453,6 +455,14 @@ public class LoginBean implements Serializable {
      */
     public void setUser(Tbluser user) {
         this.user = user;
+    }
+
+    public char[] getKeystorePassword() {
+        return keystorePassword;
+    }
+
+    public void setKeystorePassword(char[] keystorePassword) {
+        this.keystorePassword = keystorePassword;
     }
 
     /**

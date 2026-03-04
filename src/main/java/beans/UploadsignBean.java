@@ -1,19 +1,22 @@
 package beans;
 
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import model.DocumentFile;
 import model.DocumentSignature;
+import model.Tbluser;
 import org.primefaces.model.file.UploadedFile;
 import rest.DocumentService;
 import utils.DocumentAuditService;
 import utils.FacesUtil;
 import utils.FileStorageService;
+import utils.UserKeystoreService;
 import db.dbTransactions;
 
 import java.io.Serializable;
 
-@Named
+@Named("uploadsignBean")
 @ViewScoped
 public class UploadsignBean implements Serializable {
 
@@ -23,13 +26,27 @@ public class UploadsignBean implements Serializable {
     private Long lastDocumentId;
     private Long lastSignatureId;
 
+    @Inject
+    private LoginBean loginBean;
 
-
-    public void uploadAndSign() {
+    public String uploadAndSign() {
+        Tbluser user = loginBean != null ? loginBean.getUser() : null;
+        if (user == null) {
+            FacesUtil.error("Δεν είστε συνδεδεμένος.");
+            return null;
+        }
+        if (!UserKeystoreService.hasUserKeystore(user.getUsername())) {
+            FacesUtil.error("Πρέπει πρώτα να δημιουργήσετε τα προσωπικά σας κλειδιά υπογραφής. Μετάβαση στη σελίδα «Προσωπικά κλειδιά».");
+            return "/webContent/user-keys?faces-redirect=true";
+        }
+        if (loginBean.getKeystorePassword() == null || loginBean.getKeystorePassword().length == 0) {
+            FacesUtil.error("Πρέπει να εισάγετε τον κωδικό keystore σας. Μετάβαση στη σελίδα «Προσωπικά κλειδιά» για να ξεκλειδώσετε.");
+            return "/webContent/user-keys?faces-redirect=true";
+        }
         try {
             if (uploadedFile == null || uploadedFile.getContent() == null || uploadedFile.getContent().length == 0) {
                 FacesUtil.error("Παρακαλώ επιλέξτε ένα αρχείο PDF.");
-                return;
+                return null;
             }
 
             byte[] pdfBytes = uploadedFile.getContent();
@@ -66,12 +83,14 @@ public class UploadsignBean implements Serializable {
             DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_UPLOAD, DocumentAuditService.STATUS_SUCCESS);
             DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_SIGN, DocumentAuditService.STATUS_SUCCESS);
             FacesUtil.info("Upload & Sign ολοκληρώθηκε. docId=" + lastDocumentId + ", sigId=" + lastSignatureId);
+            return null;
 
         } catch (Exception e) {
             if (lastDocumentId != null) {
                 DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_SIGN, DocumentAuditService.STATUS_FAILURE);
             }
             FacesUtil.error("Σφάλμα: " + e.getMessage());
+            return null;
         }
     }
 

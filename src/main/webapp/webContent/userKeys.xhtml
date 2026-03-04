@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+  <ui:define name="title">Προσωπικά κλειδιά υπογραφής</ui:define>
+  <ui:define name="head">
+    <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+  </ui:define>
+  <ui:define name="content">
+
+    <p:panel header="Προσωπικά κλειδιά υπογραφής (RSA + PQC)">
+      <h:form id="form">
+
+        <p:messages id="msgs" showDetail="true" closable="true"/>
+
+        <p:panel rendered="#{userKeysBean.hasKeys}" style="margin-bottom: 15px;">
+<!--          <p:message for="info" severity="info"/>-->
+          <p>Έχετε ήδη δημιουργήσει προσωπικά κλειδιά. Μπορείτε να υπογράφετε από τη σελίδα <strong>Upload / Υπογραφή</strong>.</p>
+        </p:panel>
+
+        <p:panel header="Δημιουργία νέων κλειδιών" rendered="#{not userKeysBean.hasKeys}">
+          <p>Για να υπογράφετε έγγραφα με το δικό σας identity, δημιουργήστε πρώτα τα προσωπικά σας κλειδιά. Θα χρειαστείτε τον κωδικό κάθε φορά που θα υπογράφετε (ή θα τον εισάγετε μία φορά ανά σύνδεση).</p>
+          <p:spacer height="10"/>
+          <p:outputLabel for="pwd" value="Κωδικός keystore:"/>
+          <p:password id="pwd" value="#{userKeysBean.password}" feedback="true" required="true" requiredMessage="Υποχρεωτικό πεδίο" minlength="4"/>
+          <p:spacer height="8"/>
+          <p:outputLabel for="conf" value="Επιβεβαίωση κωδικού:"/>
+          <p:password id="conf" value="#{userKeysBean.confirmPassword}" feedback="true" required="true" requiredMessage="Υποχρεωτικό πεδίο"/>
+          <p:spacer height="12"/>
+          <p:commandButton value="Δημιούργησε τα κλειδιά μου"
+                           icon="pi pi-key"
+                           action="#{userKeysBean.createKeys}"
+                           update="msgs form"
+                           process="@form"/>
+        </p:panel>
+
+      </h:form>
+    </p:panel>
+
+  </ui:define>
+</ui:composition>

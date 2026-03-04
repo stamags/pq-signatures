@@ -62,6 +62,10 @@
                                             outcome="/webContent/dashboard"
                                             rendered="#{LoginBean.security.foundPageAccess('dashboard') or LoginBean.isAdmin()}"/>
 
+                                <p:menuitem id="userKeys" value="Προσωπικά κλειδιά" icon="fa fa-key"
+                                            outcome="/webContent/userKeys"
+                                            rendered="#{LoginBean.security.foundPageAccess('uploadsign')}"/>
+
                             </p:submenu>
 
 

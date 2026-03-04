@@ -1,12 +1,15 @@
 package signatures;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import utils.UserKeystoreService;
 
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
@@ -80,9 +83,64 @@ public class KeyLoader {
     public static PublicKey loadPublicKey(String path, String algorithm) throws Exception {
         Path keyPath = resolveKeyPath(path);
         byte[] der = readKeyBytes(keyPath); // <-- Base64 -> DER
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(der);
+        return publicKeyFromDer(der, algorithm);
+    }
 
-        // Για DILITHIUM/DILITHIUM3, χρήση BC provider
+    // ---------- Φόρτωση κλειδιών ανά χρήστη (από UserKeystoreService) ----------
+
+    /**
+     * Φόρτωση ιδιωτικού κλειδιού RSA από το keystore του χρήστη.
+     */
+    public static PrivateKey loadRsaPrivateKeyForUser(String username, char[] keystorePassword) throws Exception {
+        Path keystorePath = UserKeystoreService.getKeystorePath(username);
+        if (!Files.exists(keystorePath)) {
+            throw new Exception("User keystore not found for: " + username + " at " + keystorePath.toAbsolutePath());
+        }
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        try (InputStream is = Files.newInputStream(keystorePath)) {
+            ks.load(is, keystorePassword);
+        }
+        KeyStore.ProtectionParameter protParam = new KeyStore.PasswordProtection(keystorePassword);
+        KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) ks.getEntry(UserKeystoreService.RSA_ALIAS, protParam);
+        if (entry == null) {
+            throw new Exception("RSA key entry not found in keystore for: " + username);
+        }
+        return entry.getPrivateKey();
+    }
+
+    /**
+     * Φόρτωση δημόσιου κλειδιού RSA του χρήστη (από αρχείο, χωρίς κωδικό).
+     */
+    public static PublicKey loadRsaPublicKeyForUser(String username) throws Exception {
+        Path path = UserKeystoreService.getRsaPublicKeyPath(username);
+        byte[] der = readKeyBytesFromPath(path);
+        return publicKeyFromDer(der, "RSA");
+    }
+
+    /**
+     * Φόρτωση ιδιωτικού κλειδιού PQC (Dilithium) του χρήστη.
+     */
+    public static PrivateKey loadPqcPrivateKeyForUser(String username) throws Exception {
+        Path path = UserKeystoreService.getPqcPrivateKeyPath(username);
+        byte[] der = readKeyBytesFromPath(path);
+        KeyFactory kf = KeyFactory.getInstance("DILITHIUM3", "BC");
+        return kf.generatePrivate(new PKCS8EncodedKeySpec(der));
+    }
+
+    /**
+     * Φόρτωση δημόσιου κλειδιού PQC (Dilithium) του χρήστη.
+     */
+    public static PublicKey loadPqcPublicKeyForUser(String username) throws Exception {
+        Path path = UserKeystoreService.getPqcPublicKeyPath(username);
+        byte[] der = readKeyBytesFromPath(path);
+        return publicKeyFromDer(der, "DILITHIUM");
+    }
+
+    /**
+     * Δημιουργία PublicKey από DER bytes και αλγόριθμο.
+     */
+    private static PublicKey publicKeyFromDer(byte[] der, String algorithm) throws Exception {
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(der);
         KeyFactory kf;
         if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
             kf = KeyFactory.getInstance("DILITHIUM3", "BC");
@@ -90,6 +148,22 @@ public class KeyLoader {
             kf = KeyFactory.getInstance(algorithm);
         }
         return kf.generatePublic(spec);
+    }
+
+    /**
+     * Ανάγνωση Base64-encoded κλειδιού από Path (ίδια λογική με readKeyBytes).
+     */
+    private static byte[] readKeyBytesFromPath(Path keyPath) throws Exception {
+        if (!Files.exists(keyPath)) {
+            throw new Exception("Key file not found: " + keyPath.toAbsolutePath());
+        }
+        String s = Files.readString(keyPath, StandardCharsets.UTF_8).trim();
+        s = s.replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s+", "");
+        return Base64.getDecoder().decode(s);
     }
 
     private static byte[] readKeyBytes(Path keyPath) throws Exception {

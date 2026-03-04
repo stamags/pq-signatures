@@ -58,6 +58,10 @@ public class DocumentSignature implements Serializable {
     @Column(name = "SIGN_TIME", nullable = false)
     private Date signTime;
 
+    @JoinColumn(name = "idUser", referencedColumnName = "idUser", nullable = true)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Tbluser idUser;
+
     public DocumentSignature() {}
 
     @PrePersist
@@ -97,6 +101,9 @@ public class DocumentSignature implements Serializable {
 
     public Date getSignTime() { return signTime; }
     public void setSignTime(Date signTime) { this.signTime = signTime; }
+
+    public Tbluser getIdUser() { return idUser; }
+    public void setIdUser(Tbluser idUser) { this.idUser = idUser; }
 
     @Override
     public int hashCode() { return (signatureId != null ? signatureId.hashCode() : 0); }
