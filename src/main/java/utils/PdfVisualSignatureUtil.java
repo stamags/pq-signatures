@@ -3,6 +3,7 @@ package utils;
 import beans.LoginBean;
 import jakarta.inject.Inject;
 import model.DocumentSignature;
+import model.Tbluser;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -126,20 +127,19 @@ public class PdfVisualSignatureUtil {
 
                 ty -= 16;
 
-                //TODO to username από loginbean
-               String username = "George Stamatis";
-// Username (από login)
+                // Όνομα υπογράφοντα: όνομα + επίθετο από idUser (μεταγραφή σε Latin για Helvetica)
+                String signerDisplay = toLatinForPdf(signerDisplayName(sig));
                 cs.beginText();
                 cs.setFont(PDType1Font.HELVETICA, 10);
                 cs.setNonStrokingColor(0, 0, 0);
                 cs.newLineAtOffset(textX, ty);
-                cs.showText("User: " + (username == null ? "" : username));
+                cs.showText("User: " + (signerDisplay == null ? "" : signerDisplay));
                 cs.endText();
 
                 ty -= 14;
 
-// Scheme
-                String scheme = sig.getScheme() == null ? "" : sig.getScheme();
+                // Scheme (μεταγραφή για Helvetica)
+                String scheme = toLatinForPdf(sig.getScheme() == null ? "" : sig.getScheme());
                 cs.beginText();
                 cs.setFont(PDType1Font.HELVETICA, 10);
                 cs.setNonStrokingColor(0, 0, 0);
@@ -149,7 +149,7 @@ public class PdfVisualSignatureUtil {
 
                 ty -= 14;
 
-// Date
+                // Date (μόνο αριθμοί/λατινικά)
                 if (sig.getSignTime() != null) {
                     String dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(sig.getSignTime());
                     cs.beginText();
@@ -171,5 +171,100 @@ public class PdfVisualSignatureUtil {
             tmpl.save(baos);
             return new ByteArrayInputStream(baos.toByteArray());
         }
+    }
+
+    /** Όνομα + επίθετο υπογράφοντα από idUser, αλλιώς username, αλλιώς "User". */
+    private static String signerDisplayName(DocumentSignature sig) {
+        if (sig == null || sig.getIdUser() == null) {
+            return "User";
+        }
+        Tbluser user = sig.getIdUser();
+        String name = user.getName() != null ? user.getName().trim() : "";
+        String surname = user.getSurname() != null ? user.getSurname().trim() : "";
+        String display = (name + " " + surname).trim();
+        if (!display.isEmpty()) {
+            return display;
+        }
+        return user.getUsername() != null ? user.getUsername() : "User";
+    }
+
+    /**
+     * Μετατρέπει κείμενο σε Latin/ASCII ώστε να εμφανίζεται σωστά με Helvetica (WinAnsiEncoding).
+     * Ελληνικά γράμματα μεταγράφονται σε Latin (π.χ. Π→P, α→a). Public για χρήση και από PdfSignatureEmbedder.
+     */
+    public static String toLatinForPdf(String text) {
+        if (text == null || text.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder(text.length());
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c >= 0x20 && c <= 0x7E) {
+                sb.append(c);
+                continue;
+            }
+            switch (c) {
+                case 'Α': sb.append('A'); break;
+                case 'Β': sb.append('B'); break;
+                case 'Γ': sb.append('G'); break;
+                case 'Δ': sb.append('D'); break;
+                case 'Ε': sb.append('E'); break;
+                case 'Ζ': sb.append('Z'); break;
+                case 'Η': sb.append('H'); break;
+                case 'Θ': sb.append("Th"); break;
+                case 'Ι': sb.append('I'); break;
+                case 'Κ': sb.append('K'); break;
+                case 'Λ': sb.append('L'); break;
+                case 'Μ': sb.append('M'); break;
+                case 'Ν': sb.append('N'); break;
+                case 'Ξ': sb.append('X'); break;
+                case 'Ο': sb.append('O'); break;
+                case 'Π': sb.append('P'); break;
+                case 'Ρ': sb.append('R'); break;
+                case 'Σ': sb.append('S'); break;
+                case 'Τ': sb.append('T'); break;
+                case 'Υ': sb.append('Y'); break;
+                case 'Φ': sb.append('F'); break;
+                case 'Χ': sb.append("Ch"); break;
+                case 'Ψ': sb.append("Ps"); break;
+                case 'Ω': sb.append('O'); break;
+                case 'α': sb.append('a'); break;
+                case 'β': sb.append('b'); break;
+                case 'γ': sb.append('g'); break;
+                case 'δ': sb.append('d'); break;
+                case 'ε': sb.append('e'); break;
+                case 'ζ': sb.append('z'); break;
+                case 'η': sb.append('h'); break;
+                case 'θ': sb.append("th"); break;
+                case 'ι': sb.append('i'); break;
+                case 'κ': sb.append('k'); break;
+                case 'λ': sb.append('l'); break;
+                case 'μ': sb.append('m'); break;
+                case 'ν': sb.append('n'); break;
+                case 'ξ': sb.append('x'); break;
+                case 'ο': sb.append('o'); break;
+                case 'π': sb.append('p'); break;
+                case 'ρ': sb.append('r'); break;
+                case 'σ': sb.append('s'); break;
+                case 'ς': sb.append('s'); break;
+                case 'τ': sb.append('t'); break;
+                case 'υ': sb.append('u'); break;
+                case 'φ': sb.append('f'); break;
+                case 'χ': sb.append("ch"); break;
+                case 'ψ': sb.append("ps"); break;
+                case 'ω': sb.append('o'); break;
+                case 'ά': sb.append('a'); break;
+                case 'έ': sb.append('e'); break;
+                case 'ή': sb.append('h'); break;
+                case 'ί': sb.append('i'); break;
+                case 'ό': sb.append('o'); break;
+                case 'ύ': sb.append('u'); break;
+                case 'ώ': sb.append('o'); break;
+                case 'ϊ': sb.append('i'); break;
+                case 'ϋ': sb.append('u'); break;
+                case 'ΐ': sb.append('i'); break;
+                case 'ΰ': sb.append('u'); break;
+                default: sb.append('?');
+            }
+        }
+        return sb.toString();
     }
 }

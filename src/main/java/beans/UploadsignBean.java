@@ -89,7 +89,12 @@ public class UploadsignBean implements Serializable {
             if (lastDocumentId != null) {
                 DocumentAuditService.recordEvent(lastDocumentId, DocumentAuditService.ACTION_SIGN, DocumentAuditService.STATUS_FAILURE);
             }
-            FacesUtil.error("Σφάλμα: " + e.getMessage());
+            String msg = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
+            if (msg.contains("password") || msg.contains("keystore") || msg.contains("key") || msg.contains("no such file") || msg.contains("not found")) {
+                FacesUtil.error("Σφάλμα κλειδιών ή κωδικού. Δοκιμάστε ξανά από «Προσωπικά κλειδιά» να ξεκλειδώσετε με τον κωδικό keystore, ή να δημιουργήσετε νέα κλειδιά αν ξεχάσατε τον κωδικό.");
+            } else {
+                FacesUtil.error("Σφάλμα: " + e.getMessage());
+            }
             return null;
         }
     }

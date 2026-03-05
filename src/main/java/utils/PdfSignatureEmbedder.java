@@ -51,8 +51,8 @@ public class PdfSignatureEmbedder {
             pdSignature.setSubFilter(PDSignature.SUBFILTER_ETSI_CADES_DETACHED);
 
             String scheme = normalizeScheme(signature.getScheme());
-            String name = (username != null && !username.isEmpty() ? username : "PQ-Signatures System") + (scheme.isEmpty() ? "" : " (" + scheme + ")");
-            pdSignature.setName(name);
+            String nameRaw = (username != null && !username.isEmpty() ? username : "PQ-Signatures System") + (scheme.isEmpty() ? "" : " (" + scheme + ")");
+            pdSignature.setName(PdfVisualSignatureUtil.toLatinForPdf(nameRaw));
             pdSignature.setReason("Digital Signature");
             pdSignature.setLocation("Greece");
 

@@ -93,22 +93,6 @@
                                     value="#{record.phone}"/>
                         </p:column>
 
-                        <p:column headerText="Μάρκα Αυτοκινήτου" sortBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getMarkaAutokinitou()}"
-                                  filterBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getMarkaAutokinitou()}"
-                                  filterMatchMode="contains"
-                                  style="width: 100px;height: auto">
-                            <h:outputText
-                                    value="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getMarkaAutokinitou()}"/>
-                        </p:column>
-
-                        <p:column headerText="Αριθμός Κυκλοφορίας" sortBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getArithmosKikloforias()}"
-                                  filterBy="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getArithmosKikloforias()}"
-                                  filterMatchMode="contains"
-                                  style="width: 100px;height: auto">
-                            <h:outputText
-                                  value="#{OloiOiXristesBean.getParkingUsersCarMap().get(record.idUser).getArithmosKikloforias()}"/>
-                        </p:column>
-
 
                         <p:column headerText="Ενεργός Χρήστης" sortBy="#{record.userActive}"
                                   filterBy="#{record.userActive}"

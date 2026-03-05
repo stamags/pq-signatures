@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
@@ -110,6 +111,26 @@ public class UserKeystoreService {
         Path keystore = getKeystorePath(username);
         Path pqcPriv = getPqcPrivateKeyPath(username);
         return Files.exists(keystore) && Files.exists(pqcPriv);
+    }
+
+    /**
+     * Διαγράφει όλα τα κλειδιά του χρήστη (για περίπτωση "ξεχάσα τον κωδικό").
+     * Μετά ο χρήστης μπορεί να δημιουργήσει νέα κλειδιά. Οι παλιές υπογραφές του δεν θα επαληθεύονται.
+     */
+    public static void deleteUserKeystore(String username) throws Exception {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username is required");
+        }
+        Path userDir = getUserKeysDir(username);
+        if (!Files.exists(userDir)) {
+            return;
+        }
+        try (Stream<Path> list = Files.list(userDir)) {
+            for (Path p : list.toList()) {
+                Files.deleteIfExists(p);
+            }
+        }
+        Files.deleteIfExists(userDir);
     }
 
     /**

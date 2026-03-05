@@ -90,6 +90,30 @@ public class UserKeysBean implements Serializable {
         }
     }
 
+    /**
+     * Ξέχασα τον κωδικό: διαγραφή κλειδιών ώστε ο χρήστης να μπορεί να δημιουργήσει νέα.
+     * Ο κωδικός keystore δεν ανακτάται. Οι παλιές υπογραφές δεν θα επαληθεύονται.
+     */
+    public String resetKeysForgotPassword() {
+        Tbluser u = getCurrentUser();
+        if (u == null) {
+            FacesUtil.error("Δεν είστε συνδεδεμένοι.");
+            return null;
+        }
+        try {
+            UserKeystoreService.deleteUserKeystore(u.getUsername());
+            if (loginBean != null) {
+                loginBean.setKeystorePassword(null);
+            }
+            sessionUnlockPassword = "";
+            FacesUtil.info("Τα παλιά κλειδιά διαγράφηκαν. Μπορείτε να δημιουργήσετε νέα κλειδιά παρακάτω.");
+            return null;
+        } catch (Exception e) {
+            FacesUtil.error("Σφάλμα διαγραφής κλειδιών: " + e.getMessage());
+            return null;
+        }
+    }
+
     private Tbluser getCurrentUser() {
         return loginBean != null ? loginBean.getUser() : null;
     }
