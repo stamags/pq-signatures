@@ -2,17 +2,22 @@ package rest;
 
 import model.DocumentSignature;
 import model.DocumentFile;
+import model.Tbluser;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import signatures.KeyLoader;
 import db.JPAUtil;
 import utils.FileStorageService;
 import utils.PdfSignatureEmbedder;
+import utils.PdfCanonicalUtil;
 import utils.PdfSignatureVerifier;
+import java.nio.file.Files;
 import java.nio.file.Path;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import java.nio.file.Path;
 import java.security.*;
 import java.util.List;
 
@@ -56,25 +61,23 @@ public class DocumentService {
 //    }
 
     public static DocumentSignature signDocument(
-            DocumentFile doc, String scheme) throws Exception {
+            DocumentFile doc, String scheme, Tbluser user, char[] keystorePassword) throws Exception {
 
-        // ΚΡΙΣΙΜΟ: Πρέπει να υπογράφουμε τα bytes που θα ορίσει το ByteRange
-        // Αυτό σημαίνει ότι πρέπει να υπογράφουμε ΜΕΣΑ στο ίδιο external signing session
-        // που θα γράψει το ByteRange. Η embedSignature θα κάνει αυτό.
+        if (user == null || user.getUsername() == null) {
+            throw new IllegalArgumentException("User is required for signing");
+        }
+        if (keystorePassword == null || keystorePassword.length == 0) {
+            throw new IllegalArgumentException("Keystore password is required for signing");
+        }
 
         DocumentSignature sig = new DocumentSignature();
         sig.setDocumentId(doc);
+        sig.setIdUser(user);
         sig.setScheme(scheme);
-        sig.setSignTime(new java.util.Date()); // Ορισμός χρόνου υπογραφής
+        sig.setSignTime(new java.util.Date());
 
-        // Ενσωμάτωση υπογραφής στο PDF
-        // Η embedSignature θα:
-        // 1. Προσθέσει metadata/annotations και signature field
-        // 2. Στο addPdfCryptographicSignature, θα πάρει τα bytes από externalSigning.getContent()
-        // 3. Θα υπογράψει αυτά τα bytes με RSA/PQC (raw signatures) και θα τα αποθηκεύσει στο sig
-        // 4. Θα δημιουργήσει το CMS blob και θα το προσθέσει στο PDF
         try {
-            PdfSignatureEmbedder.embedSignature(doc.getStoragePath(), sig);
+            PdfSignatureEmbedder.embedSignature(doc.getDocumentId(), sig, user.getUsername(), keystorePassword);
         } catch (Exception e) {
             // Καταγραφή warning αλλά μην αποτύχει - η υπογραφή είναι ακόμα στη βάση δεδομένων
             System.err.println("Warning: Αποτυχία ενσωμάτωσης υπογραφής στο PDF: " + e.getMessage());
@@ -114,8 +117,20 @@ public class DocumentService {
                 ", PQC: " + (sig.getPqcSignature() != null ? sig.getPqcSignature().length + " bytes" : "null") +
                 ", Scheme: " + sig.getScheme());
 
-        PublicKey rsaPublic = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
-        PublicKey pqPublic  = KeyLoader.loadPublicKey("data/pqc-public.key", "DILITHIUM");
+        // Φόρτωση δημόσιων κλειδιών του υπογράφοντα (αν idUser υπάρχει), αλλιώς global για παλιές υπογραφές
+        PublicKey rsaPublic;
+        PublicKey pqPublic;
+        Tbluser signer = sig.getIdUser();
+        if (signer != null && signer.getUsername() != null) {
+            String username = signer.getUsername();
+            rsaPublic = KeyLoader.loadRsaPublicKeyForUser(username);
+            pqPublic = KeyLoader.loadPqcPublicKeyForUser(username);
+            System.out.println("DEBUG Verify: Using signer keys for user: " + username);
+        } else {
+            rsaPublic = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
+            pqPublic = KeyLoader.loadPublicKey("data/pqc-public.key", "DILITHIUM");
+            System.out.println("DEBUG Verify: Using global keys (legacy signature without idUser)");
+        }
 
         // ΚΡΙΣΙΜΟ: Επαλήθευση υπογραφής με βάση το ByteRange του PDF
         // Αυτή είναι η σωστή προσέγγιση για PDF signature verification

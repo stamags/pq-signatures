@@ -72,9 +72,9 @@ public class UploadsignBean implements Serializable {
             //Επαναφόρτωση DocumentFile από τη βάση δεδομένων για να είναι managed (όχι detached)
             DocumentFile managedDoc = dbTransactions.getObjectById(DocumentFile.class, lastDocumentId);
 
-            // Υπογραφή
-            DocumentSignature sig =
-                    DocumentService.signDocument(managedDoc, scheme);
+            // Υπογραφή με κλειδιά του τρέχοντα χρήστη
+            DocumentSignature sig = DocumentService.signDocument(
+                    managedDoc, scheme, loginBean.getUser(), loginBean.getKeystorePassword());
 
             dbTransactions.storeObject(sig);
             lastSignatureId = sig.getSignatureId();

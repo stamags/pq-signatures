@@ -4,6 +4,7 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import model.Tbluser;
+import signatures.KeyLoader;
 import utils.FacesUtil;
 import utils.UserKeystoreService;
 
@@ -19,6 +20,8 @@ public class UserKeysBean implements Serializable {
 
     private String password = "";
     private String confirmPassword = "";
+    /** Κωδικός για ξεκλείδωμα keystore στην τρέχουσα συνεδρία (όταν έχει ήδη κλειδιά). */
+    private String sessionUnlockPassword = "";
 
     @Inject
     private LoginBean loginBean;
@@ -26,6 +29,13 @@ public class UserKeysBean implements Serializable {
     public boolean isHasKeys() {
         Tbluser u = getCurrentUser();
         return u != null && UserKeystoreService.hasUserKeystore(u.getUsername());
+    }
+
+    /** Απόλυτη διαδρομή του φακέλου κλειδιών (για εμφάνιση στη σελίδα). */
+    public String getKeysFolderPath() {
+        Tbluser u = getCurrentUser();
+        if (u == null) return "";
+        return UserKeystoreService.getUserKeysDir(u.getUsername()).toAbsolutePath().toString();
     }
 
     public String createKeys() {
@@ -51,6 +61,31 @@ public class UserKeysBean implements Serializable {
             return null;
         } catch (Exception e) {
             FacesUtil.error("Σφάλμα δημιουργίας κλειδιών: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Ξεκλείδωμα keystore για την τρέχουσα συνεδρία (εισάγετε τον κωδικό που δώσατε κατά τη δημιουργία κλειδιών).
+     */
+    public String unlockForSession() {
+        Tbluser u = getCurrentUser();
+        if (u == null) {
+            FacesUtil.error("Δεν είστε συνδεδεμένος.");
+            return null;
+        }
+        if (sessionUnlockPassword == null || sessionUnlockPassword.isEmpty()) {
+            FacesUtil.error("Εισάγετε τον κωδικό keystore σας.");
+            return null;
+        }
+        try {
+            KeyLoader.loadRsaPrivateKeyForUser(u.getUsername(), sessionUnlockPassword.toCharArray());
+            loginBean.setKeystorePassword(sessionUnlockPassword.toCharArray());
+            sessionUnlockPassword = "";
+            FacesUtil.info("Ξεκλειδώσατε τα κλειδιά σας. Μπορείτε πλέον να υπογράφετε.");
+            return null;
+        } catch (Exception e) {
+            FacesUtil.error("Λάθος κωδικός. Δοκιμάστε ξανά.");
             return null;
         }
     }
@@ -81,5 +116,13 @@ public class UserKeysBean implements Serializable {
 
     public void setLoginBean(LoginBean loginBean) {
         this.loginBean = loginBean;
+    }
+
+    public String getSessionUnlockPassword() {
+        return sessionUnlockPassword;
+    }
+
+    public void setSessionUnlockPassword(String sessionUnlockPassword) {
+        this.sessionUnlockPassword = sessionUnlockPassword;
     }
 }

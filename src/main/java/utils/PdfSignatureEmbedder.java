@@ -22,21 +22,17 @@ public class PdfSignatureEmbedder {
     private PdfSignatureEmbedder() {}
 
     /**
-     * External signing + visible signature + raw RSA/PQC πάνω στα ByteRange bytes.
+     * Υπογραφή με κλειδιά συγκεκριμένου χρήστη (username + keystore password).
      */
-    public static void embedSignature(String pdfPath, DocumentSignature signature) throws Exception {
-        addPdfCryptographicSignature(pdfPath, signature);
-    }
-
-    public static void embedSignature(Long documentId, DocumentSignature signature) throws Exception {
+    public static void embedSignature(Long documentId, DocumentSignature signature, String username, char[] keystorePassword) throws Exception {
         Path filePath = FileStorageService.getFilePath(documentId);
         if (!Files.exists(filePath)) {
             throw new Exception("PDF file not found for document ID: " + documentId);
         }
-        embedSignature(filePath.toString(), signature);
+        addPdfCryptographicSignature(filePath.toString(), signature, username, keystorePassword);
     }
 
-    private static void addPdfCryptographicSignature(String pdfPath, DocumentSignature signature) throws Exception {
+    private static void addPdfCryptographicSignature(String pdfPath, DocumentSignature signature, String username, char[] keystorePassword) throws Exception {
         Path original = Paths.get(pdfPath);
         Path temp = Files.createTempFile("pdf_signed_", ".pdf");
 
@@ -55,7 +51,7 @@ public class PdfSignatureEmbedder {
             pdSignature.setSubFilter(PDSignature.SUBFILTER_ETSI_CADES_DETACHED);
 
             String scheme = normalizeScheme(signature.getScheme());
-            String name = "PQ-Signatures System" + (scheme.isEmpty() ? "" : " (" + scheme + ")");
+            String name = (username != null && !username.isEmpty() ? username : "PQ-Signatures System") + (scheme.isEmpty() ? "" : " (" + scheme + ")");
             pdSignature.setName(name);
             pdSignature.setReason("Digital Signature");
             pdSignature.setLocation("Greece");
@@ -96,12 +92,11 @@ public class PdfSignatureEmbedder {
                 System.out.println("DEBUG ByteRange bytes len=" + bytesToSign.length +
                         ", SHA-256(first16)=" + toHex(Arrays.copyOf(hash, 16)));
 
-                // 5) Raw RSA/PQC signatures (για DB verify)
-                signRawBytesForDatabase(signature, scheme, bytesToSign);
+                // 5) Raw RSA/PQC signatures (για DB verify) με κλειδιά χρήστη
+                signRawBytesForDatabase(signature, scheme, bytesToSign, username, keystorePassword);
 
-                // 6) CMS/PKCS#7 signature bytes για PDF /Contents
-                // Απαιτεί δική σου υλοποίηση RsaSignatureInterface (όπως ήδη έχεις)
-                RsaSignatureInterface signatureInterface = new RsaSignatureInterface();
+                // 6) CMS/PKCS#7 signature bytes για PDF /Contents (με κλειδιά χρήστη)
+                RsaSignatureInterface signatureInterface = new RsaSignatureInterface(username, keystorePassword);
                 byte[] cmsSignature = signatureInterface.sign(new ByteArrayInputStream(bytesToSign));
 
                 // 7) Write CMS into PDF
@@ -113,10 +108,11 @@ public class PdfSignatureEmbedder {
         Files.move(temp, original, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    private static void signRawBytesForDatabase(DocumentSignature signatureObj, String scheme, byte[] bytesToSign) throws Exception {
-        // RSA
+    private static void signRawBytesForDatabase(DocumentSignature signatureObj, String scheme, byte[] bytesToSign,
+                                                String username, char[] keystorePassword) throws Exception {
+        // RSA – με ιδιωτικό κλειδί χρήστη
         if ("RSA".equals(scheme) || "HYBRID".equals(scheme)) {
-            PrivateKey rsaPriv = KeyLoader.loadPrivateKey("data/rsa-private.key", "RSA");
+            PrivateKey rsaPriv = KeyLoader.loadRsaPrivateKeyForUser(username, keystorePassword);
             Signature rsa = Signature.getInstance("SHA256withRSA");
             rsa.initSign(rsaPriv);
             rsa.update(bytesToSign);
@@ -126,9 +122,9 @@ public class PdfSignatureEmbedder {
             signatureObj.setRsaSignature(null);
         }
 
-        // PQC
+        // PQC – με ιδιωτικό κλειδί χρήστη
         if ("DILITHIUM".equals(scheme) || "HYBRID".equals(scheme)) {
-            PrivateKey pqPriv = KeyLoader.loadPrivateKey("data/pqc-private.key", "DILITHIUM");
+            PrivateKey pqPriv = KeyLoader.loadPqcPrivateKeyForUser(username);
             Signature pq = Signature.getInstance("DILITHIUM3", "BC");
             pq.initSign(pqPriv);
             pq.update(bytesToSign);

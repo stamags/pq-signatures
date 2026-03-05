@@ -13,6 +13,8 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -106,6 +108,25 @@ public class KeyLoader {
             throw new Exception("RSA key entry not found in keystore for: " + username);
         }
         return entry.getPrivateKey();
+    }
+
+    /**
+     * Φόρτωση πιστοποιητικού RSA από το keystore του χρήστη (για CMS).
+     */
+    public static X509Certificate loadRsaCertificateForUser(String username, char[] keystorePassword) throws Exception {
+        Path keystorePath = UserKeystoreService.getKeystorePath(username);
+        if (!Files.exists(keystorePath)) {
+            throw new Exception("User keystore not found for: " + username);
+        }
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        try (InputStream is = Files.newInputStream(keystorePath)) {
+            ks.load(is, keystorePassword);
+        }
+        Certificate cert = ks.getCertificate(UserKeystoreService.RSA_ALIAS);
+        if (cert == null || !(cert instanceof X509Certificate)) {
+            throw new Exception("RSA certificate not found in keystore for: " + username);
+        }
+        return (X509Certificate) cert;
     }
 
     /**

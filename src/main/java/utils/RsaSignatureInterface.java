@@ -43,47 +43,40 @@ public class RsaSignatureInterface implements SignatureInterface {
         }
     }
 
+    /** Constructor με κλειδιά χρήστη (από keystore). */
+    public RsaSignatureInterface(String username, char[] keystorePassword) throws Exception {
+        this.privateKey = KeyLoader.loadRsaPrivateKeyForUser(username, keystorePassword);
+        this.certificate = KeyLoader.loadRsaCertificateForUser(username, keystorePassword);
+    }
+
+    /** Legacy: global κλειδιά (data/). Διατηρήθηκε για συμβατότητα. */
     public RsaSignatureInterface() throws Exception {
         this.privateKey = KeyLoader.loadPrivateKey("data/rsa-private.key", "RSA");
         this.certificate = createSelfSignedCertificate(privateKey);
     }
 
     /**
-     * Δημιουργεί ένα self-signed X509 certificate από το private key.
-     * Αυτό είναι απαραίτητο για PAdES υπογραφές.
+     * Δημιουργεί ένα self-signed X509 certificate από το private key (μόνο για global keys).
      */
     private X509Certificate createSelfSignedCertificate(PrivateKey privateKey) throws Exception {
         PublicKey publicKey = KeyLoader.loadPublicKey("data/rsa-public.key", "RSA");
-
-        // Χρήση BouncyCastle για δημιουργία self-signed certificate
         X509v3CertificateBuilder certBuilder =
                 new X509v3CertificateBuilder(
                         new X500Name("CN=PQ-Signatures System, O=PQ-Signatures, C=GR"),
-                        getSerialNumber(),
+                        java.math.BigInteger.valueOf(System.currentTimeMillis()),
                         Calendar.getInstance().getTime(),
                         getExpiryDate(),
                         new X500Name("CN=PQ-Signatures System, O=PQ-Signatures, C=GR"),
-                        SubjectPublicKeyInfo.getInstance(
-                                publicKey.getEncoded())
+                        SubjectPublicKeyInfo.getInstance(publicKey.getEncoded())
                 );
-
-        ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256withRSA")
-                .setProvider("BC")
-                .build(privateKey);
-
+        ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256withRSA").setProvider("BC").build(privateKey);
         X509CertificateHolder certHolder = certBuilder.build(contentSigner);
-        return new JcaX509CertificateConverter()
-                .setProvider("BC")
-                .getCertificate(certHolder);
-    }
-
-    private java.math.BigInteger getSerialNumber() {
-        return java.math.BigInteger.valueOf(System.currentTimeMillis());
+        return new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
     }
 
     private java.util.Date getExpiryDate() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 10); // 10 χρόνια validity
+        cal.add(Calendar.YEAR, 10);
         return cal.getTime();
     }
 
