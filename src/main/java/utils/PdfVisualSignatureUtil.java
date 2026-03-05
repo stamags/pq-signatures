@@ -91,7 +91,7 @@ public class PdfVisualSignatureUtil {
                 cs.addRect(0, 0, w, h);
                 cs.fill();
 
-// --- BORDER ---
+                // --- BORDER ---
                 cs.setStrokingColor(180, 180, 180);
                 cs.setLineWidth(1f);
                 cs.addRect(0, 0, w, h);
@@ -105,7 +105,7 @@ public class PdfVisualSignatureUtil {
                 }
 
                 PDImageXObject logo = PDImageXObject.createFromByteArray(tmpl, logoBytes, "pqc-logo");
-// θέση/μέγεθος μέσα στο box (αριστερά)
+                // θέση/μέγεθος μέσα στο box (αριστερά)
                 float logoW = 48;
                 float logoH = 48;
                 float logoX = 10;

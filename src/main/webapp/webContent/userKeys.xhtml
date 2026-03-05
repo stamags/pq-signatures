@@ -8,6 +8,12 @@
     <ui:define name="title">Προσωπικά κλειδιά υπογραφής</ui:define>
     <ui:define name="head">
         <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+        <style type="text/css">
+            .user-keys-path { background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 6px; padding: 10px 14px; font-family: monospace; font-size: 0.9em; word-break: break-all; margin: 8px 0; }
+            .user-keys-warn { background: #fff8e6; border-left: 4px solid #f0ad4e; padding: 10px 12px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 0.9em; color: #5c5c5c; }
+            .user-keys-status { color: #2e7d32; font-weight: 600; margin-bottom: 4px; }
+            .user-keys-done-panel .ui-panel-titlebar { background: #e8f5e9; color: #1b5e20; }
+        </style>
     </ui:define>
     <ui:define name="content">
 
@@ -15,21 +21,6 @@
             <h:form id="form">
 
                 <p:messages id="msgs" showDetail="true" closable="true" redisplay="false"/>
-
-
-                    <p:panel header="Ξεκλείδωμα για αυτή τη συνεδρία" style="margin-top: 12px;">
-                        <p>Για να υπογράφετε, εισάγετε τον κωδικό keystore που ορίσατε κατά τη δημιουργία κλειδιών. Ο κωδικός θα ισχύει μέχρι να κλείσετε το browser ή να κάνετε logout.</p>
-                        <p:spacer height="10"/>
-                        <p:outputLabel for="unlockPwd" value="Κωδικός keystore:"/>
-                        <p:password id="unlockPwd" value="#{userKeysBean.sessionUnlockPassword}" feedback="false" required="true" requiredMessage="Υποχρεωτικό"/>
-                        <p:spacer height="10"/>
-                        <p:commandButton value="Ξεκλείδωμα"
-                                         icon="pi pi-lock-open"
-                                         action="#{userKeysBean.unlockForSession}"
-                                         update="msgs form"
-                                         process="@form"/>
-
-                </p:panel>
 
                 <p:panel header="Δημιουργία νέων κλειδιών" rendered="#{not userKeysBean.hasKeys}">
                     <p>Για να υπογράφετε έγγραφα με το δικό σας identity, δημιουργήστε πρώτα τα προσωπικά σας κλειδιά. Θα χρειαστείτε τον κωδικό κάθε φορά που θα υπογράφετε (ή θα τον εισάγετε μία φορά ανά σύνδεση).</p>
@@ -47,22 +38,38 @@
                                      process="@form"/>
                 </p:panel>
 
-                <p:panel rendered="#{userKeysBean.hasKeys}" style="margin-bottom: 15px;">
-                    <p>Έχετε ήδη δημιουργήσει προσωπικά κλειδιά.</p>
-                    <p style="margin-top: 8px; font-size: 0.9em; color: #666;">
-                        <strong>Φάκελος κλειδιών στο server:</strong><br/>
-                        <code>#{userKeysBean.keysFolderPath}</code>
-                    </p>
-                    <p style="margin-top: 8px; font-size: 0.85em; color: #888;">
-                        Ο κωδικός keystore <strong>δεν μπορεί να ανακτηθεί</strong> αν τον ξεχάσετε. Σε αυτή την περίπτωση μπορείτε να διαγράψετε τα κλειδιά και να δημιουργήσετε νέα (οι υπογραφές που έχετε ήδη κάνει δεν θα επαληθεύονται).
-                    </p>
-                    <p:commandButton value="Ξέχασα τον κωδικό – Διαγραφή κλειδιών και δημιουργία νέων"
-                                     icon="pi pi-refresh"
-                                     styleClass="ui-button-secondary">
-                        <p:confirm header="Επιβεβαίωση"
-                                   message="Δεν μπορούμε να ανακτήσουμε τον κωδικό. Θα διαγραφούν τα τρέχοντα κλειδιά και θα μπορείτε να δημιουργήσετε νέα. Οι έγγραφα που έχετε ήδη υπογράψει δεν θα επαληθεύονται. Θέλετε να συνεχίσετε;"/>
-                    </p:commandButton>
-
+                <p:panel rendered="#{userKeysBean.hasKeys}" style="margin-top: 15px;">
+                    <p:panel header="Ξεκλείδωμα για αυτή τη συνεδρία">
+                        <p>Για να υπογράφετε, εισάγετε τον κωδικό keystore που ορίσατε κατά τη δημιουργία κλειδιών. Ο κωδικός θα ισχύει μέχρι να κλείσετε το browser ή να κάνετε logout.</p>
+                        <p:spacer height="10"/>
+                        <p:outputLabel for="unlockPwd" value="Κωδικός keystore:"/>
+                        <p:password id="unlockPwd" value="#{userKeysBean.sessionUnlockPassword}" feedback="false" required="true" requiredMessage="Υποχρεωτικό"/>
+                        <p:spacer height="10"/>
+                        <p:commandButton value="Ξεκλείδωμα"
+                                         icon="pi pi-lock-open"
+                                         action="#{userKeysBean.unlockForSession}"
+                                         update="msgs form"
+                                         process="@form"/>
+                    </p:panel>
+                    <p:panel header="Κλειδιά δημιουργημένα" style="margin-top: 50px;" styleClass="user-keys-done-panel">
+                        <p class="user-keys-status">
+                            <i class="pi pi-check-circle" style="margin-right: 6px; vertical-align: middle;"></i>
+                            Έχετε ήδη δημιουργήσει προσωπικά κλειδιά.
+                        </p>
+                        <p style="margin: 12px 0 4px 0; font-size: 0.95em; color: #555;">
+                            <strong>Φάκελος κλειδιών στο server:</strong>
+                        </p>
+                        <div class="user-keys-path">#{userKeysBean.keysFolderPath}</div>
+                        <div class="user-keys-warn">
+                            Ο κωδικός keystore <strong>δεν μπορεί να ανακτηθεί</strong> αν τον ξεχάσετε. Σε αυτή την περίπτωση μπορείτε να διαγράψετε τα κλειδιά και να δημιουργήσετε νέα (οι υπογραφές που έχετε ήδη κάνει δεν θα επαληθεύονται).
+                        </div>
+                        <p:commandButton value="Ξέχασα τον κωδικό – Διαγραφή κλειδιών και δημιουργία νέων"
+                                         icon="pi pi-refresh"
+                                         styleClass="ui-button-secondary">
+                            <p:confirm header="Επιβεβαίωση"
+                                       message="Δεν μπορούμε να ανακτήσουμε τον κωδικό. Θα διαγραφούν τα τρέχοντα κλειδιά και θα μπορείτε να δημιουργήσετε νέα. Οι έγγραφα που έχετε ήδη υπογράψει δεν θα επαληθεύονται. Θέλετε να συνεχίσετε;"/>
+                        </p:commandButton>
+                    </p:panel>
                     <p:confirmDialog widgetVar="confirmForgotPwd" global="true" showEffect="fade" responsive="true" closable="true">
                         <p:commandButton value="Όχι" type="button" onclick="PF('confirmForgotPwd').hide()" styleClass="ui-confirmcancel-button"/>
                         <p:commandButton value="Ναι, διαγραφή κλειδιών" icon="pi pi-check" action="#{userKeysBean.resetKeysForgotPassword}" update="msgs form" process="@this" onclick="PF('confirmForgotPwd').hide()"/>
