@@ -209,95 +209,84 @@
         <!--        </p:dialog>-->
 
 
-        <!--        <p:dialog header="Προσθήκη Νέου Χρήστη "-->
-        <!--                  widgetVar="dlg5"-->
-        <!--                  width="600"-->
-        <!--                  modal="true"-->
-        <!--                  closable="true"-->
-        <!--                  rendered="#{missionstimelineBean.loginBean.newUser}">-->
+                <p:dialog header="Προσθήκη Νέου Χρήστη "
+                          widgetVar="dlg5"
+                          width="600"
+                          modal="true"
+                          closable="true"
+                          rendered="#{missionstimelineBean.loginBean.newUser}">
 
-        <!--            <div class="info">-->
-        <!--                Καλώς ήρθατε στην εφαμοργή! To username θα είναι το email σας! Παρακαλώ να αλλάξετε κωδικό και να συμπληρώσετε τα στοιχεία του αυτοκινήτου σας !-->
-        <!--            </div>-->
-        <!--            <p></p>-->
-        <!--            <h:form id="eisagogiPopUp2">-->
-        <!--                <p:growl id="growl2" sticky="false" showDetail="true" life="3000"/>-->
-        <!--                <h:panelGrid columns="2" cellpadding="5" id="newUser1">-->
-        <!--                    <h:outputText value="'Όνομα "/>-->
-        <!--                    <h:inputText id="name2"-->
-        <!--                                 value="#{missionstimelineBean.tbluser.name}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"/>-->
+                    <div class="info">
+                        Καλώς ήρθατε στην εφαμοργή! To username θα είναι το email σας! Παρακαλώ να αλλάξετε κωδικό και να συμπληρώσετε τα στοιχεία του αυτοκινήτου σας !
+                    </div>
+                    <p></p>
+                    <h:form id="eisagogiPopUp2">
+                        <p:growl id="growl2" sticky="false" showDetail="true" life="3000"/>
+                        <h:panelGrid columns="2" cellpadding="5" id="newUser1">
+                            <h:outputText value="'Όνομα "/>
+                            <h:inputText id="name2"
+                                         value="#{missionstimelineBean.tbluser.name}"
+                                         required="true"
+                                         requiredMessage="Πρέπει να συμπληρώσετε το Όνομα"/>
 
-        <!--                    <h:outputText value="Επίθετο "/>-->
-        <!--                    <h:inputText id="surname2"-->
-        <!--                                 value="#{missionstimelineBean.tbluser.surname}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε το Επίθετο"/>-->
+                            <h:outputText value="Επίθετο "/>
+                            <h:inputText id="surname2"
+                                         value="#{missionstimelineBean.tbluser.surname}"
+                                         required="true"
+                                         requiredMessage="Πρέπει να συμπληρώσετε το Επίθετο"/>
 
-        <!--                    <h:outputText value="Username "/>-->
-        <!--                    <h:inputText id="username2"-->
-        <!--                                 value="#{missionstimelineBean.tbluser.username}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε το username"/>-->
+                            <h:outputText value="Username "/>
+                            <h:inputText id="username2"
+                                         value="#{missionstimelineBean.tbluser.username}"
+                                         required="true"
+                                         requiredMessage="Πρέπει να συμπληρώσετε το username"/>
 
-        <!--                    <h:outputText value="Email "/>-->
-        <!--                    <h:inputText id="email2"-->
-        <!--                                 value="#{missionstimelineBean.tbluser.email}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε το Email"/>-->
+                            <h:outputText value="Email "/>
+                            <h:inputText id="email2"
+                                         value="#{missionstimelineBean.tbluser.email}"
+                                         required="true"
+                                         requiredMessage="Πρέπει να συμπληρώσετε το Email"/>
 
-        <!--                    <h:outputText value="Αριθμός Τηλεφώνου "/>-->
-        <!--                    <h:inputText id="phoneNumber2"-->
-        <!--                                 value="#{missionstimelineBean.tbluser.phone}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Τηλεφώνου"/>-->
+                            <h:outputText value="Αριθμός Τηλεφώνου "/>
+                            <h:inputText id="phoneNumber2"
+                                         value="#{missionstimelineBean.tbluser.phone}"
+                                         required="true"
+                                         requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Τηλεφώνου"/>
 
-        <!--                    <h:outputText  value="Password"/>-->
-        <!--                    <p:password id="password2"-->
-        <!--                                value="#{missionstimelineBean.passWord1}"-->
-        <!--                                toggleMask="true" redisplay="true"-->
-        <!--                                required="true"-->
-        <!--                                match="passwordrepeat2"-->
-        <!--                                label="Password Repeat"-->
-        <!--                                feedback="true"-->
-        <!--                                requiredMessage="Πρέπει να συμπληρώσετε το password">-->
-        <!--                        <f:validateLength minimum="8"></f:validateLength>-->
-        <!--                    </p:password>-->
-
-
-        <!--                    <h:outputText value="Επανάληψη password"/>-->
-        <!--                    <p:password id="passwordrepeat2"-->
-        <!--                                value="#{missionstimelineBean.passWord2}"-->
-        <!--                                toggleMask="true" redisplay="true"-->
-        <!--                                required="true"-->
-        <!--                                feedback="true"-->
-        <!--                                label="Password Repeat"-->
-        <!--                                requiredMessage="Πρέπει να συμπληρώσετε την Επανάληψη password"/>-->
-
-        <!--                    <h:outputText value="Μάρκα Αυτοκινητού"/>-->
-        <!--                    <h:inputText id="carMarka2"-->
-        <!--                                 value="#{missionstimelineBean.parkingUsersCar.markaAutokinitou}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε τη Μάρκα Αυτοκινήτου"/>-->
-
-        <!--                    <h:outputText value="Αριθμός Κυκλοφορίας"/>-->
-        <!--                    <h:inputText id="carArithmos2"-->
-        <!--                                 value="#{missionstimelineBean.parkingUsersCar.arithmosKikloforias}"-->
-        <!--                                 required="true"-->
-        <!--                                 requiredMessage="Πρέπει να συμπληρώσετε τον Αριθμό Κυκλοφορίας!"/>-->
+                            <h:outputText  value="Password"/>
+                            <p:password id="password2"
+                                        value="#{missionstimelineBean.passWord1}"
+                                        toggleMask="true" redisplay="true"
+                                        required="true"
+                                        match="passwordrepeat2"
+                                        label="Password Repeat"
+                                        feedback="true"
+                                        requiredMessage="Πρέπει να συμπληρώσετε το password">
+                                <f:validateLength minimum="8"></f:validateLength>
+                            </p:password>
 
 
-        <!--                    <p:commandButton id="no13"-->
-        <!--                                     value="Εισαγωγή"-->
-        <!--                                     action="#{missionstimelineBean.storeObjectsNewUser}"-->
-        <!--                                     update="eisagogiPopUp2 growl2"-->
-        <!--                                     oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg5').hide();"/>-->
+                            <h:outputText value="Επανάληψη password"/>
+                            <p:password id="passwordrepeat2"
+                                        value="#{missionstimelineBean.passWord2}"
+                                        toggleMask="true" redisplay="true"
+                                        required="true"
+                                        feedback="true"
+                                        label="Password Repeat"
+                                        requiredMessage="Πρέπει να συμπληρώσετε την Επανάληψη password"/>
 
-        <!--                </h:panelGrid>-->
 
-        <!--            </h:form>-->
-        <!--        </p:dialog>-->
+
+                            <p:commandButton id="no13"
+                                             value="Εισαγωγή"
+                                             action="#{missionstimelineBean.storeObjectsNewUser}"
+                                             update="eisagogiPopUp2 growl2"
+                                             oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg5').hide();"/>
+
+                        </h:panelGrid>
+
+                    </h:form>
+                </p:dialog>
 
 
         <!--        <p:dialog header="Αλλαγή Κωδικού"-->

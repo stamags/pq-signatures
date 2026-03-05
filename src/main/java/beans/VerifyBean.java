@@ -3,8 +3,8 @@ package beans;
 import db.dbTransactions;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -13,27 +13,28 @@ import model.ParkingBooking;
 import utils.DocumentAuditService;
 import utils.EmailService;
 import utils.FacesUtil;
+import utils.FileStorageService;
 import rest.DocumentService;
-
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import model.DocumentSignature;
 import model.DocumentFile;
-import utils.FileStorageService;
 
 @Named("verifyUiBean")
 @ViewScoped
 public class VerifyBean implements Serializable {
 
     private Long docId;
+    /** Χρησιμοποιείται από setPropertyActionListener πριν την κλήση downloadDocument(). */
+    private Long documentIdToDownload;
 
     private Boolean hasResult = false;
     private String rsaOk;
@@ -45,7 +46,7 @@ public class VerifyBean implements Serializable {
     private String keimenoEmail;
 
     private DocumentService documentService;
-    private Long documentIdToDownload;
+
     private DocumentSignature signature;
     private DocumentFile document;
     private List<SignatureInfoRow> signatureInfoList;
@@ -198,7 +199,6 @@ public class VerifyBean implements Serializable {
         }
     }
 
-
     private void buildSignatureInfoList() {
         signatureInfoList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -225,6 +225,19 @@ public class VerifyBean implements Serializable {
                     signature.getHashAlg() != null ? signature.getHashAlg() : "N/A"));
             signatureInfoList.add(new SignatureInfoRow("Ημερομηνία Υπογραφής",
                     signature.getSignTime() != null ? sdf.format(signature.getSignTime()) : "N/A"));
+            // Υπογράφων: όνομα + επίθετο (αν η υπογραφή έχει idUser)
+            if (signature.getIdUser() != null) {
+                String name = signature.getIdUser().getName() != null ? signature.getIdUser().getName().trim() : "";
+                String surname = signature.getIdUser().getSurname() != null ? signature.getIdUser().getSurname().trim() : "";
+                String display = (name + " " + surname).trim();
+                if (display.isEmpty() && signature.getIdUser().getUsername() != null) {
+                    display = signature.getIdUser().getUsername();
+                }
+                signatureInfoList.add(new SignatureInfoRow("Υπέγραψε",
+                        display.isEmpty() ? "N/A" : display));
+            } else {
+                signatureInfoList.add(new SignatureInfoRow("Υπέγραψε", "N/A (παλιά υπογραφή)"));
+            }
 
         } else {
             signatureInfoList.add(new SignatureInfoRow("Στάτους Υπογραφής", "Δεν βρέθηκε υπογραφή"));
@@ -320,6 +333,14 @@ public class VerifyBean implements Serializable {
         this.docId = docId;
     }
 
+    public Long getDocumentIdToDownload() {
+        return documentIdToDownload;
+    }
+
+    public void setDocumentIdToDownload(Long documentIdToDownload) {
+        this.documentIdToDownload = documentIdToDownload;
+    }
+
     public String getRsaOk() {
         return rsaOk;
     }
@@ -373,70 +394,6 @@ public class VerifyBean implements Serializable {
 
     public void setKeimenoEmail(String keimenoEmail) {
         this.keimenoEmail = keimenoEmail;
-    }
-
-    public Boolean getHasResult() {
-        return hasResult;
-    }
-
-    public void setHasResult(Boolean hasResult) {
-        this.hasResult = hasResult;
-    }
-
-    public void setRsaOk(String rsaOk) {
-        this.rsaOk = rsaOk;
-    }
-
-    public void setPqcOk(String pqcOk) {
-        this.pqcOk = pqcOk;
-    }
-
-    public void setOverall(String overall) {
-        this.overall = overall;
-    }
-
-    public void setHasIncrementalUpdates(String hasIncrementalUpdates) {
-        this.hasIncrementalUpdates = hasIncrementalUpdates;
-    }
-
-    public void setCoversWholeFile(String coversWholeFile) {
-        this.coversWholeFile = coversWholeFile;
-    }
-
-    public DocumentService getDocumentService() {
-        return documentService;
-    }
-
-    public void setDocumentService(DocumentService documentService) {
-        this.documentService = documentService;
-    }
-
-    public Long getDocumentIdToDownload() {
-        return documentIdToDownload;
-    }
-
-    public void setDocumentIdToDownload(Long documentIdToDownload) {
-        this.documentIdToDownload = documentIdToDownload;
-    }
-
-    public DocumentSignature getSignature() {
-        return signature;
-    }
-
-    public void setSignature(DocumentSignature signature) {
-        this.signature = signature;
-    }
-
-    public DocumentFile getDocument() {
-        return document;
-    }
-
-    public void setDocument(DocumentFile document) {
-        this.document = document;
-    }
-
-    public void setSignatureInfoList(List<SignatureInfoRow> signatureInfoList) {
-        this.signatureInfoList = signatureInfoList;
     }
 }
 

@@ -8,16 +8,13 @@ import signatures.KeyLoader;
 import db.JPAUtil;
 import utils.FileStorageService;
 import utils.PdfSignatureEmbedder;
-import utils.PdfCanonicalUtil;
 import utils.PdfSignatureVerifier;
-import java.nio.file.Files;
+
 import java.nio.file.Path;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import java.nio.file.Path;
+
 import java.security.*;
 import java.util.List;
 

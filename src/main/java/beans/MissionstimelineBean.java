@@ -90,9 +90,6 @@ public class MissionstimelineBean implements Serializable {
 
         //Αν είναι καινούριος χρήστης του ανοίγουμε το dialog
         if (loginBean.getNewUserFromGoogle().equals(true)) {
-            //Θα πρέπει να αποθηκεύσει καινούριο αυτοκίνητο οπότε δημιουργούμε καινούριο object
-            parkingUsersCar = new ParkingUsersCar();
-            parkingUsersCar.setIdUser(tbluser);
 
             PrimeFaces current = PrimeFaces.current();
             current.executeScript("PF('dlg3').show();");
@@ -100,18 +97,16 @@ public class MissionstimelineBean implements Serializable {
 
         //Αν είναι καινούριος χρήστης του ανοίγουμε το dialog
         if (loginBean.getNewUser().equals(true)) {
-            //Θα πρέπει να αποθηκεύσει καινούριο αυτοκίνητο οπότε δημιουργούμε καινούριο object
-            parkingUsersCar = new ParkingUsersCar();
 
             PrimeFaces current = PrimeFaces.current();
             current.executeScript("PF('dlg5').show();");
         }
 
         //Αν είναι καινούριος χρήστης του ανοίγουμε το dialog
-        if (tbluser.getResetPassword().equals(true)) {
-            PrimeFaces current = PrimeFaces.current();
-            current.executeScript("PF('dlg4').show();");
-        }
+//        if (tbluser.getResetPassword().equals(true)) {
+//            PrimeFaces current = PrimeFaces.current();
+//            current.executeScript("PF('dlg4').show();");
+//        }
 
 //        //Βρίσκουμε πόσες θέσεις είναι ελεύθερες. Όσα User_id δεν είναι μέσα στο πίνακα booking για την συγκεκριμένη ημερομηνία
 //        String eleytheresTheseisParkingQuery = "select (e.p) from (select count(p.IS_AVAILABLE) as p\n" +
@@ -208,9 +203,6 @@ public class MissionstimelineBean implements Serializable {
 
             try {
                 dbTransactions.storeObject(tbluser);
-                //Μόλις αποθηκευτει θα δημιουρηθεί και το Iduser
-                parkingUsersCar.setIdUser(tbluser);
-                dbTransactions.storeObject(parkingUsersCar);
 
                 loginBean.setUser(tbluser);
 

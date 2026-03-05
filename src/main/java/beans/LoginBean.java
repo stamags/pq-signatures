@@ -340,7 +340,7 @@ public class LoginBean implements Serializable {
         tbluser.setLayoutMode("static");
         tbluser.setLightMenu(false);
         tbluser.setUserActive(1);
-        tbluser.setIdRole(tblrolesList.get(1));// τον βάζω ως guest
+        tbluser.setIdRole(tblrolesList.get(0));// τον βάζω ως guest
         user = tbluser;
         username = "-";
 
