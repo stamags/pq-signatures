@@ -184,34 +184,50 @@ public class PdfSignatureVerifier {
      * @return Τα bytes που ορίζονται από το ByteRange
      */
     public static byte[] getSignedBytes(String pdfPath, int[] byteRange) throws IOException {
+        // Validation: Το ByteRange πρέπει να έχει ακριβώς 4 στοιχεία
+        // Format: [start1, length1, start2, length2]
         if (byteRange == null || byteRange.length != 4) {
             throw new IllegalArgumentException("Invalid ByteRange format");
         }
 
-        int start1 = byteRange[0];
-        int length1 = byteRange[1];
-        int start2 = byteRange[2];
-        int length2 = byteRange[3];
+        // Εξαγωγή των παραμέτρων από το ByteRange array
+        // Παράδειγμα: [0, 1234, 5678, 9012]
+        int start1 = byteRange[0];   // Αρχή 1ου κομματιού (συνήθως 0)
+        int length1 = byteRange[1];  // Μήκος 1ου κομματιού (μέχρι πριν το /Contents)
+        int start2 = byteRange[2];   // Αρχή 2ου κομματιού (μετά το /Contents)
+        int length2 = byteRange[3];  // Μήκος 2ου κομματιού (μέχρι το τέλος του PDF)
 
         try (RandomAccessFile raf = new RandomAccessFile(pdfPath, "r")) {
-            // Πρώτο range: [start1, start1+length1)
+            // ΔΙΑΒΑΣΜΑ ΠΡΩΤΟΥ ΚΟΜΜΑΤΙΟΥ
+            // Το πρώτο κομμάτι περιέχει: PDF header + objects + signature dict (μέχρι το /Contents)
+            // Παράδειγμα: bytes [0 ... 1234) = Όλο το PDF μέχρι το "< " του /Contents
             byte[] part1 = new byte[length1];
-            raf.seek(start1);
-            raf.readFully(part1);
+            raf.seek(start1);           // Μετακίνηση στην αρχή του αρχείου (συνήθως 0)
+            raf.readFully(part1);       // Διάβασμα length1 bytes
 
-            // Δεύτερο range: [start2, start2+length2)
+
+            // ΔΙΑΒΑΣΜΑ ΔΕΥΤΕΡΟΥ ΚΟΜΜΑΤΙΟΥ
+            // Το δεύτερο κομμάτι περιέχει: Το υπόλοιπο PDF μετά το /Contents signature
+            // Παράδειγμα: bytes [5678 ... 14690) = Μετά το "> " του /Contents μέχρι EOF
+            // ΤΙ ΠΑΡΑΛΕΙΠΟΥΜΕ: Τα bytes [1234 ... 5678) = Το /Contents hex string (η υπογραφή)
+            // Γιατί; Γιατί αυτά ΔΕΝ υπογράφονται - είναι το placeholder για την υπογραφή!
             byte[] part2 = new byte[length2];
-            raf.seek(start2);
-            raf.readFully(part2);
+            raf.seek(start2);           // Μετακίνηση στην αρχή του 2ου κομματιού
+            raf.readFully(part2);       // Διάβασμα length2 bytes
 
-            // Συνένωση των δύο ranges
+
+            // ΣΥΝΕΝΩΣΗ ΤΩΝ ΔΥΟ ΚΟΜΜΑΤΙΩΝ
+            // Συνένωση: part1 + part2 (χωρίς το /Contents στη μέση)
+            // Αποτέλεσμα: Τα ΑΚΡΙΒΩΣ ίδια bytes που υπογράφηκαν αρχικά
             byte[] signedBytes = new byte[length1 + length2];
-            System.arraycopy(part1, 0, signedBytes, 0, length1);
-            System.arraycopy(part2, 0, signedBytes, length1, length2);
+            System.arraycopy(part1, 0, signedBytes, 0, length1);              // Copy part1 στην αρχή
+            System.arraycopy(part2, 0, signedBytes, length1, length2);        // Copy part2 μετά το part1
 
+            // Επιστροφή: Τα bytes που υπογράφηκαν (χωρίς το /Contents signature field)
             return signedBytes;
         }
     }
+
 
     /**
      * Ελέγχει αν υπάρχουν incremental updates μετά την υπογραφή.
@@ -251,41 +267,79 @@ public class PdfSignatureVerifier {
     }
 
     /**
-     * Επαληθεύει RSA υπογραφή με βάση το ByteRange.
+     * Επαληθεύει RSA υπογραφή χρησιμοποιώντας το RSA Public Key.
      *
-     * @param pdfPath Διαδρομή προς το PDF
-     * @param byteRange Το ByteRange array
-     * @param signatureBytes Τα bytes της υπογραφής
-     * @param publicKey Το RSA public key
-     * @return true αν η επαλήθευση περάσει
+     * Διαδικασία:
+     * 1. Εξάγει τα υπογεγραμμένα bytes από το PDF (με βάση το ByteRange)
+     * 2. Υπολογίζει το SHA-256 hash των bytes
+     * 3. Χρησιμοποιεί το RSA Public Key για να "αποκρυπτογραφήσει" την υπογραφή
+     * 4. Συγκρίνει το hash από την υπογραφή με το hash των bytes
+     *
+     * @param pdfPath Διαδρομή προς το υπογεγραμμένο PDF
+     * @param byteRange Το ByteRange array [start1, length1, start2, length2]
+     * @param signatureBytes Η αποθηκευμένη RSA signature από τη ΒΔ (raw bytes)
+     * @param publicKey Το RSA Public Key του υπογράφοντα
+     * @return true αν η υπογραφή είναι έγκυρη, false αλλιώς
      */
     public static boolean verifyRsaSignature(String pdfPath, int[] byteRange,
                                              byte[] signatureBytes, PublicKey publicKey) throws Exception {
+
+        // ΒΗΜΑ 1: ΕΞΑΓΩΓΗ ΤΩΝ ΥΠΟΓΕΓΡΑΜΜΕΝΩΝ BYTES
+        // Διαβάζουμε τα ίδια ακριβώς bytes που υπογράφηκαν κατά το signing
+        // (χωρίς το /Contents signature field)
         byte[] signedBytes = getSignedBytes(pdfPath, byteRange);
 
+        // Debug output: Μέγεθος των δεδομένων
         System.out.println("DEBUG RSA Verify: Signed bytes length: " + signedBytes.length);
         System.out.println("DEBUG RSA Verify: Signature bytes length: " + signatureBytes.length);
 
-        // Υπολογισμός hash για σύγκριση
+
+        // ΒΗΜΑ 2: ΥΠΟΛΟΓΙΣΜΟΣ HASH (για debugging/logging)
+        // Υπολογίζουμε το SHA-256 hash των signed bytes
+        // Αυτό είναι το ίδιο hash που υπολογίστηκε κατά το signing
+        // ΣΗΜΕΙΩΣΗ: Το Signature.verify() κάνει αυτό αυτόματα εσωτερικά
         java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
         byte[] signedHash = md.digest(signedBytes);
         System.out.println("DEBUG RSA Verify: Signed bytes SHA-256 hash (first 16 bytes): " +
                 java.util.HexFormat.of().formatHex(java.util.Arrays.copyOf(signedHash, 16)));
 
+
+        // ΒΗΜΑ 3: ΕΠΑΛΗΘΕΥΣΗ ΜΕ RSA PUBLIC KEY
+        // Δημιουργία RSA Signature verifier instance
         Signature rsa = Signature.getInstance("SHA256withRSA");
+
+        // Αρχικοποίηση με το RSA Public Key
+        // Εσωτερικά: Θα χρησιμοποιηθεί το public key exponent (e) και modulus (n)
         rsa.initVerify(publicKey);
+
+        // Παροχή των signed bytes
+        // Εσωτερικά: Υπολογίζεται το SHA-256 hash των bytes (hash_new)
         rsa.update(signedBytes);
+
+        // Επαλήθευση της υπογραφής
+        // Εσωτερικά:
+        //   1. "Αποκρυπτογραφεί" την signatureBytes με το public key:
+        //      hash_from_sig = signature^e mod n
+        //   2. Συγκρίνει: hash_new == hash_from_sig
+        //   3. Επιστρέφει: true (ταιριάζουν) ή false (διαφέρουν)
         boolean result = rsa.verify(signatureBytes);
+
         System.out.println("DEBUG RSA Verify: Result: " + result);
 
+        // ΒΗΜΑ 4: ERROR LOGGING (αν αποτύχει)
         if (!result) {
             System.err.println("ERROR: RSA verification failed!");
+            System.err.println("ERROR: Πιθανές αιτίες:");
+            System.err.println("  - Το PDF τροποποιήθηκε μετά την υπογραφή");
+            System.err.println("  - Λάθος public key (δεν ταιριάζει με το private που υπέγραψε)");
+            System.err.println("  - Η υπογραφή είναι corrupted (damaged signature bytes)");
             System.err.println("ERROR: ByteRange: [" + byteRange[0] + ", " + byteRange[1] + ", " +
                     byteRange[2] + ", " + byteRange[3] + "]");
         }
 
         return result;
     }
+
 
     /**
      * Επαληθεύει PQC (DILITHIUM) υπογραφή με βάση το ByteRange.
