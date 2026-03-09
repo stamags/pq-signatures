@@ -341,17 +341,6 @@ public class VerifyBean implements Serializable {
         this.documentIdToDownload = documentIdToDownload;
     }
 
-    public String getRsaOk() {
-        return rsaOk;
-    }
-
-    public String getPqcOk() {
-        return pqcOk;
-    }
-
-    public String getOverall() {
-        return overall;
-    }
 
     public List<DocumentFile> getDocumentFileList() {return documentFileList;}
 
@@ -362,14 +351,6 @@ public class VerifyBean implements Serializable {
             signatureInfoList = new ArrayList<>();
         }
         return signatureInfoList;
-    }
-
-    public String getHasIncrementalUpdates() {
-        return hasIncrementalUpdates;
-    }
-
-    public String getCoversWholeFile() {
-        return coversWholeFile;
     }
 
     public EmailService getEmailService() {

@@ -67,20 +67,20 @@ public class KeyLoader {
         return keyPath;
     }
 
-    public static PrivateKey loadPrivateKey(String path, String algorithm) throws Exception {
-        Path keyPath = resolveKeyPath(path);
-        byte[] der = readKeyBytes(keyPath); // <-- Base64 -> DER
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(der);
-
-        // Για DILITHIUM/DILITHIUM3, χρήση BC provider
-        KeyFactory kf;
-        if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
-            kf = KeyFactory.getInstance("DILITHIUM3", "BC");
-        } else {
-            kf = KeyFactory.getInstance(algorithm);
-        }
-        return kf.generatePrivate(spec);
-    }
+//    public static PrivateKey loadPrivateKey(String path, String algorithm) throws Exception {
+//        Path keyPath = resolveKeyPath(path);
+//        byte[] der = readKeyBytes(keyPath); // <-- Base64 -> DER
+//        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(der);
+//
+//        // Για DILITHIUM/DILITHIUM3, χρήση BC provider
+//        KeyFactory kf;
+//        if ("DILITHIUM".equalsIgnoreCase(algorithm) || "DILITHIUM3".equalsIgnoreCase(algorithm)) {
+//            kf = KeyFactory.getInstance("DILITHIUM3", "BC");
+//        } else {
+//            kf = KeyFactory.getInstance(algorithm);
+//        }
+//        return kf.generatePrivate(spec);
+//    }
 
     public static PublicKey loadPublicKey(String path, String algorithm) throws Exception {
         Path keyPath = resolveKeyPath(path);
@@ -90,23 +90,42 @@ public class KeyLoader {
 
     // ---------- Φόρτωση κλειδιών ανά χρήστη (από UserKeystoreService) ----------
 
+    // ---------- Φόρτωση κλειδιών ανά χρήστη (από UserKeystoreService) ----------
+
     /**
      * Φόρτωση ιδιωτικού κλειδιού RSA από το keystore του χρήστη.
+     * Αποκρυπτογραφεί το private key χρησιμοποιώντας το keystorePassword.
      */
     public static PrivateKey loadRsaPrivateKeyForUser(String username, char[] keystorePassword) throws Exception {
+        // Εύρεση διαδρομής του keystore αρχείου (data/users/{username}/keystore.p12)
         Path keystorePath = UserKeystoreService.getKeystorePath(username);
         if (!Files.exists(keystorePath)) {
             throw new Exception("User keystore not found for: " + username + " at " + keystorePath.toAbsolutePath());
         }
+
+        // Δημιουργία PKCS12 keystore instance
         KeyStore ks = KeyStore.getInstance("PKCS12");
+
+        // Φόρτωση keystore από αρχείο και επαλήθευση κωδικού
+        // Εσωτερικά: PBKDF2(keystorePassword + stored salt) → HMAC verification
+        // Αν ο κωδικός είναι λάθος → IOException: "keystore password was incorrect"
         try (InputStream is = Files.newInputStream(keystorePath)) {
             ks.load(is, keystorePassword);
         }
+
+        // Προετοιμασία παραμέτρων προστασίας για πρόσβαση στο private key
         KeyStore.ProtectionParameter protParam = new KeyStore.PasswordProtection(keystorePassword);
+
+        // Ανάκτηση του RSA private key entry από το keystore
+        // Εσωτερικά: PBKDF2(keystorePassword + salt) → AES decryption → plain text private key
+        // Το αποκρυπτογραφημένο key επιστρέφεται στη μνήμη (RAM) - ΟΧΙ σε αρχείο
         KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) ks.getEntry(UserKeystoreService.RSA_ALIAS, protParam);
+
         if (entry == null) {
             throw new Exception("RSA key entry not found in keystore for: " + username);
         }
+
+        // Επιστροφή του αποκρυπτογραφημένου private key (σε plain text, στη μνήμη)
         return entry.getPrivateKey();
     }
 

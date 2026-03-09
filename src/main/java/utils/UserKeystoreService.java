@@ -149,35 +149,53 @@ public class UserKeystoreService {
         Path userDir = getUserKeysDir(username);
         Files.createDirectories(userDir);
 
-        // 1. RSA key pair + self-signed cert
+        // ΜΕΡΟΣ 1: ΔΗΜΙΟΥΡΓΙΑ RSA KEY PAIR + PKCS12 KEYSTORE
+
+        // Δημιουργία RSA key pair (2048-bit) για υπογραφή/επαλήθευση
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
-        KeyPair rsaKp = rsaKpg.generateKeyPair();
+        KeyPair rsaKp = rsaKpg.generateKeyPair();  // Public + Private key (σε μνήμη)
 
+        // Δημιουργία self-signed X.509 certificate (για CMS/PKCS#7 signatures)
         String cn = buildCertificateCN(user);
         X509Certificate cert = createSelfSignedCertificate(rsaKp, cn);
 
+        // Δημιουργία PKCS12 keystore container
         KeyStore ks = KeyStore.getInstance("PKCS12");
-        ks.load(null, null);
+        ks.load(null, null);  // Αρχικοποίηση κενού keystore
+
+        // Αποθήκευση RSA private key + certificate στο keystore
+        // Εσωτερικά: PBKDF2(keystorePassword + salt) → Encryption Key → AES encrypt private key
         ks.setKeyEntry(RSA_ALIAS, rsaKp.getPrivate(), keystorePassword, new X509Certificate[]{cert});
 
+        // Αποθήκευση keystore σε αρχείο (.p12)
+        // Εσωτερικά: Υπολογίζει HMAC με keystorePassword για integrity check
         Path keystorePath = getKeystorePath(username);
         try (var fos = Files.newOutputStream(keystorePath)) {
-            ks.store(fos, keystorePassword);
+            ks.store(fos, keystorePassword);  // keystorePassword ΔΕΝ αποθηκεύεται - μόνο το encrypted key
         }
 
-        // Δημόσιο κλειδί RSA σε αρχείο (για επαλήθευση χωρίς κωδικό keystore)
+        // Εξαγωγή RSA public key σε ξεχωριστό αρχείο (Base64)
+        // Σκοπός: Επαλήθευση υπογραφών χωρίς να χρειάζεται keystorePassword
         Files.writeString(getRsaPublicKeyPath(username),
                 Base64.getEncoder().encodeToString(rsaKp.getPublic().getEncoded()) + "\n",
                 StandardCharsets.UTF_8);
 
-        // 2. PQC (Dilithium) key pair -> αρχεία
-        KeyPairGenerator pqcKpg = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
-        KeyPair pqcKp = pqcKpg.generateKeyPair();
 
+        // ΜΕΡΟΣ 2: ΔΗΜΙΟΥΡΓΙΑ PQC (DILITHIUM3) KEY PAIR
+
+        // Δημιουργία Dilithium3 key pair (post-quantum signature algorithm)
+        // Χρήση BouncyCastle provider (BC) - το standard JDK δεν υποστηρίζει PQC
+        KeyPairGenerator pqcKpg = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+        KeyPair pqcKp = pqcKpg.generateKeyPair();  // Public + Private key (σε μνήμη)
+
+        // Μετατροπή σε Base64 για αποθήκευση (DER format encoded)
         String pqcPrivB64 = Base64.getEncoder().encodeToString(pqcKp.getPrivate().getEncoded());
         String pqcPubB64 = Base64.getEncoder().encodeToString(pqcKp.getPublic().getEncoded());
 
+        // Αποθήκευση PQC keys σε ξεχωριστά αρχεία (.key)
+        // Σημείωση: PKCS12 δεν υποστηρίζει Dilithium, οπότε αποθηκεύονται ως plain Base64 files
+        // Το private key ΔΕΝ είναι encrypted - προστασία μέσω filesystem permissions
         Files.writeString(getPqcPrivateKeyPath(username), pqcPrivB64 + "\n", StandardCharsets.UTF_8);
         Files.writeString(getPqcPublicKeyPath(username), pqcPubB64 + "\n", StandardCharsets.UTF_8);
     }

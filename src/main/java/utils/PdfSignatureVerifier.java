@@ -25,56 +25,153 @@ public class PdfSignatureVerifier {
 
     /**
      * Διαβάζει το ByteRange από ένα PDF signature field.
-     *
+     * Τι κάνει αυτή η μέθοδος:
+     * - Ανοίγει το signed PDF
+     * - Βρίσκει όλα τα signature fields (μπορεί να υπάρχουν πολλές υπογραφές)
+     * - Για κάθε signature, παίρνει το ByteRange που ορίζει ποια bytes υπογράφηκαν
+     * - Επιστρέφει λίστα με όλα τα ByteRanges (για να δοκιμάσουμε ποιο ταιριάζει)
      * @param pdfPath Διαδρομή προς το PDF
      * @return List με ByteRange arrays για κάθε signature, ή empty list αν δεν βρεθούν
      */
     public static List<int[]> getSignatureByteRanges(String pdfPath) throws IOException {
+        // Λίστα για να κρατήσουμε όλα τα ByteRanges που βρίσκουμε
         List<int[]> byteRanges = new ArrayList<>();
 
+        // ΒΗΜΑ 1: Άνοιγμα του PDF με PDFBox
         try (PDDocument doc = PDDocument.load(new File(pdfPath))) {
+
+
+            // ΒΗΜΑ 2: Πρόσβαση στο AcroForm (PDF Forms & Signature Container)
+            // Το AcroForm είναι το μέρος του PDF που περιέχει:
+            // - Form fields (text boxes, checkboxes, κλπ.)
+            // - Signature fields (τα signature dictionaries)
             PDAcroForm acroForm = doc.getDocumentCatalog().getAcroForm();
+
+            // Έλεγχος αν υπάρχει AcroForm
+            // Αν δεν υπάρχει = το PDF δεν έχει καθόλου forms ή signatures
             if (acroForm == null) {
-                return byteRanges;
+                System.out.println("DEBUG getSignatureByteRanges: No AcroForm found (PDF has no signature fields)");
+                return byteRanges;  // Empty list
             }
 
-            // ΚΡΙΣΙΜΟ: Εύρεση signature fields που έχουν πραγματικό Contents (όχι placeholder)
-            // Πρέπει να έχουν ByteRange ΚΑΙ Contents μη-κενό
+
+            // ΒΗΜΑ 3: Iteration πάνω σε ΟΛΑ τα fields του AcroForm
+            // Το AcroForm μπορεί να έχει πολλά fields:
+            // - PDTextField (text input)
+            // - PDCheckBox (checkbox)
+            // - PDSignatureField (signature) ← Αυτό μας ενδιαφέρει!
+            // - κ.ά.
+            //
+            // ΣΗΜΕΙΩΣΗ: Μπορεί να υπάρχουν ΠΟΛΛΕΣ υπογραφές σε ένα PDF!
+            // Π.χ. 1η υπογραφή από τον τάδε, 2η από έναν άλλο, 3η από άλλο πάλο
             for (var field : acroForm.getFields()) {
+
+
+                //  Έλεγχος: Είναι signature field;
                 if (field instanceof PDSignatureField) {
                     PDSignatureField sigField = (PDSignatureField) field;
+
+                    // 3.2) Παίρνουμε το PDSignature object (το signature dictionary)
+                    // Το PDSignature περιέχει:
+                    // - /Type /Sig
+                    // - /Filter /Adobe.PPKLite
+                    // - /SubFilter /ETSI.CAdES.detached
+                    // - /ByteRange [0, N, M, fileSize]
+                    // - /Contents <CMS_SIGNATURE_BLOB>
+                    // - /Name, /M, /Reason, /Location (metadata)
                     PDSignature pdSignature = sigField.getSignature();
 
+                    // Έλεγχος αν το signature field ΟΝΤΩΣ έχει signature
+                    // (Μπορεί να υπάρχει field αλλά να μην έχει υπογραφτεί ακόμα)
                     if (pdSignature != null) {
-                        // Έλεγχος αν έχει ByteRange
+
+                        // ΒΗΜΑ 4: Παίρνουμε το ByteRange
+                        // Το ByteRange είναι array με 4 integers:
+                        // [start1, length1, start2, length2]
+                        //
+                        // Παράδειγμα: [0, 1666395, 1966397, 360116]
+                        // Σημαίνει:
+                        //   - Υπογεγραμμένα bytes Part 1: από 0 μέχρι 1666395
+                        //   - Υπογεγραμμένα bytes Part 2: από 1966397 μέχρι 2326513
+                        //   - Το gap (1666395..1966397) είναι το /Contents field
                         int[] byteRange = pdSignature.getByteRange();
+
+                        // Validation: Το ByteRange πρέπει να έχει ακριβώς 4 integers
                         if (byteRange != null && byteRange.length == 4) {
-                            // ΚΡΙΣΙΜΟ: Έλεγχος αν έχει πραγματικό Contents (όχι placeholder)
-                            // Το Contents είναι COSString ή COSStream στο COS object
-                            org.apache.pdfbox.cos.COSBase contentsBase = pdSignature.getCOSObject().getDictionaryObject(org.apache.pdfbox.cos.COSName.CONTENTS);
+
+                            // ΒΗΜΑ 5:  Έλεγχος αν  Έχει πραγματική υπογραφή;
+                            // Όταν υπογράφουμε με external signing:
+                            // 1. Πρώτα γράφεται το PDF με PLACEHOLDER στο /Contents:
+                            //    /Contents <0000000000...0000>  (placeholder)
+                            // 2. Μετά αντικαθίσταται με την πραγματική υπογραφή:
+                            //    /Contents <308006092a864886f7...>  (CMS blob)
+                            // Αν το process διακοπεί (crash, exception), μπορεί το PDF
+                            // να μείνει με placeholder! Αυτό ΔΕΝ είναι έγκυρη υπογραφή!
+                            // Γι' αυτό ελέγχουμε αν το /Contents έχει ΠΡΑΓΜΑΤΙΚΟ περιεχόμενο
+
+                            // Πρόσβαση στο low-level COS (Carousel Object System) object
+                            // Το PDFBox χρησιμοποιεί το COS layer για raw PDF data
+                            org.apache.pdfbox.cos.COSBase contentsBase =
+                                    pdSignature.getCOSObject()
+                                            .getDictionaryObject(org.apache.pdfbox.cos.COSName.CONTENTS);
+
+                            // Έλεγχος: Υπάρχει το /Contents field;
                             if (contentsBase != null) {
-                                // Έχει Contents, προσθέτουμε το ByteRange
+                                // ΝΑΙ - Έχει πραγματική υπογραφή!
+                                // Προσθήκη του ByteRange στη λίστα
                                 byteRanges.add(byteRange);
 
-                                // Debug: Ελέγχος τύπου Contents
+                                // Debug logging: Τύπος του Contents
+                                // Το Contents μπορεί να είναι:
+                                // - COSString: Hex string (το συνηθισμένο)
+                                // - COSStream: Stream object (σπάνιο)
                                 if (contentsBase instanceof org.apache.pdfbox.cos.COSString) {
-                                    org.apache.pdfbox.cos.COSString contentsStr = (org.apache.pdfbox.cos.COSString) contentsBase;
-                                    System.out.println("DEBUG getSignatureByteRanges: Found signed field with Contents (COSString) length: " + contentsStr.getBytes().length);
+                                    org.apache.pdfbox.cos.COSString contentsStr =
+                                            (org.apache.pdfbox.cos.COSString) contentsBase;
+                                    System.out.println("DEBUG getSignatureByteRanges: Found signed field with Contents (COSString) length: " +
+                                            contentsStr.getBytes().length + " bytes");
+                                    System.out.println("DEBUG getSignatureByteRanges: ByteRange: [" +
+                                            byteRange[0] + ", " + byteRange[1] + ", " +
+                                            byteRange[2] + ", " + byteRange[3] + "]");
                                 } else if (contentsBase instanceof org.apache.pdfbox.cos.COSStream) {
                                     System.out.println("DEBUG getSignatureByteRanges: Found signed field with Contents (COSStream)");
                                 } else {
-                                    System.out.println("DEBUG getSignatureByteRanges: Found signed field with Contents (type: " + contentsBase.getClass().getSimpleName() + ")");
+                                    System.out.println("DEBUG getSignatureByteRanges: Found signed field with Contents (type: " +
+                                            contentsBase.getClass().getSimpleName() + ")");
                                 }
                             } else {
-                                System.out.println("DEBUG getSignatureByteRanges: Skipping field with empty Contents (placeholder)");
+                                // ΟΧΙ - Το Contents είναι null ή empty (placeholder)
+                                System.out.println("DEBUG getSignatureByteRanges: Skipping signature field with empty Contents (placeholder - PDF not fully signed)");
+                                // ΔΕΝ προσθέτουμε το ByteRange - δεν είναι έγκυρη υπογραφή
                             }
+                        } else {
+                            // Invalid ByteRange format
+                            System.out.println("DEBUG getSignatureByteRanges: Skipping signature with invalid ByteRange format");
                         }
+                    } else {
+                        // Το signature field υπάρχει αλλά δεν έχει PDSignature object
+                        System.out.println("DEBUG getSignatureByteRanges: Skipping empty signature field (no signature object)");
                     }
                 }
             }
         }
 
+
+        // ΤΕΛΙΚΟ ΑΠΟΤΕΛΕΣΜΑ
+        System.out.println("DEBUG getSignatureByteRanges: Found " + byteRanges.size() + " valid signature(s)");
         return byteRanges;
+
+        // Παράδειγμα output:
+        // [
+        //   [0, 1666395, 1966397, 360116]  // 1η υπογραφή
+        // ]
+        //
+        // Αν υπήρχαν πολλές υπογραφές:
+        // [
+        //   [0, 1666395, 1966397, 360116],     // 1η υπογραφή (Alice)
+        //   [0, 2326513, 2626515, 100000],     // 2η υπογραφή (Bob)
+        //   [0, 2726515, 3026517, 50000]       // 3η υπογραφή (Charlie)
+        // ]
     }
 
     /**

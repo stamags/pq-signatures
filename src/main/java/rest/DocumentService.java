@@ -73,6 +73,14 @@ public class DocumentService {
         sig.setScheme(scheme);
         sig.setSignTime(new java.util.Date());
 
+
+        // Ενσωμάτωση υπογραφής στο PDF
+        // Αυτή η μέθοδος κάνει:
+        // 1. External signing: Παίρνει ByteRange bytes από το PDF (PDFBox)
+        // 2. Υπογράφει με RSA/PQC: Δημιουργεί raw signatures και τις αποθηκεύει στο sig object (για DB)
+        // 3. Δημιουργεί CMS: Υπογράφει με RSA και δημιουργεί CMS/PKCS#7 blob (για PDF /Contents)
+        // 4. Αντικαθιστά το PDF: Το signed PDF αντικαθιστά το original στο filesystem
+        // Αποτέλεσμα: Το sig object περιέχει τώρα rsaSignature και pqcSignature (αν HYBRID)
         try {
             PdfSignatureEmbedder.embedSignature(doc.getDocumentId(), sig, user.getUsername(), keystorePassword);
         } catch (Exception e) {
@@ -208,7 +216,7 @@ public class DocumentService {
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
             data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                    + Character.digit(hex.charAt(i+1), 16));
+                    + Character.digit(hex.charAt(i + 1), 16));
         }
         return data;
     }
