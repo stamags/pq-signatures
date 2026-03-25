@@ -1,1 +1,0 @@
-INSERT INTO kends.sypo_version (ID, HMEROMHNIA, VERSION, PERIGRAFH) VALUES (2, '2020-11-02', '1.10', 'Διορθώσεις σχετικά με την Ικανότητα και τον συγχρονισμό.')

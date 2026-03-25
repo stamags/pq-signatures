@@ -1,1 +1,0 @@
-alter table kends.ken_yphresiaka modify YPHR_META_MONA_HMNIA datetime null;

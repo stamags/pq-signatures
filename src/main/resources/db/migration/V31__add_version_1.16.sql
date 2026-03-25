@@ -1,1 +1,0 @@
-INSERT INTO kends.sypo_version (HMEROMHNIA, VERSION, PERIGRAFH) VALUES ('2021-04-29', '1.16', '1)Εμπλουτισμός ΔΑΣΟ με επιπλέον στοιχεία 2) Προσθήκη επιθυμίας για 9μηνο ή 12μήνο')
