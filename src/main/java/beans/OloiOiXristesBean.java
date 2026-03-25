@@ -32,8 +32,7 @@ public class OloiOiXristesBean implements Serializable {
 
 
     private List<Tbluser> tbluserList = new ArrayList<>();
-    private Map<Integer, ParkingUsersCar> parkingUsersCarMap = new HashMap<>();
-    private List<ParkingUsersCar> parkingUsersCarList = new ArrayList<>();
+
 
 
     @Inject
@@ -41,17 +40,9 @@ public class OloiOiXristesBean implements Serializable {
 
     @PostConstruct
     public void init() throws IOException {
-        parkingUsersCarList = (List<ParkingUsersCar>) (List<?>) dbTransactions.getAllObjects(ParkingUsersCar.class.getCanonicalName());
+
         tbluserList = (List<Tbluser>) (List<?>) dbTransactions.getAllObjects(Tbluser.class.getCanonicalName());
 
-        //Φτιάχνουμε τα maps.
-        for (int i = 0; i < tbluserList.size(); i++) {
-            int finalI = i;
-           List<ParkingUsersCar> parkingUsersCarList1 = parkingUsersCarList.stream().filter(x -> x.getIdUser().getIdUser().equals(tbluserList.get(finalI).getIdUser())).collect(Collectors.toList());
-            if (!Objects.isNull(parkingUsersCarList1) && parkingUsersCarList1.size() > 0) {
-                parkingUsersCarMap.put(tbluserList.get(finalI).getIdUser(), parkingUsersCarList1.get(0));
-            }
-        }
     }
 
 
@@ -108,9 +99,6 @@ public class OloiOiXristesBean implements Serializable {
         this.loginBean = loginBean;
     }
 
-    public Map<Integer, ParkingUsersCar> getParkingUsersCarMap() {
-        return parkingUsersCarMap;
-    }
 
 }
 

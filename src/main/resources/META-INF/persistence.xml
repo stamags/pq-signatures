@@ -9,11 +9,6 @@
         <class>model.Tblpages</class>
         <class>model.Tblelements</class>
         <!--  ******************************************************************-->
-        <class>model.ParkingSlots</class>
-        <class>model.ParkingFloor</class>
-        <class>model.ParkingUser</class>
-        <class>model.ParkingBooking</class>
-        <class>model.ParkingUsersCar</class>
         <class>model.DocumentFile</class>
         <class>model.DocumentSignature</class>
         <class>model.TbAuditEvent</class>

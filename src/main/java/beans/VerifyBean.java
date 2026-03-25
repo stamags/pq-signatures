@@ -9,7 +9,6 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import model.DocumentFile;
-import model.ParkingBooking;
 import utils.DocumentAuditService;
 import utils.EmailService;
 import utils.FacesUtil;
@@ -23,10 +22,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+
 import model.DocumentSignature;
-import model.DocumentFile;
 
 @Named("verifyUiBean")
 @ViewScoped

@@ -3,7 +3,6 @@ package utils;
 import db.dbTransactions;
 import model.DocumentFile;
 import model.DocumentSignature;
-import model.ParkingBooking;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.email.EmailBuilder;
@@ -11,11 +10,9 @@ import org.simplejavamail.mailer.MailerBuilder;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
