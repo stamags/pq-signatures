@@ -12,7 +12,7 @@
 - **Ιστορικό Ενεργειών (Audit):** Καταγραφή όλων των ενεργειών (upload, sign, verify, email, download) ανά έγγραφο και χρήστη.
 - **Dashboard:** Στατιστικά (έγγραφα, επαληθεύσεις, events ανά τύπο, κατανομή υπογραφών, events ανά ημέρα/χρήστη).
 - **Διαχείριση κλειδιών / κωδικών:** Δημιουργία και διαχείριση προσωπικών RSA (keystore `.p12`) και PQC (Dilithium) κλειδιών ανά χρήστη μέσω της αντίστοιχης σελίδας.
-- **Δικαιώματα:** Login και πρόσβαση ανά σελίδα (upload, verify, audit, dashboard, διαχείριση κλειδιών).
+- **Δικαιώματα:** Login και πρόσβαση ανά σελίδα (upload, verify, audit, dashboard, διαχείριση κλειδιών, διαχείριση χρηστών, προτιμήσεις χρήστη).
 
 ---
 
@@ -70,7 +70,7 @@ pq-signatures/
 ### 1. Clone & Build
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/stamags/pq-signatures.git
 cd pq-signatures
 mvn clean package
 ```
@@ -205,6 +205,8 @@ data-source add \
 
 ## Διαδρομές εφαρμογής
 
+Βάση URL (τοπικά, default WildFly): `http://localhost:8080/pq-signatures` — οι διαδρομές παρακάτω προστίθενται μετά το context path.
+
 | Σελίδα | URL |
 |--------|-----|
 | Login | `/login.jsf` |
@@ -213,6 +215,18 @@ data-source add \
 | Ιστορικό Ενεργειών | `/webContent/audit.jsf` |
 | Dashboard / Στατιστικά | `/webContent/dashboard.jsf` |
 | Διαχείριση κλειδιών / κωδικών | `/webContent/user-keys.jsf` |
+| Όλοι οι χρήστες (διαχείριση λογαριασμών) | `/webContent/oloiOiXristes.jsf` |
+| Προτιμήσεις χρήστη | `/webContent/userpreferences.jsf` |
+
+### Δοκιμαστικός λογαριασμός με δημιουργία νέων χρηστών
+
+Με το παρεχόμενο SQL/schema, ένας λογαριασμός που μπορεί να κάνει **login** και έχει πρόσβαση στη **δημιουργία νέων χρηστών** (σελίδα «Όλοι οι χρήστες») είναι:
+
+| Πεδίο | Τιμή |
+|--------|------|
+| Όνομα χρήστη | `paraskevi` |
+| Κωδικός | `Stamags1234!` |
+
 
 ---
 
